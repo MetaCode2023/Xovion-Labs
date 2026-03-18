@@ -1,0 +1,134 @@
+
+<div style="font-family: var(--font-mono); font-size: 13px; line-height: 1.6; border-radius: 12px; overflow: hidden; border: 1px solid var(--color-border-tertiary);">
+
+  <!-- Title bar -->
+  <div style="background: #1e1e1e; padding: 10px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #333;">
+    <span style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56; display: inline-block;"></span>
+    <span style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e; display: inline-block;"></span>
+    <span style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f; display: inline-block;"></span>
+    <span style="color: #888; font-size: 12px; margin-left: 8px;">claude — terminal</span>
+  </div>
+
+  <!-- Terminal body -->
+  <div style="background: #141414; padding: 24px 28px; min-height: 420px;">
+
+    <!-- Prompt line -->
+    <div style="margin-bottom: 16px;">
+      <span style="color: #27c93f;">~/dump-dynasty</span>
+      <span style="color: #888;"> $ </span>
+      <span style="color: #e8e8e8;">claude</span>
+    </div>
+
+    <!-- Claude response header -->
+    <div style="color: #888; margin-bottom: 20px; font-size: 12px;">Claude Code v1.2.4 — type your task</div>
+
+    <!-- User input -->
+    <div style="margin-bottom: 20px;">
+      <span style="color: #7c6af7;">❯ </span>
+      <span style="color: #e8e8e8;">Build a fast, clean website for a dumpster rental operation. Here's our existing site — use these exact colors, logo, and copy as your baseline. Framework should be optimized for local SEO and load speed.</span>
+    </div>
+
+    <!-- Divider -->
+    <div style="border-top: 1px solid #2a2a2a; margin-bottom: 20px;"></div>
+
+    <!-- Claude thinking -->
+    <div style="color: #888; margin-bottom: 16px; font-size: 12px;">● Analyzing existing site assets...</div>
+
+    <!-- File operations -->
+    <div style="margin-bottom: 8px;">
+      <span style="color: #27c93f;">✓ </span>
+      <span style="color: #888;">Extracted brand tokens — </span>
+      <span style="color: #7c6af7;">#F5A623</span>
+      <span style="color: #888;">, </span>
+      <span style="color: #7c6af7;">#1A1A1A</span>
+      <span style="color: #888;">, </span>
+      <span style="color: #7c6af7;">Inter/700</span>
+    </div>
+    <div style="margin-bottom: 8px;">
+      <span style="color: #27c93f;">✓ </span>
+      <span style="color: #888;">Scaffolding Astro 5.x project — zero JS by default</span>
+    </div>
+    <div style="margin-bottom: 8px;">
+      <span style="color: #27c93f;">✓ </span>
+      <span style="color: #888;">Created </span>
+      <span style="color: #e8e8e8;">src/components/Hero.astro</span>
+    </div>
+    <div style="margin-bottom: 8px;">
+      <span style="color: #27c93f;">✓ </span>
+      <span style="color: #888;">Created </span>
+      <span style="color: #e8e8e8;">src/components/ServiceCard.astro</span>
+    </div>
+    <div style="margin-bottom: 8px;">
+      <span style="color: #27c93f;">✓ </span>
+      <span style="color: #888;">Created </span>
+      <span style="color: #e8e8e8;">src/pages/index.astro</span>
+      <span style="color: #888;"> — homepage with local SEO meta</span>
+    </div>
+    <div style="margin-bottom: 8px;">
+      <span style="color: #27c93f;">✓ </span>
+      <span style="color: #888;">Created </span>
+      <span style="color: #e8e8e8;">src/pages/services.astro</span>
+    </div>
+    <div style="margin-bottom: 8px;">
+      <span style="color: #27c93f;">✓ </span>
+      <span style="color: #888;">Configured Tailwind with brand color tokens</span>
+    </div>
+    <div style="margin-bottom: 20px;">
+      <span style="color: #27c93f;">✓ </span>
+      <span style="color: #888;">Installed dependencies</span>
+    </div>
+
+    <!-- Divider -->
+    <div style="border-top: 1px solid #2a2a2a; margin-bottom: 20px;"></div>
+
+    <!-- Build result -->
+    <div style="margin-bottom: 8px;">
+      <span style="color: #888;">Running </span>
+      <span style="color: #e8e8e8;">npm run build</span>
+      <span style="color: #888;">...</span>
+    </div>
+    <div style="margin-bottom: 8px; padding-left: 16px;">
+      <span style="color: #888;">dist/ generated — </span>
+      <span style="color: #27c93f;">6 pages</span>
+      <span style="color: #888;">, </span>
+      <span style="color: #27c93f;">0kb JS</span>
+      <span style="color: #888;"> shipped to client</span>
+    </div>
+
+    <!-- Lighthouse score -->
+    <div style="margin-top: 20px; padding: 14px 18px; background: #1e1e1e; border-radius: 8px; border: 1px solid #2a2a2a; display: flex; gap: 28px;">
+      <div>
+        <div style="color: #27c93f; font-size: 20px; font-weight: 600;">98</div>
+        <div style="color: #666; font-size: 11px;">Performance</div>
+      </div>
+      <div>
+        <div style="color: #27c93f; font-size: 20px; font-weight: 600;">100</div>
+        <div style="color: #666; font-size: 11px;">SEO</div>
+      </div>
+      <div>
+        <div style="color: #27c93f; font-size: 20px; font-weight: 600;">100</div>
+        <div style="color: #666; font-size: 11px;">Best Practices</div>
+      </div>
+      <div>
+        <div style="color: #ffbd2e; font-size: 20px; font-weight: 600;">94</div>
+        <div style="color: #666; font-size: 11px;">Accessibility</div>
+      </div>
+    </div>
+
+    <!-- Time stamp -->
+    <div style="margin-top: 20px; color: #444; font-size: 11px;">
+      ⏱ Completed in 18 minutes — we had never touched Astro before this session
+    </div>
+
+    <!-- Blinking cursor -->
+    <div style="margin-top: 20px;">
+      <span style="color: #27c93f;">~/dump-dynasty</span>
+      <span style="color: #888;"> $ </span>
+      <span style="color: #e8e8e8; border-right: 2px solid #e8e8e8; animation: blink 1s step-end infinite; padding-right: 2px;"> </span>
+    </div>
+
+  </div>
+</div>
+<style>
+@keyframes blink { 0%, 100% { border-color: #e8e8e8; } 50% { border-color: transparent; } }
+</style>
