@@ -4,7 +4,6 @@ interface Env {
   ANTHROPIC_API_KEY: string;
   GHL_API_KEY: string;
   GHL_LOCATION_ID: string;
-  GHL_CALENDAR_ID: string;
 }
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -14,6 +13,8 @@ interface ToolResultBlock { type: 'tool_result'; tool_use_id: string; content: s
 type ContentBlock = TextBlock | ToolUseBlock;
 interface Message { role: 'user' | 'assistant'; content: ContentBlock[] | ToolResultBlock[] | string }
 interface AnthropicResponse { stop_reason: string; content: ContentBlock[] }
+
+const BOOKING_LINK = 'https://api.leadconnectorhq.com/widget/bookings/ai-leverage-exploration-';
 
 // ── System prompt ─────────────────────────────────────────────────────────────
 const SYSTEM_PROMPT = `You are a conversational AI agent for Xovion Labs — an AI systems company that builds websites, automates CRMs, wires AI into business software, and advises operators on where AI creates real leverage.
@@ -43,9 +44,8 @@ Best for: Operators tired of paying for AI tools their team doesn't use, founder
 - Ask only one question per message.
 - Never say "CRM" to non-technical people — say "your system" or "your pipeline".
 - When you have a name + any contact method (email or phone), call create_ghl_contact immediately.
-- When fit is clear, offer to check real calendar availability for a 30-minute discovery call.
-- Always confirm bookings with the exact time and note they'll get a confirmation email.
-- If get_available_slots returns an error, do NOT say there are no slots — tell the user there was a technical issue checking the calendar and ask them to reach out directly at austin@xovionlabs.com.`;
+- When fit is clear and the user wants to book a call, share this booking link so they can pick a time directly: ${BOOKING_LINK}
+- Do not try to list slots or book on their behalf — the link handles everything.`;
 
 // ── Tools definition (Anthropic API format) ───────────────────────────────────
 const TOOLS = [
@@ -65,40 +65,10 @@ const TOOLS = [
       required: ['firstName'],
     },
   },
-  {
-    name: 'get_available_slots',
-    description: 'Get available discovery call slots on the Xovion Labs calendar for the next 7 days.',
-    input_schema: {
-      type: 'object',
-      properties: {
-        timezone: { type: 'string', description: "Visitor timezone, default 'America/Chicago'" },
-      },
-      required: [],
-    },
-  },
-  {
-    name: 'book_appointment',
-    description: 'Book a discovery call after the visitor confirms a specific time slot.',
-    input_schema: {
-      type: 'object',
-      properties: {
-        startTime: { type: 'string', description: 'ISO 8601 datetime' },
-        contactId: { type: 'string', description: 'From create_ghl_contact' },
-        firstName: { type: 'string' },
-        lastName: { type: 'string' },
-        email: { type: 'string' },
-        phone: { type: 'string' },
-        notes: { type: 'string' },
-      },
-      required: ['startTime', 'firstName', 'email'],
-    },
-  },
 ];
 
 const TOOL_STATUS: Record<string, string> = {
   create_ghl_contact: 'Saving your info...',
-  get_available_slots: 'Checking calendar availability...',
-  book_appointment: 'Booking your appointment...',
 };
 
 // ── Anthropic API call (raw fetch, no SDK) ────────────────────────────────────
@@ -165,54 +135,6 @@ async function runTool(name: string, input: Record<string, unknown>, env: Env): 
       return JSON.stringify(
         data.contact?.id ? { success: true, contactId: data.contact.id } : { success: false, status: res.status }
       );
-    }
-
-    if (name === 'get_available_slots') {
-      const timezone = (input.timezone as string) ?? 'America/Chicago';
-      const start = new Date();
-      const end = new Date();
-      end.setDate(end.getDate() + 7);
-      const params = new URLSearchParams({
-        startDate: start.toISOString().split('T')[0],
-        endDate: end.toISOString().split('T')[0],
-        timezone,
-      });
-      const res = await fetch(
-        `${GHL_BASE}/calendars/${env.GHL_CALENDAR_ID}/free-slots?${params}`,
-        { headers: ghlHeaders(env.GHL_API_KEY) }
-      );
-      if (!res.ok) {
-        const errText = await res.text();
-        return JSON.stringify({ error: `Calendar API error ${res.status}: ${errText}` });
-      }
-      const data = (await res.json()) as Record<string, { slots?: string[] }>;
-      const slots: string[] = [];
-      for (const day of Object.values(data)) {
-        if (day.slots) slots.push(...day.slots);
-        if (slots.length >= 8) break;
-      }
-      return JSON.stringify({ availableSlots: slots.slice(0, 8) });
-    }
-
-    if (name === 'book_appointment') {
-      const startMs = new Date(input.startTime as string).getTime();
-      const res = await fetch(`${GHL_BASE}/calendars/events/appointments`, {
-        method: 'POST',
-        headers: ghlHeaders(env.GHL_API_KEY),
-        body: JSON.stringify({
-          calendarId: env.GHL_CALENDAR_ID,
-          locationId: env.GHL_LOCATION_ID,
-          contactId: input.contactId,
-          startTime: input.startTime,
-          endTime: new Date(startMs + 30 * 60 * 1000).toISOString(),
-          title: `Discovery Call – ${input.firstName}`,
-          appointmentStatus: 'confirmed',
-          toNotify: true,
-          notes: input.notes ?? '',
-        }),
-      });
-      const data = (await res.json()) as { id?: string };
-      return JSON.stringify(data.id ? { success: true, appointmentId: data.id } : { success: false });
     }
 
     return JSON.stringify({ error: `Unknown tool: ${name}` });
