@@ -19,7 +19,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
         <!-- Two options -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
-          <a href="#book" class="glass-card rounded-xl p-6 text-center hover:border-xv-accent-blue/40 transition-all group">
+          <button id="btn-book" onclick="showPanel('book')" class="glass-card rounded-xl p-6 text-center hover:border-xv-accent-blue/40 transition-all group w-full">
             <div class="w-12 h-12 rounded-xl bg-xv-accent-blue/10 border border-xv-accent-blue/20 flex items-center justify-center mx-auto mb-4">
               <svg class="w-6 h-6 text-xv-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
@@ -27,9 +27,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             </div>
             <h3 class="font-display font-semibold text-xv-text-primary group-hover:text-white transition-colors">Book a Free Call</h3>
             <p class="text-sm text-xv-text-secondary mt-1">30-minute strategy conversation</p>
-          </a>
+          </button>
 
-          <a href="#form" class="glass-card rounded-xl p-6 text-center hover:border-xv-accent-green/40 transition-all group">
+          <button id="btn-form" onclick="showPanel('form')" class="glass-card rounded-xl p-6 text-center hover:border-xv-accent-green/40 transition-all group w-full">
             <div class="w-12 h-12 rounded-xl bg-xv-accent-green/10 border border-xv-accent-green/20 flex items-center justify-center mx-auto mb-4">
               <svg class="w-6 h-6 text-xv-accent-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -37,17 +37,17 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             </div>
             <h3 class="font-display font-semibold text-xv-text-primary group-hover:text-white transition-colors">Send a Message</h3>
             <p class="text-sm text-xv-text-secondary mt-1">Tell me about your project</p>
-          </a>
+          </button>
         </div>
 
         <!-- Booking embed -->
-        <div id="book" class="glass-card rounded-xl p-6 mb-8 scroll-mt-24">
+        <div id="book" class="glass-card rounded-xl p-6 mb-8 hidden">
           <iframe src="https://api.leadconnectorhq.com/widget/booking/eiF739vJXyu1Vok09WSR" style="width: 100%;border:none;overflow: hidden;" scrolling="no" id="eiF739vJXyu1Vok09WSR_1773821432258"></iframe>
           <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
         </div>
 
         <!-- Contact Form -->
-        <div id="form" class="glass-card rounded-xl p-6 sm:p-8 scroll-mt-24">
+        <div id="form" class="glass-card rounded-xl p-6 sm:p-8 hidden">
           <h2 class="font-display font-semibold text-xl text-xv-text-primary mb-6">Send a message</h2>
 
           <div class="space-y-5">
@@ -135,3 +135,36 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  function showPanel(panel: string) {
+    const book = document.getElementById('book');
+    const form = document.getElementById('form');
+    const btnBook = document.getElementById('btn-book');
+    const btnForm = document.getElementById('btn-form');
+
+    if (!book || !form || !btnBook || !btnForm) return;
+
+    // Hide both panels first
+    book.classList.add('hidden');
+    form.classList.add('hidden');
+
+    // Remove active highlight from both buttons
+    btnBook.classList.remove('border-xv-accent-blue/40');
+    btnForm.classList.remove('border-xv-accent-green/40');
+
+    // Show selected panel and highlight its button
+    if (panel === 'book') {
+      book.classList.remove('hidden');
+      btnBook.classList.add('border-xv-accent-blue/40');
+      book.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      form.classList.remove('hidden');
+      btnForm.classList.add('border-xv-accent-green/40');
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // Expose globally for inline onclick handlers
+  (window as any).showPanel = showPanel;
+</script>
