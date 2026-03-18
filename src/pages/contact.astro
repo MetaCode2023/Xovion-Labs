@@ -50,7 +50,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         <div id="form" class="glass-card rounded-xl p-6 sm:p-8 hidden">
           <h2 class="font-display font-semibold text-xl text-xv-text-primary mb-6">Send a message</h2>
 
-          <div class="space-y-5">
+          <form id="contact-form" class="space-y-5">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
                 <label for="name" class="block text-sm font-medium text-xv-text-secondary mb-1.5">Name</label>
@@ -119,17 +119,24 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
               ></textarea>
             </div>
 
-            <button type="submit" class="btn-primary w-full justify-center">
-              Send Message
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button id="submit-btn" type="submit" class="btn-primary w-full justify-center">
+              <span id="submit-label">Send Message</span>
+              <svg id="submit-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
               </svg>
             </button>
 
+            <div id="form-success" class="hidden text-center py-2">
+              <p class="text-xv-accent-green font-medium text-sm">Message sent. I'll be in touch within 24 hours.</p>
+            </div>
+            <div id="form-error" class="hidden text-center py-2">
+              <p class="text-red-400 text-sm">Something went wrong. Please try again or email directly.</p>
+            </div>
+
             <p class="text-xs text-xv-text-muted text-center">
               I'll get back to you within 24 hours. Usually faster.
             </p>
-          </div>
+          </form>
         </div>
       </div>
     </div>
@@ -167,4 +174,48 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
   // Expose globally for inline onclick handlers
   (window as any).showPanel = showPanel;
+
+  // Contact form submission
+  const contactForm = document.getElementById('contact-form') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+  const submitLabel = document.getElementById('submit-label');
+  const submitIcon = document.getElementById('submit-icon');
+  const successMsg = document.getElementById('form-success');
+  const errorMsg = document.getElementById('form-error');
+
+  contactForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+
+    // Loading state
+    if (submitBtn) submitBtn.disabled = true;
+    if (submitLabel) submitLabel.textContent = 'Sending…';
+    if (submitIcon) submitIcon.classList.add('hidden');
+    successMsg?.classList.add('hidden');
+    errorMsg?.classList.add('hidden');
+
+    const payload = {
+      name: (form.elements.namedItem('name') as HTMLInputElement).value,
+      email: (form.elements.namedItem('email') as HTMLInputElement).value,
+      business_type: (form.elements.namedItem('business-type') as HTMLSelectElement).value,
+      service: (form.elements.namedItem('service') as HTMLSelectElement).value,
+      message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
+    };
+
+    try {
+      await fetch('https://services.leadconnectorhq.com/hooks/fKNgkg4PDWsOfFTAOWYE/webhook-trigger/cd9f3d43-0726-4640-b166-56eea3dfc46a', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      form.reset();
+      successMsg?.classList.remove('hidden');
+    } catch {
+      errorMsg?.classList.remove('hidden');
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+      if (submitLabel) submitLabel.textContent = 'Send Message';
+      if (submitIcon) submitIcon.classList.remove('hidden');
+    }
+  });
 </script>
