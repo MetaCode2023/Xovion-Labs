@@ -1,0 +1,43 @@
+---
+const tools = [
+  'Close CRM',
+  'AppFolio',
+  'Claude Code',
+  'n8n',
+  'GoHighLevel',
+  'AntiGravity',
+  'GitHub',
+  'Astro',
+];
+
+// Double the list so the seamless loop works
+const doubled = [...tools, ...tools];
+---
+
+<div class="w-full overflow-hidden border-b border-xv-border/20 bg-xv-bg-primary" aria-hidden="true">
+  <div class="ticker-track flex items-center py-2">
+    {doubled.map((tool) => (
+      <span class="inline-flex items-center gap-3 px-6 text-xs font-mono tracking-widest uppercase text-xv-text-muted/50 whitespace-nowrap select-none">
+        <span class="w-[3px] h-[3px] rounded-full bg-xv-border-hover/60 shrink-0"></span>
+        {tool}
+      </span>
+    ))}
+  </div>
+</div>
+
+<style>
+  @keyframes ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .ticker-track {
+    animation: ticker 35s linear infinite;
+    will-change: transform;
+    width: max-content;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track { animation: none; }
+  }
+</style>
