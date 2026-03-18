@@ -6,7 +6,24 @@ import TerminalWindow from '@/components/home/TerminalWindow.astro';
 <section class="relative overflow-hidden min-h-[90vh] flex items-center">
   <!-- Background effects -->
   <div class="absolute inset-0">
-    <!-- Gradient orbs -->
+    <!-- Video background -->
+    <video
+      id="hero-bg-video"
+      class="absolute inset-0 w-full h-full object-cover"
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="auto"
+      aria-hidden="true"
+    >
+      <source src="/Video_Generation_With_Color.mp4" type="video/mp4" />
+    </video>
+
+    <!-- Dark overlay for text readability -->
+    <div class="absolute inset-0 bg-gradient-to-b from-xv-bg-primary/70 via-xv-bg-primary/60 to-xv-bg-primary/80"></div>
+
+    <!-- Gradient orbs (layered on top of video) -->
     <div class="absolute top-1/4 -left-32 w-96 h-96 bg-xv-accent-blue/8 rounded-full blur-[120px] animate-glow-pulse"></div>
     <div class="absolute bottom-1/4 -right-32 w-96 h-96 bg-xv-accent-cyan/6 rounded-full blur-[120px] animate-glow-pulse animate-delay-500"></div>
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-xv-accent-purple/4 rounded-full blur-[150px]"></div>
@@ -69,6 +86,12 @@ import TerminalWindow from '@/components/home/TerminalWindow.astro';
 </section>
 
 <script>
+  // Pause video for users who prefer reduced motion
+  const video = document.getElementById('hero-bg-video') as HTMLVideoElement | null;
+  if (video && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    video.pause();
+  }
+
   const CHARS = 'X01#$%@&*!><[]{}|/\\^~';
   const DURATION = 700;
   const INTERVAL = 28;
