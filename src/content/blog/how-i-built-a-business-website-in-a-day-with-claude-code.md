@@ -3,6 +3,7 @@ title: "How I Built a Business Website in a Day with Claude Code"
 description: "A step-by-step walkthrough of building a real business site from scratch using Astro and Claude Code — covering setup, components, deployment, and the actual workflow I use."
 pubDate: 2026-03-01
 tags: ["Web Development", "AI Tools", "Claude Code"]
+author: Austin
 readingTime: 8
 ---
 

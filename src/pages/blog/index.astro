@@ -1,86 +1,75 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PostCard from '../../components/blog/PostCard.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import GlowEffect from '../../components/ui/GlowEffect.astro';
 
-const posts = await getCollection('blog', ({ data }) => !data.draft);
-posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+const tagColorMap: Record<string, string> = {
+  'AI Tools': 'tag-blue',
+  'Web Development': 'tag-green',
+  'Claude Code': 'tag-purple',
+  'CRM': 'tag-cyan',
+  'Real Estate': 'tag-amber',
+  'Automation': 'tag-blue',
+};
 ---
 
-<BaseLayout
-  title="Blog — Xovion Labs"
-  description="Practical guides on building with AI — websites, CRMs, automations, and real estate operations. Written from experience, not research."
->
-  <section class="relative overflow-hidden px-4 sm:px-6 pt-16 pb-8 border-b border-[#21262D]">
-    <GlowEffect color="purple" position="top-left" />
-    <div class="max-w-6xl mx-auto relative z-10">
-      <p class="text-xs font-mono text-[#58A6FF] uppercase tracking-widest mb-4">Blog / Learn</p>
-      <h1 class="text-3xl sm:text-4xl font-bold text-[#E6EDF3] mb-4">
-        Written from experience, not research
-      </h1>
-      <p class="text-[#8B949E] text-lg max-w-2xl">
-        Every post references something actually built or done. No theoretical AI takes — just what works in real operations.
-      </p>
-    </div>
-  </section>
-
-  <section class="px-4 sm:px-6 py-12">
-    <div class="max-w-6xl mx-auto">
-      {allTags.length > 0 && (
-        <div class="flex flex-wrap gap-2 mb-10">
-          {allTags.map((tag) => (
-            <span class="px-3 py-1 bg-[#161B22] border border-[#21262D] rounded-full text-xs font-mono text-[#8B949E] hover:text-[#E6EDF3] hover:border-[#58A6FF] transition-all cursor-default">
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
+<BaseLayout title="Learn" description="Practical AI guides, tutorials, and insights from building real businesses with AI every day.">
+  <section class="section-padding">
+    <div class="section-container">
+      <!-- Header -->
+      <div class="mb-14">
+        <span class="tag-amber mb-4 block w-fit">Learn</span>
+        <h1 class="font-display font-bold text-4xl sm:text-5xl text-xv-text-primary tracking-tight">
+          Built it. <span class="gradient-text">Wrote about it.</span>
+        </h1>
+        <p class="mt-4 text-xv-text-secondary text-lg max-w-2xl">
+          Practical guides and lessons from building real businesses with AI. No theory — everything here comes from something I actually shipped.
+        </p>
+      </div>
 
       {posts.length === 0 ? (
-        <div class="text-center py-20">
-          <p class="text-[#8B949E] font-mono">// posts coming soon</p>
+        <!-- Empty state -->
+        <div class="glass-card rounded-xl p-12 text-center max-w-lg mx-auto">
+          <div class="w-16 h-16 rounded-2xl bg-xv-accent-blue/10 border border-xv-accent-blue/20 flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-xv-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+            </svg>
+          </div>
+          <h2 class="font-display font-semibold text-xl text-xv-text-primary mb-2">Posts incoming</h2>
+          <p class="text-sm text-xv-text-secondary">
+            First articles are in the works. Check back soon — or follow along for updates.
+          </p>
         </div>
       ) : (
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {posts.map((post) => (
-            <PostCard
-              title={post.data.title}
-              description={post.data.description}
-              pubDate={post.data.pubDate}
-              slug={post.id}
-              tags={post.data.tags}
-              readingTime={post.data.readingTime}
-            />
+        <!-- Posts grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {posts.map(post => (
+            <a href={`/blog/${post.id}`} class="glass-card rounded-xl p-6 hover:-translate-y-1 hover:border-xv-accent-blue/30 transition-all duration-300 group">
+              <div class="flex flex-wrap gap-2 mb-3">
+                {post.data.tags.map(tag => (
+                  <span class={tagColorMap[tag] || 'tag-blue'}>{tag}</span>
+                ))}
+              </div>
+              <h2 class="font-display font-semibold text-lg text-xv-text-primary group-hover:text-white transition-colors mb-2">
+                {post.data.title}
+              </h2>
+              <p class="text-sm text-xv-text-secondary leading-relaxed mb-4">
+                {post.data.description}
+              </p>
+              <div class="flex items-center justify-between">
+                <time class="text-xs font-mono text-xv-text-muted" datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </time>
+                <span class="text-xs font-medium text-xv-accent-blue opacity-0 group-hover:opacity-100 transition-opacity">
+                  Read →
+                </span>
+              </div>
+            </a>
           ))}
         </div>
       )}
-    </div>
-  </section>
-
-  <!-- Newsletter signup -->
-  <section class="px-4 sm:px-6 py-16 border-t border-[#21262D] bg-[#161B22]">
-    <div class="max-w-xl mx-auto text-center">
-      <p class="text-xs font-mono text-[#58A6FF] uppercase tracking-widest mb-4">Newsletter</p>
-      <h2 class="text-2xl font-bold text-[#E6EDF3] mb-3">Get the good stuff in your inbox</h2>
-      <p class="text-[#8B949E] mb-8">
-        Practical AI workflows and build tutorials — 1-2x per month. No fluff.
-      </p>
-      <form class="flex flex-col sm:flex-row gap-3">
-        <input
-          type="email"
-          placeholder="your@email.com"
-          class="flex-1 px-4 py-3 bg-[#0D1117] border border-[#30363D] rounded-lg text-[#E6EDF3] placeholder-[#8B949E] focus:outline-none focus:border-[#58A6FF] font-mono text-sm"
-        />
-        <button
-          type="submit"
-          class="px-6 py-3 bg-[#58A6FF] text-[#0D1117] font-semibold rounded-lg hover:bg-[#79BAFF] transition-colors whitespace-nowrap text-sm"
-        >
-          Subscribe
-        </button>
-      </form>
     </div>
   </section>
 </BaseLayout>

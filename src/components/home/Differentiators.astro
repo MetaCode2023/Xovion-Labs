@@ -1,0 +1,53 @@
+---
+const differentiators = [
+  {
+    title: 'Operator, Not Consultant',
+    description: 'We run real estate acquisitions, dumpster rentals, and property management — all powered by AI workflows we built ourselves. When we recommend something, it\'s because we use it.',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.42 15.17l-5.633-5.634a2.25 2.25 0 010-3.182l.944-.943a2.25 2.25 0 013.182 0l1.527 1.527 1.527-1.527a2.25 2.25 0 013.182 0l.944.943a2.25 2.25 0 010 3.182L11.42 15.17z" />`,
+  },
+  {
+    title: 'We Build With AI, Not About AI',
+    description: 'This website was built with Claude Code. Our CRM runs automated intelligence reports. Our SMS campaigns are AI-orchestrated. We don\'t just talk about AI — we ship with it.',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />`,
+  },
+  {
+    title: 'No Hype. Just Results.',
+    description: 'We don\'t promise AI will transform your business overnight. We show you where it fits, build it into your workflow, and measure whether it actually moves the needle.',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />`,
+  },
+];
+---
+
+<section class="section-padding">
+  <div class="section-container">
+    <div class="max-w-2xl mb-14">
+      <span class="tag-purple mb-4 block w-fit">Why Xovion Labs</span>
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-xv-text-primary tracking-tight">
+        Built different. <span class="gradient-text-alt">On purpose.</span>
+      </h2>
+      <p class="mt-3 text-xv-text-secondary text-lg">
+        Most AI agencies are marketers who learned prompting. We're operators who built AI into the way we work.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {differentiators.map((item, i) => {
+        const delays = ['animate-delay-100', 'animate-delay-200', 'animate-delay-300'];
+        return (
+        <div class:list={['glass-card p-6 rounded-xl opacity-0 animate-fade-in-up', delays[i]]}>
+          <div class="w-10 h-10 rounded-lg bg-xv-accent-purple/10 border border-xv-accent-purple/20 flex items-center justify-center mb-5">
+            <svg class="w-5 h-5 text-xv-accent-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <Fragment set:html={item.icon} />
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-lg text-xv-text-primary mb-2">
+            {item.title}
+          </h3>
+          <p class="text-sm text-xv-text-secondary leading-relaxed">
+            {item.description}
+          </p>
+        </div>
+      )})}
+    </div>
+  </div>
+</section>

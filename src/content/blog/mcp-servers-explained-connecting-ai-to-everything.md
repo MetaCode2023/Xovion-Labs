@@ -3,6 +3,7 @@ title: "MCP Servers Explained: Connecting AI to Everything"
 description: "A practical guide to Model Context Protocol — what it is, why it matters, and how to set it up to connect Claude to your CRM, property management software, and analytics tools."
 pubDate: 2026-03-15
 tags: ["AI Tools", "Automation"]
+author: Austin
 readingTime: 7
 ---
 

@@ -1,61 +1,105 @@
 ---
-import Button from '../ui/Button.astro';
-import GlowEffect from '../ui/GlowEffect.astro';
+import { siteConfig } from '@/data/navigation';
 ---
 
-<section class="relative overflow-hidden px-4 sm:px-6 pt-20 pb-24 sm:pt-28 sm:pb-32">
-  <GlowEffect color="blue" position="top-right" />
-  <GlowEffect color="purple" position="top-left" />
+<section class="relative overflow-hidden min-h-[90vh] flex items-center">
+  <!-- Background effects -->
+  <div class="absolute inset-0">
+    <!-- Gradient orbs -->
+    <div class="absolute top-1/4 -left-32 w-96 h-96 bg-xv-accent-blue/8 rounded-full blur-[120px] animate-glow-pulse"></div>
+    <div class="absolute bottom-1/4 -right-32 w-96 h-96 bg-xv-accent-cyan/6 rounded-full blur-[120px] animate-glow-pulse animate-delay-500"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-xv-accent-purple/4 rounded-full blur-[150px]"></div>
 
-  <div class="max-w-6xl mx-auto relative z-10">
+    <!-- Grid pattern -->
+    <div class="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"></div>
+  </div>
+
+  <div class="section-container relative z-10 py-20 md:py-32">
     <div class="max-w-3xl">
-      <!-- Terminal badge -->
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#161B22] border border-[#21262D] rounded-full mb-8">
-        <span class="w-2 h-2 rounded-full bg-[#7EE787] animate-pulse"></span>
-        <span class="text-xs font-mono text-[#8B949E]">AI education + services — now live</span>
+      <!-- Eyebrow -->
+      <div class="opacity-0 animate-fade-in-up mb-6">
+        <span class="tag-blue">
+          <span class="w-1.5 h-1.5 rounded-full bg-xv-accent-blue animate-glow-pulse mr-2"></span>
+          AI Education & Services
+        </span>
       </div>
 
-      <!-- Heading -->
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-        <span class="font-mono text-[#E6EDF3]">XOVION</span>
-        <span class="font-mono text-[#58A6FF]">_</span>
-        <span class="font-mono text-[#E6EDF3]">LABS</span>
-        <br />
-        <span class="text-3xl sm:text-4xl lg:text-5xl text-[#8B949E] font-normal italic">
-          Real Skills. Unreal Speed.
+      <!-- Brand name -->
+      <h1 class="opacity-0 animate-fade-in-up animate-delay-100">
+        <span class="block font-display font-bold text-5xl sm:text-6xl lg:text-7xl text-xv-text-primary tracking-tight">
+          Xovion
+        </span>
+        <span class="block font-display font-bold text-5xl sm:text-6xl lg:text-7xl gradient-text tracking-tight mt-1">
+          Labs
         </span>
       </h1>
 
-      <!-- Subheading -->
-      <p class="text-lg sm:text-xl text-[#8B949E] leading-relaxed mb-10 max-w-2xl">
-        We build with AI every day across real businesses — real estate, property management, service companies.
-        Not theory. Not demos. <span class="text-[#E6EDF3]">Actual AI-powered operations.</span>
+      <!-- Tagline -->
+      <p class="opacity-0 animate-fade-in-up animate-delay-200 mt-6 text-xl sm:text-2xl font-display font-medium text-xv-text-secondary">
+        Real Skills. <span class="text-xv-text-primary">Unreal Speed.</span>
+      </p>
+
+      <!-- Description -->
+      <p class="opacity-0 animate-fade-in-up animate-delay-300 mt-5 text-base sm:text-lg text-xv-text-secondary leading-relaxed max-w-xl">
+        AI doesn't replace knowing your craft — it supercharges it. We build websites, automate CRMs, integrate AI tools, and help businesses figure out where AI actually fits.
       </p>
 
       <!-- CTAs -->
-      <div class="flex flex-col sm:flex-row gap-4">
-        <Button href="/services" size="lg">
+      <div class="opacity-0 animate-fade-in-up animate-delay-400 mt-8 flex flex-wrap gap-4">
+        <a href="/services" class="btn-primary text-base">
           See What We Build
-        </Button>
-        <Button href="/contact" variant="secondary" size="lg">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a href="/contact" class="btn-secondary text-base">
           Book a Call
-        </Button>
+        </a>
       </div>
 
-      <!-- Code snippet decoration -->
-      <div class="mt-12 p-4 bg-[#161B22] border border-[#21262D] rounded-xl font-mono text-sm max-w-lg">
-        <div class="flex items-center gap-2 mb-3">
-          <div class="w-3 h-3 rounded-full bg-[#FF5F57]"></div>
-          <div class="w-3 h-3 rounded-full bg-[#FFBD2E]"></div>
-          <div class="w-3 h-3 rounded-full bg-[#28C840]"></div>
-          <span class="ml-2 text-xs text-[#8B949E]">xovion-labs ~ terminal</span>
+      <!-- Subtle proof -->
+      <div class="opacity-0 animate-fade-in-up animate-delay-600 mt-12 flex items-center gap-6 text-xs font-mono text-xv-text-muted">
+        <span class="flex items-center gap-2">
+          <span class="w-1 h-1 rounded-full bg-xv-accent-green"></span>
+          Built with Claude Code
+        </span>
+        <span class="hidden sm:flex items-center gap-2">
+          <span class="w-1 h-1 rounded-full bg-xv-accent-green"></span>
+          Shipping since 2024
+        </span>
+        <span class="hidden md:flex items-center gap-2">
+          <span class="w-1 h-1 rounded-full bg-xv-accent-green"></span>
+          Sioux Falls, SD
+        </span>
+      </div>
+    </div>
+
+    <!-- Right side decorative element -->
+    <div class="hidden lg:block absolute right-8 xl:right-16 top-1/2 -translate-y-1/2 w-80 xl:w-96 opacity-0 animate-fade-in animate-delay-500">
+      <div class="glass-card p-5 rounded-xl space-y-3">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+          <span class="text-xs font-mono text-xv-text-muted ml-2">xovion-labs</span>
         </div>
-        <div class="space-y-1">
-          <p><span class="text-[#7EE787]">$</span> <span class="text-[#58A6FF]">build</span> <span class="text-[#E6EDF3]">--with ai --ship-fast</span></p>
-          <p class="text-[#8B949E]">✓ Website deployed in 4 hours</p>
-          <p class="text-[#8B949E]">✓ CRM pipeline live — 22 statuses</p>
-          <p class="text-[#8B949E]">✓ SMS campaign: 13,000 texts/week</p>
-          <p><span class="text-[#7EE787]">✓ Done.</span> <span class="text-[#D2A8FF] animate-pulse">▊</span></p>
+        <div class="space-y-2 font-mono text-xs">
+          <p class="text-xv-text-muted">
+            <span class="text-xv-accent-purple">const</span> <span class="text-xv-accent-blue">mission</span> = {`{`}
+          </p>
+          <p class="text-xv-text-muted pl-4">
+            skills: <span class="text-xv-accent-green">"real"</span>,
+          </p>
+          <p class="text-xv-text-muted pl-4">
+            speed: <span class="text-xv-accent-green">"unreal"</span>,
+          </p>
+          <p class="text-xv-text-muted pl-4">
+            fluff: <span class="text-xv-accent-amber">null</span>,
+          </p>
+          <p class="text-xv-text-muted">{`}`};</p>
+          <p class="text-xv-text-muted mt-3">
+            <span class="text-xv-accent-purple">export default</span> <span class="text-xv-accent-blue">mission</span>;
+          </p>
         </div>
       </div>
     </div>

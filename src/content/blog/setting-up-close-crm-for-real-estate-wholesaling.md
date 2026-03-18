@@ -3,6 +3,7 @@ title: "Setting Up Close CRM for Real Estate Wholesaling"
 description: "The exact pipeline architecture, smart views, and automation workflows I use to manage a high-volume wholesaling operation — 13,000+ outbound texts per week, 22 pipeline statuses, and AI-generated deal reports."
 pubDate: 2026-03-10
 tags: ["CRM", "Real Estate", "Automation"]
+author: Austin
 readingTime: 10
 ---
 
