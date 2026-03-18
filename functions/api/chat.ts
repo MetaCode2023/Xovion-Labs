@@ -1,5 +1,4 @@
-import Anthropic from '@anthropic-ai/sdk';
-import { SYSTEM_PROMPT } from '../../src/data/agentContext';
+// No SDK dependency — raw fetch calls to Anthropic API for full CF Workers compatibility
 
 interface Env {
   ANTHROPIC_API_KEY: string;
@@ -8,107 +7,167 @@ interface Env {
   GHL_CALENDAR_ID: string;
 }
 
-const GHL_BASE = 'https://services.leadconnectorhq.com';
-const GHL_VERSION = '2021-07-28';
+// ── Types ─────────────────────────────────────────────────────────────────────
+interface TextBlock { type: 'text'; text: string }
+interface ToolUseBlock { type: 'tool_use'; id: string; name: string; input: Record<string, unknown> }
+interface ToolResultBlock { type: 'tool_result'; tool_use_id: string; content: string }
+type ContentBlock = TextBlock | ToolUseBlock;
+interface Message { role: 'user' | 'assistant'; content: ContentBlock[] | ToolResultBlock[] | string }
+interface AnthropicResponse { stop_reason: string; content: ContentBlock[] }
 
-function ghlHeaders(apiKey: string): Record<string, string> {
-  return {
-    Authorization: `Bearer ${apiKey}`,
-    Version: GHL_VERSION,
-    'Content-Type': 'application/json',
-  };
-}
+// ── System prompt ─────────────────────────────────────────────────────────────
+const SYSTEM_PROMPT = `You are a conversational AI agent for Xovion Labs — an AI systems company that builds websites, automates CRMs, wires AI into business software, and advises operators on where AI creates real leverage.
 
-const TOOLS: Anthropic.Tool[] = [
+Your job: have a real conversation with visitors, understand their business situation, and figure out if Xovion Labs can help them. Be warm, direct, and practical.
+
+## Services
+
+### AI-Powered Website Builds
+Full websites built with Claude Code, custom-wired into CRM/CMS. Leads flow directly into operations. Deployed on Cloudflare Pages. Sub-second load times, 90+ Lighthouse scores.
+Best for: Small businesses needing a real website (not a Wix template), operators who want custom work without agency pricing, businesses whose website is a disconnected brochure.
+
+### CRM Architecture & Automation
+Custom pipeline stages, smart views, and intent-driven automation that tell your team who to call today and surface deals slipping through the cracks. Also wires lead sources directly into the CRM.
+Best for: Operators with leads falling through the cracks, sales teams wasting time digging through messy pipelines, businesses that need their system to drive action.
+
+### AI Orchestration & Custom Integrations
+Secure AI bridges (APIs and MCPs) that let Claude reach into your existing software — GoHighLevel, Close CRM, AppFolio, or custom stacks — to pull live reports, update records, and trigger automations without manual copy-paste.
+Best for: Operators copying data between ChatGPT and their CRM, businesses with fragmented data across multiple platforms, anyone who wants their AI to read real-time business metrics.
+
+### Operator Advisory & Blueprinting
+BS-free operational teardown to find exactly where AI creates leverage in your specific business, with a custom step-by-step blueprint based on what's actually been stress-tested in real companies.
+Best for: Operators tired of paying for AI tools their team doesn't use, founders bleeding cash on manual tasks who need an actionable plan today.
+
+## Conversation Rules
+- Keep messages to 2–4 sentences. This is a chat widget, not email.
+- Ask only one question per message.
+- Never say "CRM" to non-technical people — say "your system" or "your pipeline".
+- When you have a name + any contact method (email or phone), call create_ghl_contact immediately.
+- When fit is clear, offer to check real calendar availability for a 30-minute discovery call.
+- Always confirm bookings with the exact time and note they'll get a confirmation email.`;
+
+// ── Tools definition (Anthropic API format) ───────────────────────────────────
+const TOOLS = [
   {
     name: 'create_ghl_contact',
-    description:
-      "Create a new contact in GoHighLevel CRM. Call this as soon as you have the visitor's name plus at least one contact method (email or phone). Returns a contactId to use when booking.",
+    description: "Create a contact in GoHighLevel. Call as soon as you have the visitor's name + any contact method (email or phone).",
     input_schema: {
       type: 'object',
       properties: {
-        firstName: { type: 'string', description: 'First name' },
-        lastName: { type: 'string', description: 'Last name (if provided)' },
-        email: { type: 'string', description: 'Email address (if provided)' },
-        phone: { type: 'string', description: 'Phone number (if provided)' },
-        companyName: { type: 'string', description: 'Business or company name' },
-        notes: {
-          type: 'string',
-          description:
-            'Qualification notes: business type, pain point, service interest, team size, etc.',
-        },
+        firstName: { type: 'string' },
+        lastName: { type: 'string' },
+        email: { type: 'string' },
+        phone: { type: 'string' },
+        companyName: { type: 'string' },
+        notes: { type: 'string', description: 'Business type, pain point, service interest, team size' },
       },
       required: ['firstName'],
     },
   },
   {
     name: 'get_available_slots',
-    description:
-      'Get available appointment slots on the Xovion Labs discovery call calendar for the next 7 days.',
+    description: 'Get available discovery call slots on the Xovion Labs calendar for the next 7 days.',
     input_schema: {
       type: 'object',
       properties: {
-        timezone: {
-          type: 'string',
-          description: "Visitor's timezone (e.g. 'America/Chicago'). Default to 'America/Chicago' if unknown.",
-        },
+        timezone: { type: 'string', description: "Visitor timezone, default 'America/Chicago'" },
       },
       required: [],
     },
   },
   {
     name: 'book_appointment',
-    description:
-      'Book a discovery call appointment. Only call this after the visitor has confirmed a specific time slot.',
+    description: 'Book a discovery call after the visitor confirms a specific time slot.',
     input_schema: {
       type: 'object',
       properties: {
-        startTime: { type: 'string', description: 'ISO 8601 datetime for the appointment start' },
-        contactId: { type: 'string', description: 'GHL contact ID from create_ghl_contact' },
+        startTime: { type: 'string', description: 'ISO 8601 datetime' },
+        contactId: { type: 'string', description: 'From create_ghl_contact' },
         firstName: { type: 'string' },
         lastName: { type: 'string' },
         email: { type: 'string' },
         phone: { type: 'string' },
-        notes: { type: 'string', description: 'Brief note about what the call is about' },
+        notes: { type: 'string' },
       },
       required: ['startTime', 'firstName', 'email'],
     },
   },
 ];
 
-async function executeToolCall(
-  toolName: string,
-  toolInput: Record<string, unknown>,
-  env: Env
-): Promise<string> {
+const TOOL_STATUS: Record<string, string> = {
+  create_ghl_contact: 'Saving your info...',
+  get_available_slots: 'Checking calendar availability...',
+  book_appointment: 'Booking your appointment...',
+};
+
+// ── Anthropic API call (raw fetch, no SDK) ────────────────────────────────────
+async function callAnthropic(
+  apiKey: string,
+  messages: Message[]
+): Promise<AnthropicResponse> {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1024,
+      system: SYSTEM_PROMPT,
+      messages,
+      tools: TOOLS,
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Anthropic API ${res.status}: ${err}`);
+  }
+
+  return res.json() as Promise<AnthropicResponse>;
+}
+
+// ── GHL API helpers ───────────────────────────────────────────────────────────
+const GHL_BASE = 'https://services.leadconnectorhq.com';
+
+function ghlHeaders(apiKey: string): Record<string, string> {
+  return {
+    Authorization: `Bearer ${apiKey}`,
+    Version: '2021-07-28',
+    'Content-Type': 'application/json',
+  };
+}
+
+async function runTool(name: string, input: Record<string, unknown>, env: Env): Promise<string> {
   try {
-    if (toolName === 'create_ghl_contact') {
+    if (name === 'create_ghl_contact') {
       const body: Record<string, unknown> = {
         locationId: env.GHL_LOCATION_ID,
-        firstName: toolInput.firstName,
-        lastName: toolInput.lastName ?? '',
-        email: toolInput.email,
-        phone: toolInput.phone,
-        companyName: toolInput.companyName,
+        firstName: input.firstName,
+        lastName: input.lastName ?? '',
+        email: input.email,
+        phone: input.phone,
+        companyName: input.companyName,
         source: 'chat-widget',
         tags: ['chat-lead'],
       };
-      if (toolInput.notes) {
-        body.customFields = [{ key: 'chat_notes', field_value: toolInput.notes }];
-      }
+      if (input.notes) body.customFields = [{ key: 'chat_notes', field_value: input.notes }];
+
       const res = await fetch(`${GHL_BASE}/contacts/`, {
         method: 'POST',
         headers: ghlHeaders(env.GHL_API_KEY),
         body: JSON.stringify(body),
       });
       const data = (await res.json()) as { contact?: { id: string } };
-      return data.contact?.id
-        ? JSON.stringify({ success: true, contactId: data.contact.id })
-        : JSON.stringify({ success: false, raw: data });
+      return JSON.stringify(
+        data.contact?.id ? { success: true, contactId: data.contact.id } : { success: false, status: res.status }
+      );
     }
 
-    if (toolName === 'get_available_slots') {
-      const timezone = (toolInput.timezone as string) ?? 'America/Chicago';
+    if (name === 'get_available_slots') {
+      const timezone = (input.timezone as string) ?? 'America/Chicago';
       const start = new Date();
       const end = new Date();
       end.setDate(end.getDate() + 7);
@@ -130,150 +189,133 @@ async function executeToolCall(
       return JSON.stringify({ availableSlots: slots.slice(0, 8) });
     }
 
-    if (toolName === 'book_appointment') {
-      const startMs = new Date(toolInput.startTime as string).getTime();
-      const body = {
-        calendarId: env.GHL_CALENDAR_ID,
-        locationId: env.GHL_LOCATION_ID,
-        contactId: toolInput.contactId,
-        startTime: toolInput.startTime,
-        endTime: new Date(startMs + 30 * 60 * 1000).toISOString(),
-        title: `Discovery Call – ${toolInput.firstName}`,
-        appointmentStatus: 'confirmed',
-        toNotify: true,
-        notes: toolInput.notes ?? '',
-      };
+    if (name === 'book_appointment') {
+      const startMs = new Date(input.startTime as string).getTime();
       const res = await fetch(`${GHL_BASE}/calendars/events/appointments`, {
         method: 'POST',
         headers: ghlHeaders(env.GHL_API_KEY),
-        body: JSON.stringify(body),
+        body: JSON.stringify({
+          calendarId: env.GHL_CALENDAR_ID,
+          locationId: env.GHL_LOCATION_ID,
+          contactId: input.contactId,
+          startTime: input.startTime,
+          endTime: new Date(startMs + 30 * 60 * 1000).toISOString(),
+          title: `Discovery Call – ${input.firstName}`,
+          appointmentStatus: 'confirmed',
+          toNotify: true,
+          notes: input.notes ?? '',
+        }),
       });
       const data = (await res.json()) as { id?: string };
-      return data.id
-        ? JSON.stringify({ success: true, appointmentId: data.id })
-        : JSON.stringify({ success: false, raw: data });
+      return JSON.stringify(data.id ? { success: true, appointmentId: data.id } : { success: false });
     }
 
-    return JSON.stringify({ error: `Unknown tool: ${toolName}` });
+    return JSON.stringify({ error: `Unknown tool: ${name}` });
   } catch (err) {
     return JSON.stringify({ error: String(err) });
   }
 }
 
-const TOOL_STATUS: Record<string, string> = {
-  create_ghl_contact: 'Saving your info...',
-  get_available_slots: 'Checking calendar availability...',
-  book_appointment: 'Booking your appointment...',
-};
+// ── Main handler ──────────────────────────────────────────────────────────────
+export async function onRequestPost(context: {
+  request: Request;
+  env: Env;
+}): Promise<Response> {
+  const { request, env } = context;
 
-export const onRequestPost: (context: { request: Request; env: Env }) => Promise<Response> =
-  async (context) => {
-    const { request, env } = context;
+  const sse = (data: object) => `data: ${JSON.stringify(data)}\n\n`;
 
-    if (!env.ANTHROPIC_API_KEY) {
-      return new Response(JSON.stringify({ error: 'Server not configured' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    let body: { messages: Anthropic.MessageParam[] };
-    try {
-      body = await request.json();
-    } catch {
-      return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
-    const anthropic = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
-    const encoder = new TextEncoder();
-
-    const readableStream = new ReadableStream({
-      async start(controller) {
-        const send = (data: object) => {
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
-        };
-
-        try {
-          const messages: Anthropic.MessageParam[] = [...body.messages];
-          let iterations = 0;
-
-          while (iterations < 6) {
-            iterations++;
-
-            const response = await anthropic.messages.create({
-              model: 'claude-sonnet-4-6',
-              max_tokens: 1024,
-              system: SYSTEM_PROMPT,
-              messages,
-              tools: TOOLS,
-            });
-
-            if (response.stop_reason === 'tool_use') {
-              const toolUseBlocks = response.content.filter(
-                (b): b is Anthropic.ToolUseBlock => b.type === 'tool_use'
-              );
-
-              for (const toolUse of toolUseBlocks) {
-                send({ type: 'status', text: TOOL_STATUS[toolUse.name] ?? 'Working...' });
-              }
-
-              const toolResults: Anthropic.ToolResultBlockParam[] = await Promise.all(
-                toolUseBlocks.map(async (toolUse) => ({
-                  type: 'tool_result' as const,
-                  tool_use_id: toolUse.id,
-                  content: await executeToolCall(
-                    toolUse.name,
-                    toolUse.input as Record<string, unknown>,
-                    env
-                  ),
-                }))
-              );
-
-              messages.push({ role: 'assistant', content: response.content });
-              messages.push({ role: 'user', content: toolResults });
-              continue;
-            }
-
-            const finalText = response.content
-              .filter((b): b is Anthropic.TextBlock => b.type === 'text')
-              .map((b) => b.text)
-              .join('');
-
-            send({ type: 'text', text: finalText });
-            send({ type: 'done' });
-            controller.close();
-            return;
-          }
-
-          send({ type: 'text', text: "I'm having trouble right now — please try again in a moment." });
-          send({ type: 'done' });
-          controller.close();
-        } catch (err) {
-          console.error('Chat function error:', err);
-          send({ type: 'error', text: 'Something went wrong. Please try again.' });
-          controller.close();
-        }
-      },
+  if (!env.ANTHROPIC_API_KEY) {
+    return new Response(sse({ type: 'error', text: 'Server not configured.' }) + sse({ type: 'done' }), {
+      headers: { 'Content-Type': 'text/event-stream', 'Access-Control-Allow-Origin': '*' },
     });
+  }
 
-    return new Response(readableStream, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-        'Access-Control-Allow-Origin': '*',
-      },
+  let body: { messages: Message[] };
+  try {
+    body = await request.json();
+  } catch {
+    return new Response(sse({ type: 'error', text: 'Invalid request.' }) + sse({ type: 'done' }), {
+      headers: { 'Content-Type': 'text/event-stream', 'Access-Control-Allow-Origin': '*' },
     });
+  }
+
+  const encoder = new TextEncoder();
+  const { readable, writable } = new TransformStream<Uint8Array, Uint8Array>();
+  const writer = writable.getWriter();
+
+  const send = async (data: object) => {
+    await writer.write(encoder.encode(sse(data)));
   };
 
-export const onRequestOptions: () => Response = () =>
-  new Response(null, {
+  (async () => {
+    try {
+      const messages: Message[] = [...body.messages];
+
+      for (let i = 0; i < 6; i++) {
+        const response = await callAnthropic(env.ANTHROPIC_API_KEY, messages);
+
+        if (response.stop_reason === 'tool_use') {
+          const toolBlocks = response.content.filter(
+            (b): b is ToolUseBlock => b.type === 'tool_use'
+          );
+
+          for (const t of toolBlocks) {
+            await send({ type: 'status', text: TOOL_STATUS[t.name] ?? 'Working...' });
+          }
+
+          const results: ToolResultBlock[] = await Promise.all(
+            toolBlocks.map(async (t) => ({
+              type: 'tool_result' as const,
+              tool_use_id: t.id,
+              content: await runTool(t.name, t.input, env),
+            }))
+          );
+
+          messages.push({ role: 'assistant', content: response.content });
+          messages.push({ role: 'user', content: results });
+          continue;
+        }
+
+        const text = response.content
+          .filter((b): b is TextBlock => b.type === 'text')
+          .map((b) => b.text)
+          .join('');
+
+        await send({ type: 'text', text });
+        break;
+      }
+    } catch (err) {
+      console.error('Chat error:', err);
+      await send({ type: 'error', text: 'Something went wrong. Please try again.' });
+    } finally {
+      await send({ type: 'done' });
+      await writer.close();
+    }
+  })();
+
+  return new Response(readable, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
+}
+
+export function onRequestOptions(): Response {
+  return new Response(null, {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     },
   });
+}
+
+// Health check — visit /api/chat in browser to confirm function is deployed
+export function onRequestGet(): Response {
+  return new Response(JSON.stringify({ ok: true, service: 'xovion-chat' }), {
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
