@@ -69,7 +69,7 @@ export const services: Service[] = [
     title: 'AI Orchestration & Custom Integrations',
     shortTitle: 'AI Integration',
     tagline: 'Stop copying and pasting. Give your AI hands to work inside your actual software.',
-    description: 'Using AI as a smart search engine is playing at 10% capacity. We build secure bridges (via APIs and MCPs) that allow Claude to reach directly into your existing software. Instead of copying data back and forth, your AI can pull live reports, update CRM records, and analyze your property management metrics autonomously.',
+    description: 'Using AI as a smart search engine is playing at 10% capacity. We build secure bridges (via APIs and MCPs) that allow Claude to reach directly into your existing software. Instead of copying data back and forth, your AI can pull live reports, update CRM records, and analyze your core operational metrics autonomously.',
     icon: 'plug',
     color: 'green',
     features: [
