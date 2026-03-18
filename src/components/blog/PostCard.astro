@@ -1,0 +1,50 @@
+---
+import Badge from '../ui/Badge.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  slug: string;
+  tags?: string[];
+  readingTime?: number;
+}
+
+const { title, description, pubDate, slug, tags = [], readingTime } = Astro.props;
+
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<a href={`/blog/${slug}`} class="block group">
+  <article class="bg-[#161B22] border border-[#21262D] rounded-xl p-6 h-full card-hover group-hover:border-[#58A6FF]">
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mb-4">
+        {tags.slice(0, 2).map((tag) => <Badge>{tag}</Badge>)}
+      </div>
+    )}
+    <h2 class="text-lg font-semibold text-[#E6EDF3] mb-3 leading-snug group-hover:text-[#58A6FF] transition-colors">
+      {title}
+    </h2>
+    <p class="text-sm text-[#8B949E] leading-relaxed mb-6 line-clamp-3">
+      {description}
+    </p>
+    <div class="flex items-center justify-between mt-auto">
+      <div class="flex items-center gap-3 text-xs text-[#8B949E] font-mono">
+        <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+        {readingTime && (
+          <>
+            <span>·</span>
+            <span>{readingTime} min read</span>
+          </>
+        )}
+      </div>
+      <span class="text-xs font-mono text-[#58A6FF] opacity-0 group-hover:opacity-100 transition-opacity">
+        Read →
+      </span>
+    </div>
+  </article>
+</a>

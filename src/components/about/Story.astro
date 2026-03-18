@@ -1,0 +1,96 @@
+---
+const timeline = [
+  {
+    phase: "The Origin",
+    icon: "🌱",
+    content:
+      "Started with GoHighLevel and Xovion AI — selling chatbots and basic automations to local businesses. Good start. But quickly realized the ceiling was low. You can only automate so much when you're not actually building.",
+  },
+  {
+    phase: "The Evolution",
+    icon: "⚡",
+    content:
+      "Learned to code with Claude Code. Built websites from scratch in hours, not weeks. Wired up CRMs with real logic. Ran SMS campaigns at scale. Each business became a live testing ground for what AI could actually do.",
+  },
+  {
+    phase: "The Operations",
+    icon: "🏗️",
+    content:
+      "Today: running Metastone Properties (property management), Big Sioux Home Buyers (real estate wholesaling), and Dump Dynasty (dumpster rentals) — all with AI-powered workflows. Not demos. Real businesses, real revenue.",
+  },
+  {
+    phase: "The Philosophy",
+    icon: "🧠",
+    content:
+      '"Real Skills. Unreal Speed." AI amplifies what you know — it doesn\'t replace knowing. The operators winning with AI aren\'t the ones who found the best tools. They\'re the ones who understood their business well enough to automate it.',
+  },
+];
+
+const businesses = [
+  {
+    name: "Metastone Properties",
+    type: "Property Management",
+    icon: "🏠",
+    aiUse: "AppFolio + AI for tenant comms, maintenance tracking, and reporting",
+  },
+  {
+    name: "Big Sioux Home Buyers",
+    type: "Real Estate Wholesaling",
+    icon: "🏡",
+    aiUse: "Close CRM with 22-status pipeline, 13K+ weekly SMS, AI deal analysis",
+  },
+  {
+    name: "Dump Dynasty",
+    type: "Dumpster Rentals",
+    icon: "🗑️",
+    aiUse: "AI-built website with SEO targeting, CRM for lead management",
+  },
+];
+---
+
+<section class="px-4 sm:px-6 py-16 sm:py-24">
+  <div class="max-w-4xl mx-auto">
+    <!-- Intro -->
+    <div class="mb-16">
+      <p class="text-xs font-mono text-[#58A6FF] uppercase tracking-widest mb-4">The Story</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-[#E6EDF3] mb-6">
+        Most AI agencies are marketers who learned to prompt.<br />
+        <span class="text-[#8B949E]">We're operators who built AI into real businesses.</span>
+      </h1>
+      <p class="text-[#8B949E] text-lg leading-relaxed">
+        There's a difference between knowing how AI works and using it to run a business at 5am on a Tuesday.
+        We do the second one — across three companies, daily.
+      </p>
+    </div>
+
+    <!-- Timeline -->
+    <div class="space-y-8 mb-16">
+      {timeline.map((item) => (
+        <div class="flex gap-6">
+          <div class="flex-shrink-0 w-10 h-10 bg-[#161B22] border border-[#21262D] rounded-lg flex items-center justify-center text-xl">
+            {item.icon}
+          </div>
+          <div class="pt-1">
+            <h3 class="font-semibold text-[#E6EDF3] mb-2">{item.phase}</h3>
+            <p class="text-[#8B949E] leading-relaxed">{item.content}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- What I Run -->
+    <div class="border-t border-[#21262D] pt-12">
+      <p class="text-xs font-mono text-[#58A6FF] uppercase tracking-widest mb-6">What I Run</p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {businesses.map((biz) => (
+          <div class="bg-[#161B22] border border-[#21262D] rounded-xl p-5">
+            <div class="text-2xl mb-3">{biz.icon}</div>
+            <h3 class="font-semibold text-[#E6EDF3] text-sm mb-1">{biz.name}</h3>
+            <p class="text-xs text-[#58A6FF] font-mono mb-3">{biz.type}</p>
+            <p class="text-xs text-[#8B949E] leading-relaxed">{biz.aiUse}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
