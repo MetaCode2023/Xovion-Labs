@@ -15,20 +15,16 @@ import TerminalWindow from '@/components/home/TerminalWindow.astro';
       muted
       playsinline
       preload="auto"
+      poster="/hero-poster.svg"
       aria-hidden="true"
     >
       <source src="/Video_Generation_With_Color.mp4" type="video/mp4" />
     </video>
 
-    <!-- Dark overlay for text readability -->
-    <div class="absolute inset-0 bg-gradient-to-b from-xv-bg-primary/70 via-xv-bg-primary/60 to-xv-bg-primary/80"></div>
+    <!-- Dark glass overlay -->
+    <div class="absolute inset-0 bg-gradient-to-b from-xv-bg-primary/75 via-xv-bg-primary/55 to-xv-bg-primary/85 backdrop-blur-[1px]"></div>
 
-    <!-- Gradient orbs (layered on top of video) -->
-    <div class="absolute top-1/4 -left-32 w-96 h-96 bg-xv-accent-blue/8 rounded-full blur-[120px] animate-glow-pulse"></div>
-    <div class="absolute bottom-1/4 -right-32 w-96 h-96 bg-xv-accent-cyan/6 rounded-full blur-[120px] animate-glow-pulse animate-delay-500"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-xv-accent-purple/4 rounded-full blur-[150px]"></div>
-
-    <!-- Grid pattern -->
+    <!-- Tech grid (on top of video + overlay) -->
     <div class="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"></div>
   </div>
 
@@ -64,7 +60,7 @@ import TerminalWindow from '@/components/home/TerminalWindow.astro';
 
         <!-- CTAs -->
         <div class="opacity-0 animate-fade-in-up animate-delay-400 mt-8 flex flex-wrap gap-3 items-center">
-          <a href="/services" class="inline-flex items-center gap-2 px-5 py-3 rounded-lg font-semibold text-base text-white bg-gradient-to-b from-blue-500 to-blue-600 ring-1 ring-inset ring-white/20 shadow-lg shadow-blue-500/40 transition-all duration-200 hover:shadow-blue-500/60 hover:-translate-y-0.5 active:scale-95">
+          <a id="magnetic-btn" href="/services" class="inline-flex items-center gap-2 px-5 py-3 rounded-lg font-semibold text-base text-white bg-gradient-to-b from-blue-500 to-blue-600 ring-1 ring-inset ring-white/20 shadow-lg shadow-blue-500/40 hover:shadow-blue-500/60 active:scale-95" style="will-change: transform;">
             See What We Build
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -131,5 +127,40 @@ import TerminalWindow from '@/components/home/TerminalWindow.astro';
     // Wait for the fade-in-up animation to start (100ms delay on h1)
     decrypt(p1, 'Custom AI', 120);
     decrypt(p2, 'Infrastructure.', 200);
+  }
+
+  // Magnetic button
+  const magnetBtn = document.getElementById('magnetic-btn') as HTMLElement | null;
+  if (magnetBtn) {
+    const PROXIMITY = 30;   // px outside button bounds to start attracting
+    const STRENGTH  = 0.35; // how far the button moves (fraction of cursor offset from center)
+    let isActive = false;
+
+    document.addEventListener('mousemove', (e: MouseEvent) => {
+      const rect = magnetBtn.getBoundingClientRect();
+      const cx = rect.left + rect.width  / 2;
+      const cy = rect.top  + rect.height / 2;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+
+      // Distance from cursor to nearest edge (negative = inside the button)
+      const edgeX = Math.max(0, Math.abs(dx) - rect.width  / 2);
+      const edgeY = Math.max(0, Math.abs(dy) - rect.height / 2);
+      const dist  = Math.sqrt(edgeX ** 2 + edgeY ** 2);
+
+      if (dist < PROXIMITY) {
+        if (!isActive) {
+          // Entering: fast follow
+          magnetBtn.style.transition = 'transform 0.12s ease-out, box-shadow 0.2s ease';
+          isActive = true;
+        }
+        magnetBtn.style.transform = `translate(${dx * STRENGTH}px, ${dy * STRENGTH}px)`;
+      } else if (isActive) {
+        // Leaving: bouncy spring snap-back
+        magnetBtn.style.transition = 'transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease';
+        magnetBtn.style.transform  = 'translate(0px, 0px)';
+        isActive = false;
+      }
+    });
   }
 </script>
