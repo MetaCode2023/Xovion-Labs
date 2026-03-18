@@ -34,7 +34,7 @@ const differentiators = [
       {differentiators.map((item, i) => {
         const delays = ['animate-delay-100', 'animate-delay-200', 'animate-delay-300'];
         return (
-        <div class:list={['glass-card p-6 rounded-xl opacity-0 animate-fade-in-up', delays[i]]}>
+        <div class:list={['glass-card spotlight-card p-6 rounded-xl opacity-0 animate-fade-in-up', delays[i]]}>
           <div class="w-10 h-10 rounded-lg bg-xv-accent-purple/10 border border-xv-accent-purple/20 flex items-center justify-center mb-5">
             <svg class="w-5 h-5 text-xv-accent-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <Fragment set:html={item.icon} />
