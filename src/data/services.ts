@@ -17,14 +17,14 @@ export const services: Service[] = [
     title: 'AI-Powered Website Builds',
     shortTitle: 'Website Builds',
     tagline: 'Production sites built with AI, by someone who learned the craft first.',
-    description: 'Full websites designed and developed using Claude Code — from landing pages to multi-page business sites and web applications. Built on modern frameworks like Astro and Next.js, deployed fast, and optimized for performance and SEO from day one.',
+    description: 'Full websites designed and developed using Claude Code — from landing pages to multi-page business sites. We don\'t just build static brochures; we custom-wire your site directly into your CRM or CMS so leads flow instantly into your operations. Built on modern frameworks, deployed fast, and optimized from day one.',
     icon: 'code',
     color: 'blue',
     features: [
       'Full-stack site builds using Claude Code + manual refinement',
       'Astro, Next.js, or custom HTML/CSS/JS depending on your needs',
-      'Mobile-first responsive design with dark/light themes',
-      'SEO-optimized: meta tags, sitemaps, structured data, performance tuning',
+      'Custom API wiring: Connect forms directly to Close CRM, GoHighLevel, AppFolio, or whatever management system you use.',
+      'Headless CMS integration so your team can update content without touching code.',
       'Deployed to Vercel or Cloudflare Pages with CI/CD from GitHub',
     ],
     proofPoints: [
@@ -35,7 +35,7 @@ export const services: Service[] = [
     idealFor: [
       'Small businesses that need a real website, not a Wix template',
       'Operators who want something custom without the agency price tag',
-      'Anyone who wants a site built fast without sacrificing quality',
+      'Businesses whose current website is a disconnected digital brochure that doesn\'t actively talk to their sales pipeline.',
     ],
   },
   {
