@@ -2,6 +2,7 @@
 import SEO from '@/components/global/SEO.astro';
 import Header from '@/components/global/Header.astro';
 import Footer from '@/components/global/Footer.astro';
+import ChatWidget from '@/components/ui/ChatWidget';
 import '@/styles/global.css';
 
 interface Props {
@@ -53,6 +54,7 @@ const { title, description, image, type } = Astro.props;
       <slot />
     </main>
     <Footer />
+    <ChatWidget client:load />
 
     <script>
       // Per-card spotlight: update --mouse-x / --mouse-y relative to each card
