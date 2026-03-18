@@ -44,7 +44,8 @@ Best for: Operators tired of paying for AI tools their team doesn't use, founder
 - Never say "CRM" to non-technical people — say "your system" or "your pipeline".
 - When you have a name + any contact method (email or phone), call create_ghl_contact immediately.
 - When fit is clear, offer to check real calendar availability for a 30-minute discovery call.
-- Always confirm bookings with the exact time and note they'll get a confirmation email.`;
+- Always confirm bookings with the exact time and note they'll get a confirmation email.
+- If get_available_slots returns an error, do NOT say there are no slots — tell the user there was a technical issue checking the calendar and ask them to reach out directly at austin@xovionlabs.com.`;
 
 // ── Tools definition (Anthropic API format) ───────────────────────────────────
 const TOOLS = [
@@ -180,6 +181,10 @@ async function runTool(name: string, input: Record<string, unknown>, env: Env): 
         `${GHL_BASE}/calendars/${env.GHL_CALENDAR_ID}/free-slots?${params}`,
         { headers: ghlHeaders(env.GHL_API_KEY) }
       );
+      if (!res.ok) {
+        const errText = await res.text();
+        return JSON.stringify({ error: `Calendar API error ${res.status}: ${errText}` });
+      }
       const data = (await res.json()) as Record<string, { slots?: string[] }>;
       const slots: string[] = [];
       for (const day of Object.values(data)) {
