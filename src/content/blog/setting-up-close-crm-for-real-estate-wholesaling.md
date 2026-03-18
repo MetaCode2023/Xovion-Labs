@@ -1,106 +1,104 @@
 ---
-title: "Setting Up Close CRM for Real Estate Wholesaling"
-description: "The exact pipeline architecture, smart views, and automation workflows I use to manage a high-volume wholesaling operation — 13,000+ outbound texts per week, 22 pipeline statuses, and AI-generated deal reports."
+title: "How to Set Up Close CRM So Leads Stop Falling Through the Cracks"
+description: "Wholesaling is chaotic by default. Here's the exact Close CRM setup — pipeline structure, smart views, and AI integration — that keeps deals from disappearing."
 pubDate: 2026-03-10
 tags: ["CRM", "Real Estate", "Automation"]
 author: Austin
-readingTime: 10
+readingTime: 7
 ---
 
-Most real estate wholesalers use Close CRM wrong. They import a lead list, send some texts, and call it a day. They're leaving massive efficiency on the table.
+Wholesaling is chaotic by default. Leads at different stages, conversations happening across multiple reps, follow-ups that never happened because someone got busy. Most operations just accept that as the cost of doing business.
 
-After running a high-volume wholesaling operation through Close — 13,000+ outbound texts per week, multiple markets, AI deal analysis — here's the exact setup I use.
+It doesn't have to be that way. Here's the exact setup I use — not because it's fancy, but because it works.
 
-## Why Close CRM?
+## Why Close CRM
 
-Before getting into the setup: why Close over GHL, HubSpot, or a spreadsheet?
-
-- **SMS is first-class** — built-in texting, not a Zapier hack
-- **Smart views** — saved filters that act like dynamic contact lists
-- **Bulk actions** — send mass texts, update statuses, assign tasks at scale
-- **API** — everything is accessible, which matters when you're adding AI
+SMS is native, not bolted on. Bulk actions work at scale. The filtering system is powerful enough to build a real operational layer on top of. For outbound-heavy operations, it's the right tool.
 
 ## The 22-Status Pipeline
 
-Most people default to 5-8 statuses. Not enough granularity for a serious operation.
+Most people default to five or six pipeline stages. That's not enough granularity. When you only have five statuses, leads get lost in the middle. You don't know if "Contacted" means a real conversation or a voicemail from three weeks ago. Warm leads die in that ambiguity.
 
-Here's my pipeline structure:
+When you have 22, you know exactly who needs a follow-up today, who's waiting on title, and who's actively negotiating.
 
 **New Leads**
-1. New — Raw import, uncontacted
-2. Attempted Contact — Texted or called, no response
-3. Contacted — Had a conversation
+1. New — Uncontacted
+2. Attempted Contact — Reached out, no response
+3. Contacted — Had a real conversation
 
 **Qualifying**
-4. Needs Follow-up — Not ready now, check back
-5. Qualified — Confirmed seller motivation
+4. Needs Follow-Up — Not ready, check back
+5. Qualified — Motivation confirmed
 6. Appointment Set — Visit scheduled
-7. Appointment Complete — Visited property
+7. Appointment Complete — Property visited
 
 **Offer Phase**
 8. Offer Sent — Verbal or written offer made
-9. Offer Declined — They said no (keep in nurture)
+9. Offer Declined — Said no (keep in nurture)
 10. Negotiating — Active back and forth
 11. Under Contract — Signed
 
 **Disposition**
 12. Marketing to Buyers — Active buyer outreach
 13. Showing — Buyer viewing scheduled
-14. Buyer Offer Received — LOI or offer in
+14. Buyer Offer Received — LOI or offer in hand
 15. Buyer Negotiating — Working terms
 16. Buyer Under Contract — Signed with buyer
 
 **Closing**
 17. Title Opened — Title company engaged
 18. Clear to Close — Title cleared
-19. Closing Scheduled — Date set
-20. Closed — Deal done
+19. Closing Scheduled — Date confirmed
+20. Closed — Done
 
 **Dead**
 21. Dead — Not a deal right now
 22. DNC — Do not contact
 
-This granularity means you know exactly where every lead is. Your smart views segment by status automatically. Your follow-up sequences trigger based on status transitions.
+## The Smart Views Worth Having
 
-## Smart Views That Matter
-
-Smart views are saved filter sets. I have these always visible:
+Smart views are saved filters that update in real time. These five cover most of what you need to see daily:
 
 - **Hot Today** — Active conversations from the last 48 hours
-- **Follow-up Due** — Tasks due or overdue
-- **Offer Pipeline** — Statuses 8-16, everything in active deal flow
-- **Nurture** — Dead/Declined leads, filter by "last contacted > 30 days"
-- **No Activity 7 Days** — Qualified leads that fell through the cracks
+- **Follow-Up Due** — Tasks due or overdue
+- **Offer Pipeline** — Everything in active deal flow (statuses 8–16)
+- **Nurture** — Declined leads, last contacted over 30 days ago
+- **No Activity 7 Days** — Qualified leads that quietly went cold
 
-## The SMS Infrastructure
+## The Leads Your CRM Is Hiding From You
 
-13,000 texts per week doesn't happen manually. Here's how the automation works:
+This is the part most people miss — and it's where deals actually disappear.
 
-1. **Import leads** → status set to "New" automatically
-2. **Day 1 sequence triggers** → initial outreach text sent
-3. **Response detected** → lead moved to "Contacted," assigned to rep
-4. **No response** → 3-day follow-up text, then 7-day, then 14-day
-5. **Interested reply** → immediate task created for callback
+Close shows you what's organized. It doesn't show you what happened.
 
-The sequences live in Close's automation builder. The key is writing texts that don't sound like a bot — short, direct, genuine.
+The CRM is built around structured objects: leads, opportunities, tasks. Its filters work great on those. But conversations happen in a different layer — SMS threads, back-and-forth exchanges, call logs. And conversation doesn't automatically become structure. A seller texts back, you respond, they engage again — and if nobody created an opportunity off that exchange, Close has no way to surface it. That lead looks identical to a cold import.
 
-## Adding AI to the Workflow
+The data is there. It's just invisible.
 
-This is where it gets interesting. I connect Close CRM to Claude via MCP (Model Context Protocol), which means I can:
+When you connect AI to your CRM, you can query across both layers at once — find every lead where a real two-way conversation happened, then cross-reference against your pipeline to find anyone who engaged but never got an opportunity created. That gap is where most of the revenue leakage is.
 
-- Pull all leads in a status and have Claude analyze for deal potential
-- Generate weekly intelligence reports summarizing pipeline activity
-- Draft personalized follow-up messages based on lead notes and history
+A few things it catches regularly:
 
-The weekly intelligence report is my favorite. Every Monday, a script pulls the prior week's data from Close and Claude generates a structured summary: deals closed, pipeline movement, follow-up priorities, red flags. 5 minutes of reading that would take 2 hours to compile manually.
+**The forgotten follow-up.** Seller says "call me in a week." Rep means to set a task. Doesn't. Three weeks later, nobody knows that person was ever warm.
 
-## Getting Started
+**The handoff gap.** Busy day, seller responds positively, no opportunity gets created. Now they look like a cold lead.
 
-If you're setting up Close for wholesaling from scratch:
+**The almost-appointment.** Real back-and-forth, stopped short of committing to a call. One more touch away from converting — but they're invisible in the pipeline.
 
-1. Start with 10-12 statuses — you can always add more
-2. Build your first smart view before you import leads
-3. Set up SMS templates for your initial outreach sequences
-4. Import a small test batch before your full list
+**The re-engagement candidate.** Went warm months ago, had a real conversation, nothing was ever logged. Not in nurture. Not anywhere.
 
-And if you want this built for your operation — pipeline design, automations, AI integrations, and all — that's one of the core services we offer at Xovion Labs.
+We run this as a weekly check — outputs a prioritized list of who the lead is, which rep owns them, what the last message said, and how many days since last contact. If the last message was inbound and nobody responded, that goes to the top immediately.
+
+This isn't about generating new leads. It's about recovering value from work that was already done.
+
+## The Monday Morning Brief
+
+Every Monday, instead of two hours clicking through deal stages, AI reads the entire pipeline and hands back a five-minute summary — which deals moved, which are stuck, which leads went quiet, who to call first.
+
+Same information. A fraction of the time.
+
+## Building This Yourself
+
+If your pipeline is a mess and leads are slipping — this is the fix. Start with 10-12 statuses if 22 feels like too much. Build your first smart view before you import leads. Write your outreach sequences to sound like a human wrote them, because if they read like a bot they'll convert like one.
+
+If you want the whole thing built out — pipeline design, automations, AI integration — that's what Xovion Labs does. But everything in this post is enough to get started on your own.
