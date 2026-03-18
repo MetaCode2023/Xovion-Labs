@@ -287,7 +287,7 @@ export async function onRequestPost(context: {
       }
     } catch (err) {
       console.error('Chat error:', err);
-      await send({ type: 'error', text: 'Something went wrong. Please try again.' });
+      await send({ type: 'error', text: `Error: ${String(err)}` });
     } finally {
       await send({ type: 'done' });
       await writer.close();
