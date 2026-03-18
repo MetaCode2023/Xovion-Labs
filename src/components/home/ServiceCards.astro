@@ -1,0 +1,81 @@
+---
+import { services } from '@/data/services';
+
+const iconMap: Record<string, string> = {
+  code: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />`,
+  workflow: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25a2.25 2.25 0 01-2.25-2.25v-2.25z" />`,
+  plug: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />`,
+  compass: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />`,
+};
+
+const colorMap: Record<string, { border: string; bg: string; text: string; glow: string }> = {
+  blue: { border: 'border-xv-accent-blue/20', bg: 'bg-xv-accent-blue/10', text: 'text-xv-accent-blue', glow: 'group-hover:shadow-xv-accent-blue/10' },
+  cyan: { border: 'border-xv-accent-cyan/20', bg: 'bg-xv-accent-cyan/10', text: 'text-xv-accent-cyan', glow: 'group-hover:shadow-xv-accent-cyan/10' },
+  green: { border: 'border-xv-accent-green/20', bg: 'bg-xv-accent-green/10', text: 'text-xv-accent-green', glow: 'group-hover:shadow-xv-accent-green/10' },
+  purple: { border: 'border-xv-accent-purple/20', bg: 'bg-xv-accent-purple/10', text: 'text-xv-accent-purple', glow: 'group-hover:shadow-xv-accent-purple/10' },
+};
+---
+
+<section class="section-padding border-t border-xv-border/30">
+  <div class="section-container">
+    <!-- Section header -->
+    <div class="mb-14">
+      <span class="tag-green mb-4 block w-fit">What We Do</span>
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-xv-text-primary tracking-tight">
+        Four pillars. Zero fluff.
+      </h2>
+      <p class="mt-3 text-xv-text-secondary text-lg max-w-xl">
+        Everything we offer comes from building real businesses with AI every day — not reading about it.
+      </p>
+    </div>
+
+    <!-- Service cards grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      {services.map((service, i) => {
+        const colors = colorMap[service.color];
+        const delays = ['animate-delay-100', 'animate-delay-200', 'animate-delay-300', 'animate-delay-400'];
+        return (
+          <a
+            href={`/services#${service.id}`}
+            class:list={[
+              'group glass-card p-6 sm:p-7 rounded-xl transition-all duration-300',
+              'hover:-translate-y-1 hover:shadow-xl',
+              colors.glow,
+              'opacity-0 animate-fade-in-up',
+              delays[i],
+            ]}
+          >
+            {/* Icon */}
+            <div class:list={['w-11 h-11 rounded-lg flex items-center justify-center mb-5', colors.bg, colors.border, 'border']}>
+              <svg class:list={['w-5 h-5', colors.text]} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <Fragment set:html={iconMap[service.icon]} />
+              </svg>
+            </div>
+
+            {/* Content */}
+            <h3 class="font-display font-semibold text-lg text-xv-text-primary mb-2 group-hover:text-white transition-colors">
+              {service.shortTitle}
+            </h3>
+            <p class="text-sm text-xv-text-secondary leading-relaxed mb-4">
+              {service.tagline}
+            </p>
+
+            {/* Proof point */}
+            <div class="flex items-center gap-2 text-xs font-mono text-xv-text-muted">
+              <span class:list={['w-1 h-1 rounded-full', colors.text.replace('text-', 'bg-')]}></span>
+              {service.proofPoints[0]}
+            </div>
+
+            {/* Arrow */}
+            <div class:list={['mt-5 flex items-center gap-1.5 text-sm font-medium', colors.text, 'opacity-0 group-hover:opacity-100 transition-opacity duration-300']}>
+              Learn more
+              <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</section>

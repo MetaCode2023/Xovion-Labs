@@ -1,0 +1,75 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const tagColorMap: Record<string, string> = {
+  'AI Tools': 'tag-blue',
+  'Web Development': 'tag-green',
+  'Claude Code': 'tag-purple',
+  'CRM': 'tag-cyan',
+  'Real Estate': 'tag-amber',
+  'Automation': 'tag-blue',
+};
+---
+
+<BaseLayout title="Learn" description="Practical AI guides, tutorials, and insights from building real businesses with AI every day.">
+  <section class="section-padding">
+    <div class="section-container">
+      <!-- Header -->
+      <div class="mb-14">
+        <span class="tag-amber mb-4 block w-fit">Learn</span>
+        <h1 class="font-display font-bold text-4xl sm:text-5xl text-xv-text-primary tracking-tight">
+          Built it. <span class="gradient-text">Wrote about it.</span>
+        </h1>
+        <p class="mt-4 text-xv-text-secondary text-lg max-w-2xl">
+          Practical guides and lessons from building real businesses with AI. No theory — everything here comes from something I actually shipped.
+        </p>
+      </div>
+
+      {posts.length === 0 ? (
+        <!-- Empty state -->
+        <div class="glass-card rounded-xl p-12 text-center max-w-lg mx-auto">
+          <div class="w-16 h-16 rounded-2xl bg-xv-accent-blue/10 border border-xv-accent-blue/20 flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-xv-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+            </svg>
+          </div>
+          <h2 class="font-display font-semibold text-xl text-xv-text-primary mb-2">Posts incoming</h2>
+          <p class="text-sm text-xv-text-secondary">
+            First articles are in the works. Check back soon — or follow along for updates.
+          </p>
+        </div>
+      ) : (
+        <!-- Posts grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {posts.map(post => (
+            <a href={`/blog/${post.id}`} class="glass-card rounded-xl p-6 hover:-translate-y-1 hover:border-xv-accent-blue/30 transition-all duration-300 group">
+              <div class="flex flex-wrap gap-2 mb-3">
+                {post.data.tags.map(tag => (
+                  <span class={tagColorMap[tag] || 'tag-blue'}>{tag}</span>
+                ))}
+              </div>
+              <h2 class="font-display font-semibold text-lg text-xv-text-primary group-hover:text-white transition-colors mb-2">
+                {post.data.title}
+              </h2>
+              <p class="text-sm text-xv-text-secondary leading-relaxed mb-4">
+                {post.data.description}
+              </p>
+              <div class="flex items-center justify-between">
+                <time class="text-xs font-mono text-xv-text-muted" datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </time>
+                <span class="text-xs font-medium text-xv-accent-blue opacity-0 group-hover:opacity-100 transition-opacity">
+                  Read →
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,28 @@
+---
+const stats = [
+  { value: '3', label: 'Businesses Running on AI', suffix: '' },
+  { value: '13K', label: 'Outbound SMS / Week', suffix: '+' },
+  { value: '90', label: 'Lighthouse Scores', suffix: '+' },
+  { value: '0', label: 'Lines of Fluff', suffix: '' },
+];
+---
+
+<section class="border-y border-xv-border/30 bg-xv-bg-secondary/20">
+  <div class="section-container py-12 md:py-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+      {stats.map((stat, i) => {
+        const delays = ['animate-delay-100', 'animate-delay-200', 'animate-delay-300', 'animate-delay-400'];
+        return (
+        <div class:list={['text-center opacity-0 animate-fade-in-up', delays[i]]}>
+          <div class="font-display font-bold text-3xl sm:text-4xl gradient-text">
+            {stat.value}{stat.suffix}
+          </div>
+          <p class="mt-1.5 text-xs sm:text-sm font-mono text-xv-text-muted uppercase tracking-wider">
+            {stat.label}
+          </p>
+        </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

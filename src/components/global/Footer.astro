@@ -1,0 +1,57 @@
+---
+import { navLinks, siteConfig } from '@/data/navigation';
+---
+
+<footer class="border-t border-xv-border/40 bg-xv-bg-secondary/30">
+  <div class="section-container py-12 md:py-16">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8">
+      <!-- Brand -->
+      <div class="md:col-span-5">
+        <a href="/" class="flex items-center gap-2.5 group mb-4">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-xv-accent-blue to-xv-accent-cyan flex items-center justify-center">
+            <span class="text-white font-mono font-bold text-sm">X</span>
+          </div>
+          <span class="font-display font-bold text-xv-text-primary text-lg tracking-wide">
+            {siteConfig.name}
+          </span>
+        </a>
+        <p class="text-xv-text-secondary text-sm leading-relaxed max-w-sm">
+          {siteConfig.description}
+        </p>
+      </div>
+
+      <!-- Navigation -->
+      <div class="md:col-span-3">
+        <h4 class="font-display font-semibold text-xv-text-primary text-sm uppercase tracking-wider mb-4">Navigate</h4>
+        <div class="flex flex-col gap-2.5">
+          {navLinks.map(link => (
+            <a href={link.href} class="text-sm text-xv-text-secondary hover:text-xv-accent-blue transition-colors">
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div class="md:col-span-4">
+        <h4 class="font-display font-semibold text-xv-text-primary text-sm uppercase tracking-wider mb-4">Services</h4>
+        <div class="flex flex-col gap-2.5">
+          <a href="/services#website-builds" class="text-sm text-xv-text-secondary hover:text-xv-accent-blue transition-colors">Website Builds</a>
+          <a href="/services#crm-automation" class="text-sm text-xv-text-secondary hover:text-xv-accent-blue transition-colors">CRM & Automation</a>
+          <a href="/services#ai-integration" class="text-sm text-xv-text-secondary hover:text-xv-accent-blue transition-colors">AI Integration</a>
+          <a href="/services#ai-strategy" class="text-sm text-xv-text-secondary hover:text-xv-accent-blue transition-colors">AI Strategy</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="mt-12 pt-8 border-t border-xv-border/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-xs text-xv-text-muted">
+        &copy; {new Date().getFullYear()} {siteConfig.name}. Built with AI. Refined by hand.
+      </p>
+      <div class="flex items-center gap-1">
+        <span class="text-xs text-xv-text-muted font-mono">{siteConfig.tagline}</span>
+      </div>
+    </div>
+  </div>
+</footer>

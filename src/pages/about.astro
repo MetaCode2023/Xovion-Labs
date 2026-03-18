@@ -1,0 +1,143 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { tools, toolCategories } from '@/data/tools';
+
+const timeline = [
+  { year: '2024', title: 'Started with AI Chatbots', description: 'Began building GHL-based AI bots for businesses — database reactivation, speed-to-lead, review responders. Learned what AI could do, and what it couldn\'t.' },
+  { year: '2024', title: 'Learned to Code with Claude', description: 'Picked up Claude Code and started building real websites from scratch. Not drag-and-drop — actual code. Built sites for Dump Dynasty and Big Sioux Home Buyers.' },
+  { year: '2025', title: 'Built Full Business Infrastructure', description: 'Designed a 22-status CRM pipeline in Close, automated 13K+ weekly SMS campaigns, connected MCP servers to everything from AppFolio to Google Analytics.' },
+  { year: '2026', title: 'Launched Xovion Labs', description: 'Combined everything into one offering: websites, CRM automation, AI integration, and strategy — all built on real experience running three businesses with AI.' },
+];
+---
+
+<BaseLayout title="About" description="The story behind Xovion Labs. Built by an operator running three businesses on AI-powered workflows every day.">
+  <!-- Header -->
+  <section class="section-padding pb-12">
+    <div class="section-container">
+      <span class="tag-purple mb-4 block w-fit">About</span>
+      <h1 class="font-display font-bold text-4xl sm:text-5xl text-xv-text-primary tracking-tight">
+        Not a consultant. <span class="gradient-text-alt">An operator.</span>
+      </h1>
+      <p class="mt-4 text-xv-text-secondary text-lg max-w-2xl">
+        Most people selling AI services learned about it from Twitter threads. I learned it by wiring it into businesses I actually run.
+      </p>
+    </div>
+  </section>
+
+  <!-- The Story -->
+  <section class="pb-16 md:pb-24">
+    <div class="section-container">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+        <div class="lg:col-span-7">
+          <h2 class="font-display font-bold text-2xl text-xv-text-primary mb-6">The short version</h2>
+          <div class="space-y-4 text-xv-text-secondary leading-relaxed">
+            <p>
+              I run multiple businesses out of Sioux Falls, SD — multifamily real estate acquisitions, a direct-to-seller home buying operation, dumpster rentals, and property management. All of them use AI in some way, every single day.
+            </p>
+            <p>
+              I didn't start as a developer. I started by trying to use AI chatbots to help local businesses close more deals. That worked, but I quickly realized the real power wasn't in chatbots — it was in building actual systems.
+            </p>
+            <p>
+              So I taught myself to code using Claude Code. Not just prompting — actually learning how websites work, how frameworks are structured, how APIs connect. AI was the tool that let me learn 10x faster, but I still had to understand the craft.
+            </p>
+            <p>
+              That's the philosophy behind Xovion Labs: <strong class="text-xv-text-primary">AI amplifies what you know. It doesn't replace knowing.</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="lg:col-span-5">
+          <div class="glass-card rounded-xl p-6">
+            <h3 class="font-display font-semibold text-sm uppercase tracking-wider text-xv-text-muted mb-6">The journey</h3>
+            <div class="space-y-6">
+              {timeline.map((item, i) => (
+                <div class="flex gap-4">
+                  <div class="flex flex-col items-center">
+                    <div class="w-2.5 h-2.5 rounded-full bg-xv-accent-blue mt-1.5"></div>
+                    {i < timeline.length - 1 && <div class="w-px flex-1 bg-xv-border mt-2"></div>}
+                  </div>
+                  <div class="pb-2">
+                    <span class="text-xs font-mono text-xv-accent-blue">{item.year}</span>
+                    <h4 class="font-display font-semibold text-sm text-xv-text-primary mt-0.5">{item.title}</h4>
+                    <p class="text-xs text-xv-text-secondary mt-1 leading-relaxed">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What I Run -->
+  <section class="py-16 md:py-24 bg-xv-bg-secondary/20 border-y border-xv-border/20">
+    <div class="section-container">
+      <h2 class="font-display font-bold text-2xl text-xv-text-primary mb-8">What I run on AI</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="glass-card rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-xv-accent-blue/10 border border-xv-accent-blue/20 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-xv-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-xv-text-primary mb-2">Metastone Properties</h3>
+          <p class="text-sm text-xv-text-secondary">Multifamily and storage acquisitions. AI-powered deal analysis, underwriting models, and automated CRM pipeline management.</p>
+        </div>
+
+        <div class="glass-card rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-xv-accent-green/10 border border-xv-accent-green/20 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-xv-accent-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819" />
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-xv-text-primary mb-2">Big Sioux Home Buyers</h3>
+          <p class="text-sm text-xv-text-secondary">Direct-to-seller residential acquisitions. 13K+ automated SMS per week across multiple markets with AI-built outbound infrastructure.</p>
+        </div>
+
+        <div class="glass-card rounded-xl p-6">
+          <div class="w-10 h-10 rounded-lg bg-xv-accent-amber/10 border border-xv-accent-amber/20 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-xv-accent-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H18.75m-7.5-10.5H6.375c-.621 0-1.125.504-1.125 1.125v12.75c0 .621.504 1.125 1.125 1.125h12.75" />
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-xv-text-primary mb-2">Dump Dynasty</h3>
+          <p class="text-sm text-xv-text-secondary">Dumpster rental and junk removal. AI-built website, automated scheduling, and operations management powered by Docket + Claude.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tool Stack -->
+  <section class="section-padding">
+    <div class="section-container">
+      <h2 class="font-display font-bold text-2xl text-xv-text-primary mb-2">The tool stack</h2>
+      <p class="text-xv-text-secondary mb-8">What I actually use every day — not a wishlist.</p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        {tools.map(tool => (
+          <div class="glass-card rounded-lg p-4 hover:border-xv-accent-blue/30 transition-colors group">
+            <p class="font-display font-semibold text-sm text-xv-text-primary group-hover:text-white transition-colors">{tool.name}</p>
+            <p class="text-xs text-xv-text-muted mt-0.5">{tool.category}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Philosophy CTA -->
+  <section class="section-padding border-t border-xv-border/20">
+    <div class="section-container text-center max-w-2xl mx-auto">
+      <p class="font-display font-bold text-2xl sm:text-3xl text-xv-text-primary tracking-tight text-balance">
+        "AI is the tool. <span class="gradient-text">You're the builder.</span>"
+      </p>
+      <p class="mt-4 text-xv-text-secondary">
+        That's the whole philosophy. Learn the skill, then let AI make you dangerous.
+      </p>
+      <a href="/contact" class="btn-primary mt-8 inline-flex">
+        Let's Build Together
+      </a>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/26077002/README.md)
 # Xovion Labs
 
 **Real Skills. Unreal Speed.**
