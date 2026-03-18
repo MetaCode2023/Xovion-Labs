@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 100" width="320" height="100">
+  <defs>
+    <!-- Diamond gradient -->
+    <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A9EFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A6EF5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Diamond mark -->
+  <!-- Outer diamond outline -->
+  <polygon
+    points="50,8 88,50 50,92 12,50"
+    fill="none"
+    stroke="#1A1F2E"
+    stroke-width="3"
+  />
+  <!-- Inner diamond filled -->
+  <polygon
+    points="50,22 74,50 50,78 26,50"
+    fill="url(#diamondGrad)"
+  />
+  <!-- Center cutout -->
+  <polygon
+    points="50,34 62,50 50,66 38,50"
+    fill="white"
+  />
+
+  <!-- Wordmark -->
+  <text
+    x="106"
+    y="46"
+    font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+    font-size="28"
+    font-weight="500"
+    letter-spacing="-0.5"
+    fill="#0A0C12"
+  >Xovion</text>
+
+  <text
+    x="106"
+    y="74"
+    font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+    font-size="28"
+    font-weight="300"
+    letter-spacing="-0.5"
+    fill="#1A6EF5"
+  >Labs</text>
+
+  <!-- Thin accent line between mark and wordmark -->
+  <rect x="100" y="20" width="1" height="60" fill="#E0E0E0"/>
+</svg>
