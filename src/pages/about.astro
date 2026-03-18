@@ -3,10 +3,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { tools, toolCategories } from '@/data/tools';
 
 const timeline = [
-  { year: '2024', title: 'Started with AI Chatbots', description: 'Began building GHL-based AI bots for businesses — database reactivation, speed-to-lead, review responders. Learned what AI could do, and what it couldn\'t.' },
-  { year: '2024', title: 'Learned to Code with Claude', description: 'Picked up Claude Code and started building real websites from scratch. Not drag-and-drop — actual code. Built sites for Dump Dynasty and Big Sioux Home Buyers.' },
-  { year: '2025', title: 'Built Full Business Infrastructure', description: 'Designed a 22-status CRM pipeline in Close, automated 13K+ weekly SMS campaigns, connected MCP servers to everything from AppFolio to Google Analytics.' },
-  { year: '2026', title: 'Launched Xovion Labs', description: 'Combined everything into one offering: websites, CRM automation, AI integration, and strategy — all built on real experience running three businesses with AI.' },
+  { title: 'The ChatGPT Awakening', description: 'Like everyone else, I started by typing prompts into a chatbox. It was a cool parlor trick, but I quickly realized that generating generic text wasn\'t a business model. To actually drive revenue, AI couldn\'t just sit in a browser tab — it needed to be wired directly into daily operations.' },
+  { title: 'The Infrastructure Layer', description: 'I moved past the chat interface and started connecting AI to GoHighLevel. I built automated SMS bots to handle inbound lead flow, database reactivation, and speed-to-lead for my real estate and dumpster businesses. That\'s when I saw the power of AI actually talking to real customers.' },
+  { title: 'Complex Orchestration (n8n)', description: 'Basic integrations weren\'t enough, so I learned n8n to connect disparate, stubborn systems. I started building custom prospecting engines and routing complex webhooks — creating automated outbound logic that didn\'t just respond to leads, but actively hunted and qualified them.' },
+  { title: 'Deep Context & The Anthropic Shift', description: 'I hit the limits of basic AI memory and started learning RAG (Retrieval-Augmented Generation) to feed my own business data directly into the models. Then, Anthropic dropped updates that made entire SaaS startups obsolete overnight. I realized the ultimate leverage wasn\'t buying AI software — it was using Claude to code custom infrastructure from scratch.' },
+  { title: 'Building in Public (Xovion Labs)', description: 'This tech moves violently fast. The tools I built yesterday are already evolving today. I launched Xovion Labs because I wanted a centralized place to document what I\'m learning and share the exact playbooks I use to run my companies. It\'s a live operating log designed to help us collaborate, learn, and build better systems together.' },
 ];
 ---
 
@@ -58,8 +59,7 @@ const timeline = [
                     {i < timeline.length - 1 && <div class="w-px flex-1 bg-xv-border mt-2"></div>}
                   </div>
                   <div class="pb-2">
-                    <span class="text-xs font-mono text-xv-accent-blue">{item.year}</span>
-                    <h4 class="font-display font-semibold text-sm text-xv-text-primary mt-0.5">{item.title}</h4>
+                    <h4 class="font-display font-semibold text-sm text-xv-text-primary">{item.title}</h4>
                     <p class="text-xs text-xv-text-secondary mt-1 leading-relaxed">{item.description}</p>
                   </div>
                 </div>
