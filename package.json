@@ -12,6 +12,8 @@
   "author": "Austin",
   "license": "MIT",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
+    "@astrojs/cloudflare": "^13.1.2",
     "@astrojs/react": "^5.0.0",
     "@astrojs/sitemap": "^3.7.1",
     "@tailwindcss/typography": "^0.5.19",
