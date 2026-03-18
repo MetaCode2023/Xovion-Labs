@@ -55,6 +55,19 @@ const { title, description, image, type } = Astro.props;
     <Footer />
 
     <script>
+      // Per-card spotlight: update --mouse-x / --mouse-y relative to each card
+      document.querySelectorAll<HTMLElement>('.spotlight-card').forEach(card => {
+        card.addEventListener('mousemove', (e: MouseEvent) => {
+          const r = card.getBoundingClientRect();
+          card.style.setProperty('--mouse-x', `${e.clientX - r.left}px`);
+          card.style.setProperty('--mouse-y', `${e.clientY - r.top}px`);
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.setProperty('--mouse-x', '-9999px');
+          card.style.setProperty('--mouse-y', '-9999px');
+        });
+      });
+
       const spotlight = document.getElementById('mouse-spotlight');
       if (spotlight) {
         let ticking = false;

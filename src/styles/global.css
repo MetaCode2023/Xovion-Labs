@@ -187,6 +187,45 @@
   border-radius: 0.75rem;
 }
 
+/* ── Spotlight card: cursor-tracked glowing border + soft fill ───────────── */
+.spotlight-card {
+  position: relative;
+  isolation: isolate;
+  --mouse-x: -9999px;
+  --mouse-y: -9999px;
+  /* Soft background fill — layers on top of background-color */
+  background-image: radial-gradient(
+    380px circle at var(--mouse-x) var(--mouse-y),
+    rgba(59, 130, 246, 0.055),
+    transparent 70%
+  );
+}
+
+/* Glowing border ring — only visible at cursor position */
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    260px circle at var(--mouse-x) var(--mouse-y),
+    rgba(88, 166, 255, 0.75),
+    transparent 65%
+  );
+  /* Mask excludes the content-box, leaving only the 1px padding ring */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
 @utility noise-overlay {
   position: relative;
 }
