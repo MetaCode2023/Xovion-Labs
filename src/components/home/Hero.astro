@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from '@/data/navigation';
+import TerminalWindow from '@/components/home/TerminalWindow.astro';
 ---
 
 <section class="relative overflow-hidden min-h-[90vh] flex items-center">
@@ -15,48 +16,56 @@ import { siteConfig } from '@/data/navigation';
   </div>
 
   <div class="section-container relative z-10 py-20 md:py-32">
-    <div class="max-w-3xl">
-      <!-- Eyebrow -->
-      <div class="opacity-0 animate-fade-in-up mb-6">
-        <span class="tag-blue">
-          <span class="w-1.5 h-1.5 rounded-full bg-xv-accent-blue animate-glow-pulse mr-2"></span>
-          AI Education & Services
-        </span>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+      <!-- Left column: text & CTAs -->
+      <div class="max-w-xl">
+        <!-- Eyebrow -->
+        <div class="opacity-0 animate-fade-in-up mb-6">
+          <span class="tag-blue">
+            <span class="w-1.5 h-1.5 rounded-full bg-xv-accent-blue animate-glow-pulse mr-2"></span>
+            AI Education & Services
+          </span>
+        </div>
+
+        <!-- Brand name -->
+        <h1 class="opacity-0 animate-fade-in-up animate-delay-100">
+          <span class="block font-display font-bold text-5xl sm:text-6xl lg:text-7xl text-xv-text-primary tracking-tight">
+            Xovion
+          </span>
+          <span class="block font-display font-bold text-5xl sm:text-6xl lg:text-7xl tracking-tight mt-1 labs-gradient-text">
+            Labs
+          </span>
+        </h1>
+
+        <!-- Tagline — enlarged and distinctly spaced -->
+        <p class="opacity-0 animate-fade-in-up animate-delay-200 mt-8 mb-7 text-2xl sm:text-3xl font-display font-semibold text-xv-text-secondary">
+          Real Skills. <span class="text-xv-text-primary">Unreal Speed.</span>
+        </p>
+
+        <!-- Description -->
+        <p class="opacity-0 animate-fade-in-up animate-delay-300 text-base sm:text-lg text-xv-text-secondary leading-relaxed max-w-lg">
+          AI doesn't replace knowing your craft — it supercharges it. We build websites, automate CRMs, integrate AI tools, and build the AI infrastructure most businesses don't know they're missing.
+        </p>
+
+        <!-- CTAs -->
+        <div class="opacity-0 animate-fade-in-up animate-delay-400 mt-8 flex flex-wrap gap-4">
+          <a href="/services" class="btn-primary text-base">
+            See What We Build
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+          <a href="/contact" class="btn-secondary text-base">
+            Book a Call
+          </a>
+        </div>
       </div>
 
-      <!-- Brand name -->
-      <h1 class="opacity-0 animate-fade-in-up animate-delay-100">
-        <span class="block font-display font-bold text-5xl sm:text-6xl lg:text-7xl text-xv-text-primary tracking-tight">
-          Xovion
-        </span>
-        <span class="block font-display font-bold text-5xl sm:text-6xl lg:text-7xl gradient-text tracking-tight mt-1">
-          Labs
-        </span>
-      </h1>
-
-      <!-- Tagline -->
-      <p class="opacity-0 animate-fade-in-up animate-delay-200 mt-6 text-xl sm:text-2xl font-display font-medium text-xv-text-secondary">
-        Real Skills. <span class="text-xv-text-primary">Unreal Speed.</span>
-      </p>
-
-      <!-- Description -->
-      <p class="opacity-0 animate-fade-in-up animate-delay-300 mt-5 text-base sm:text-lg text-xv-text-secondary leading-relaxed max-w-xl">
-        AI doesn't replace knowing your craft — it supercharges it. We build websites, automate CRMs, integrate AI tools, and build the AI infrastructure most businesses don't know they're missing.
-      </p>
-
-      <!-- CTAs -->
-      <div class="opacity-0 animate-fade-in-up animate-delay-400 mt-8 flex flex-wrap gap-4">
-        <a href="/services" class="btn-primary text-base">
-          See What We Build
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
-        <a href="/contact" class="btn-secondary text-base">
-          Book a Call
-        </a>
+      <!-- Right column: Terminal (desktop only) -->
+      <div class="opacity-0 animate-fade-in-up animate-delay-500 hidden lg:flex items-center justify-center">
+        <TerminalWindow />
       </div>
-
 
     </div>
   </div>
