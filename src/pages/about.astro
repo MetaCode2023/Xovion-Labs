@@ -1,110 +1,137 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { tools, toolCategories } from '@/data/tools';
+import { tools } from '@/data/tools';
 
-const timeline = [
-  { title: 'The ChatGPT Awakening', description: 'Like everyone else, I started by typing prompts into a chatbox. It was a cool parlor trick, but I quickly realized that generating generic text wasn\'t a business model. To actually drive revenue, AI couldn\'t just sit in a browser tab — it needed to be wired directly into daily operations.' },
-  { title: 'The Infrastructure Layer', description: 'I moved past the chat interface and started connecting AI to GoHighLevel. I built automated SMS bots to handle inbound lead flow, database reactivation, and speed-to-lead for my real estate and dumpster businesses. That\'s when I saw the power of AI actually talking to real customers.' },
-  { title: 'Complex Orchestration (n8n)', description: 'Basic integrations weren\'t enough, so I learned n8n to connect disparate, stubborn systems. I started building custom prospecting engines and routing complex webhooks — creating automated outbound logic that didn\'t just respond to leads, but actively hunted and qualified them.' },
-  { title: 'Deep Context & The Anthropic Shift', description: 'I hit the limits of basic AI memory and started learning RAG (Retrieval-Augmented Generation) to feed my own business data directly into the models. Then, Anthropic dropped updates that made entire SaaS startups obsolete overnight. I realized the ultimate leverage wasn\'t buying AI software — it was using Claude to code custom infrastructure from scratch.' },
-  { title: 'Building in Public (Xovion Labs)', description: 'This tech moves violently fast. The tools I built yesterday are already evolving today. I launched Xovion Labs because I wanted a centralized place to document what I\'m learning and share the exact playbooks I use to run my companies. It\'s a live operating log designed to help us collaborate, learn, and build better systems together.' },
+const principles = [
+  {
+    number: '01',
+    title: 'Build Infrastructure. Stop Renting Software.',
+    body: "SaaS companies want you paying monthly for tools designed for the average business — which means designed for nobody in particular. AI lets us engineer the exact system a specific operation needs, own it outright, and iterate on it as fast as the business moves. We stopped renting a long time ago.",
+  },
+  {
+    number: '02',
+    title: 'AI Needs Hands, Not Just a Brain.',
+    body: "Getting AI to write a follow-up email is a parlor trick. Getting AI to monitor your pipeline, surface warm leads that fell through the cracks, flag cash anomalies before they become problems, and autonomously triage your CRM while you sleep — that's leverage. The difference is whether AI is sitting in a browser tab or wired into the actual nervous system of your business.",
+  },
+  {
+    number: '03',
+    title: 'The Operator Advantage.',
+    body: "Most AI agencies have never run a service business. They don't know what a stalled acquisition pipeline actually costs. They don't know what it feels like to have a holding company account running thin because two distributions didn't land on time. We do — because we live inside these problems every day. That's not a credential. It's just context. And it makes everything we build more useful.",
+  },
+];
+
+const portfolio = [
+  {
+    accent: 'blue',
+    title: 'Commercial & Multifamily Portfolio',
+    description: 'AI-powered deal underwriting, forensic cash flow analysis, and automated CRM pipeline management across a multi-entity HoldCo/OpCo structure.',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />`,
+  },
+  {
+    accent: 'green',
+    title: 'Direct-to-Seller Acquisitions',
+    description: 'High-volume outbound SMS operations, AI-driven lead triage, and a 22-stage pipeline built to make sure warm leads never go invisible.',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819" />`,
+  },
+  {
+    accent: 'amber',
+    title: 'Equipment & Dumpster Rentals',
+    description: 'AI-built web infrastructure, automated dispatch scheduling, and full operations management. Built lean and runs mostly without us.',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H18.75m-7.5-10.5H6.375c-.621 0-1.125.504-1.125 1.125v12.75c0 .621.504 1.125 1.125 1.125h12.75" />`,
+  },
 ];
 ---
 
-<BaseLayout title="About" description="The story behind Xovion Labs. Built by an operator running three businesses on AI-powered workflows every day.">
+<BaseLayout title="About" description="Xovion Labs is the internal engineering arm for a portfolio of physical businesses. We build AI infrastructure we depend on daily to generate real revenue.">
+
   <!-- Header -->
   <section class="section-padding pb-12">
     <div class="section-container">
       <span class="tag-purple mb-4 block w-fit">About</span>
       <h1 class="font-display font-bold text-4xl sm:text-5xl text-xv-text-primary tracking-tight">
-        Not a consultant. <span class="gradient-text-alt">An operator.</span>
+        Not consultants. <span class="gradient-text-alt">Operators.</span>
       </h1>
       <p class="mt-4 text-xv-text-secondary text-lg max-w-2xl">
-        Most people selling AI services learned about it from Twitter threads. I learned it by wiring it into businesses I actually run.
+        Most people selling AI services learned about it from YouTube tutorials and Twitter threads. We learned it by wiring it into businesses where the revenue is real and the margin for error isn't.
       </p>
     </div>
   </section>
 
-  <!-- The Story -->
+  <!-- The Short Version -->
   <section class="pb-16 md:pb-24">
     <div class="section-container">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-        <div class="lg:col-span-7">
-          <h2 class="font-display font-bold text-2xl text-xv-text-primary mb-6">The short version</h2>
-          <div class="space-y-4 text-xv-text-secondary leading-relaxed">
-            <p>
-              I run multiple businesses out of Sioux Falls, SD — multifamily real estate acquisitions, a direct-to-seller home buying operation, dumpster rentals, and property management. All of them use AI in some way, every single day.
-            </p>
-            <p>
-              I didn't start as a developer. I started by trying to use AI chatbots to help local businesses close more deals. That worked, but I quickly realized the real power wasn't in chatbots — it was in building actual systems.
-            </p>
-            <p>
-              So I taught myself to code using Claude Code. Not just prompting — actually learning how websites work, how frameworks are structured, how APIs connect. AI was the tool that let me learn 10x faster, but I still had to understand the craft.
-            </p>
-            <p>
-              That's the philosophy behind Xovion Labs: <strong class="text-xv-text-primary">AI amplifies what you know. It doesn't replace knowing.</strong>
-            </p>
-          </div>
-        </div>
-
-        <!-- Timeline -->
-        <div class="lg:col-span-5">
-          <div class="glass-card rounded-xl p-6">
-            <h3 class="font-display font-semibold text-sm uppercase tracking-wider text-xv-text-muted mb-6">The journey</h3>
-            <div class="space-y-6">
-              {timeline.map((item, i) => (
-                <div class="flex gap-4">
-                  <div class="flex flex-col items-center">
-                    <div class="w-2.5 h-2.5 rounded-full bg-xv-accent-blue mt-1.5"></div>
-                    {i < timeline.length - 1 && <div class="w-px flex-1 bg-xv-border mt-2"></div>}
-                  </div>
-                  <div class="pb-2">
-                    <h4 class="font-display font-semibold text-sm text-xv-text-primary">{item.title}</h4>
-                    <p class="text-xs text-xv-text-secondary mt-1 leading-relaxed">{item.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+      <div class="max-w-3xl">
+        <h2 class="font-display font-bold text-2xl text-xv-text-primary mb-6">The Short Version</h2>
+        <div class="space-y-4 text-xv-text-secondary leading-relaxed">
+          <p>
+            Xovion Labs is the internal engineering arm for a portfolio of physical businesses — spanning multifamily real estate, direct-to-seller acquisitions, property management, and equipment rentals.
+          </p>
+          <p>
+            We build custom AI infrastructure because off-the-shelf SaaS is too slow, too rigid, and too generic to run high-volume operations. We're not selling tools we read about. We're selling systems we depend on daily to generate actual revenue.
+          </p>
+          <p class="text-xv-text-primary font-medium">
+            That's the only reason any of this is worth listening to.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- What I Run -->
+  <!-- The Blueprint -->
   <section class="py-16 md:py-24 bg-xv-bg-secondary/20 border-y border-xv-border/20">
     <div class="section-container">
-      <h2 class="font-display font-bold text-2xl text-xv-text-primary mb-8">What I run on AI</h2>
+      <h2 class="font-display font-bold text-2xl text-xv-text-primary mb-10">The Blueprint</h2>
+      <div class="space-y-8">
+        {principles.map(p => (
+          <div class="glass-card rounded-xl p-6 sm:p-8 flex gap-6 sm:gap-8">
+            <div class="shrink-0 font-display font-bold text-3xl text-xv-accent-blue/30 leading-none select-none">{p.number}</div>
+            <div>
+              <h3 class="font-display font-semibold text-lg text-xv-text-primary mb-3">{p.title}</h3>
+              <p class="text-xv-text-secondary leading-relaxed">{p.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why This Actually Works -->
+  <section class="py-16 md:py-24">
+    <div class="section-container">
+      <div class="max-w-3xl">
+        <h2 class="font-display font-bold text-2xl text-xv-text-primary mb-6">Why This Actually Works</h2>
+        <div class="space-y-4 text-xv-text-secondary leading-relaxed">
+          <p>There's no secret methodology here. No proprietary framework with a trademarked name.</p>
+          <p>The honest answer is curiosity. Genuine, stubborn, stays-up-too-late curiosity.</p>
+          <p>
+            Building with AI tools — Claude Code especially — doesn't feel like work. It feels like a video game where the levels are your actual business problems and every tool you learn unlocks a new capability. A lot of the best systems we've built started at midnight because something interesting came up and it didn't feel right to stop.
+          </p>
+          <p>
+            The competitive advantage isn't a computer science degree. It's asking better questions. AI doesn't reward the people who know the most — it rewards the people who can articulate what they actually need with precision. That's a skill anybody can develop, and it's the one we've spent the most time sharpening.
+          </p>
+          <p>
+            If you're genuinely curious about what's possible and willing to sit with a problem until it clicks — this stuff is available to you. We just got there a little earlier and want to show you what we found.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Portfolio -->
+  <section class="py-16 md:py-24 bg-xv-bg-secondary/20 border-y border-xv-border/20">
+    <div class="section-container">
+      <h2 class="font-display font-bold text-2xl text-xv-text-primary mb-3">The Portfolio</h2>
+      <p class="text-xv-text-secondary mb-10">Where we stress-test AI infrastructure with real revenue before we ever offer it to anyone else.</p>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div class="glass-card rounded-xl p-6">
-          <div class="w-10 h-10 rounded-lg bg-xv-accent-blue/10 border border-xv-accent-blue/20 flex items-center justify-center mb-4">
-            <svg class="w-5 h-5 text-xv-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
-            </svg>
+        {portfolio.map(item => (
+          <div class={`glass-card rounded-xl p-6 hover:border-xv-accent-${item.accent}/40 transition-colors`}>
+            <div class={`w-10 h-10 rounded-lg bg-xv-accent-${item.accent}/10 border border-xv-accent-${item.accent}/20 flex items-center justify-center mb-4`}>
+              <svg class={`w-5 h-5 text-xv-accent-${item.accent}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" set:html={item.icon} />
+            </div>
+            <h3 class="font-display font-semibold text-xv-text-primary mb-2">{item.title}</h3>
+            <p class="text-sm text-xv-text-secondary">{item.description}</p>
           </div>
-          <h3 class="font-display font-semibold text-xv-text-primary mb-2">Metastone Properties</h3>
-          <p class="text-sm text-xv-text-secondary">Multifamily and storage acquisitions. AI-powered deal analysis, underwriting models, and automated CRM pipeline management.</p>
-        </div>
-
-        <div class="glass-card rounded-xl p-6">
-          <div class="w-10 h-10 rounded-lg bg-xv-accent-green/10 border border-xv-accent-green/20 flex items-center justify-center mb-4">
-            <svg class="w-5 h-5 text-xv-accent-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819" />
-            </svg>
-          </div>
-          <h3 class="font-display font-semibold text-xv-text-primary mb-2">Big Sioux Home Buyers</h3>
-          <p class="text-sm text-xv-text-secondary">Direct-to-seller residential acquisitions. 13K+ automated SMS per week across multiple markets with AI-built outbound infrastructure.</p>
-        </div>
-
-        <div class="glass-card rounded-xl p-6">
-          <div class="w-10 h-10 rounded-lg bg-xv-accent-amber/10 border border-xv-accent-amber/20 flex items-center justify-center mb-4">
-            <svg class="w-5 h-5 text-xv-accent-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H18.75m-7.5-10.5H6.375c-.621 0-1.125.504-1.125 1.125v12.75c0 .621.504 1.125 1.125 1.125h12.75" />
-            </svg>
-          </div>
-          <h3 class="font-display font-semibold text-xv-text-primary mb-2">Dump Dynasty</h3>
-          <p class="text-sm text-xv-text-secondary">Dumpster rental and junk removal. AI-built website, automated scheduling, and operations management powered by Docket + Claude.</p>
-        </div>
+        ))}
       </div>
     </div>
   </section>
@@ -112,9 +139,8 @@ const timeline = [
   <!-- Tool Stack -->
   <section class="section-padding">
     <div class="section-container">
-      <h2 class="font-display font-bold text-2xl text-xv-text-primary mb-2">The tool stack</h2>
-      <p class="text-xv-text-secondary mb-8">What I actually use every day — not a wishlist.</p>
-
+      <h2 class="font-display font-bold text-2xl text-xv-text-primary mb-2">The Tool Stack</h2>
+      <p class="text-xv-text-secondary mb-8">What we actually use every day — not a wishlist.</p>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         {tools.map(tool => (
           <div class="glass-card rounded-lg p-4 hover:border-xv-accent-blue/30 transition-colors group">
@@ -126,18 +152,19 @@ const timeline = [
     </div>
   </section>
 
-  <!-- Philosophy CTA -->
+  <!-- Closing Quote -->
   <section class="section-padding border-t border-xv-border/20">
     <div class="section-container text-center max-w-2xl mx-auto">
       <p class="font-display font-bold text-2xl sm:text-3xl text-xv-text-primary tracking-tight text-balance">
-        "AI is the tool. <span class="gradient-text">You're the builder.</span>"
+        "AI is the tool. <span class="gradient-text">You're the builder."</span>
       </p>
       <p class="mt-4 text-xv-text-secondary">
-        That's the whole philosophy. Learn the skill, then let AI make you dangerous.
+        The businesses in our portfolio aren't proof that we're smart. They're proof that the systems work under real conditions. If they work there, they'll work for you.
       </p>
       <a href="/contact" class="btn-primary mt-8 inline-flex">
         Let's Build Together
       </a>
     </div>
   </section>
+
 </BaseLayout>
