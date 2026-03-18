@@ -39,6 +39,49 @@ AI-assisted development: describe what you want, read the output, understand it,
 
 The AI generated typed, clean, zero-JavaScript components from the jump. We didn't write them. But we read every line. That's the new discipline — reading AI code is the skill. If you can't read it, you can't direct it, and eventually something breaks and you have no idea where to look.
 
+<div style="margin: 2rem 0; font-family: var(--font-mono); font-size: 13px; line-height: 1.6; border-radius: 12px; overflow: hidden; border: 1px solid #1e293b;">
+  <div style="background: #1e1e1e; padding: 10px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #333;">
+    <span style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56; display: inline-block;"></span>
+    <span style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e; display: inline-block;"></span>
+    <span style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f; display: inline-block;"></span>
+    <span style="color: #888; font-size: 12px; margin-left: 8px;">claude — terminal</span>
+  </div>
+  <div style="background: #141414; padding: 24px 28px; min-height: 420px;">
+    <div style="margin-bottom: 16px;">
+      <span style="color: #27c93f;">~/dump-dynasty</span>
+      <span style="color: #888;"> $ </span>
+      <span style="color: #e8e8e8;">claude</span>
+    </div>
+    <div style="color: #888; margin-bottom: 20px; font-size: 12px;">Claude Code v1.2.4 — type your task</div>
+    <div style="margin-bottom: 20px;">
+      <span style="color: #7c6af7;">❯ </span>
+      <span style="color: #e8e8e8;">Build a fast, clean website for a dumpster rental operation. Here's our existing site — use these exact colors, logo, and copy as your baseline. Framework should be optimized for local SEO and load speed.</span>
+    </div>
+    <div style="border-top: 1px solid #2a2a2a; margin-bottom: 20px;"></div>
+    <div style="color: #888; margin-bottom: 16px; font-size: 12px;">● Analyzing existing site assets...</div>
+    <div style="margin-bottom: 8px;"><span style="color: #27c93f;">✓ </span><span style="color: #888;">Extracted brand tokens — </span><span style="color: #7c6af7;">#F5A623</span><span style="color: #888;">, </span><span style="color: #7c6af7;">#1A1A1A</span><span style="color: #888;">, </span><span style="color: #7c6af7;">Inter/700</span></div>
+    <div style="margin-bottom: 8px;"><span style="color: #27c93f;">✓ </span><span style="color: #888;">Scaffolding Astro 5.x project — zero JS by default</span></div>
+    <div style="margin-bottom: 8px;"><span style="color: #27c93f;">✓ </span><span style="color: #888;">Created </span><span style="color: #e8e8e8;">src/components/Hero.astro</span></div>
+    <div style="margin-bottom: 8px;"><span style="color: #27c93f;">✓ </span><span style="color: #888;">Created </span><span style="color: #e8e8e8;">src/components/ServiceCard.astro</span></div>
+    <div style="margin-bottom: 8px;"><span style="color: #27c93f;">✓ </span><span style="color: #888;">Created </span><span style="color: #e8e8e8;">src/pages/index.astro</span><span style="color: #888;"> — homepage with local SEO meta</span></div>
+    <div style="margin-bottom: 8px;"><span style="color: #27c93f;">✓ </span><span style="color: #888;">Created </span><span style="color: #e8e8e8;">src/pages/services.astro</span></div>
+    <div style="margin-bottom: 8px;"><span style="color: #27c93f;">✓ </span><span style="color: #888;">Configured Tailwind with brand color tokens</span></div>
+    <div style="margin-bottom: 20px;"><span style="color: #27c93f;">✓ </span><span style="color: #888;">Installed dependencies</span></div>
+    <div style="border-top: 1px solid #2a2a2a; margin-bottom: 20px;"></div>
+    <div style="margin-bottom: 8px;"><span style="color: #888;">Running </span><span style="color: #e8e8e8;">npm run build</span><span style="color: #888;">...</span></div>
+    <div style="margin-bottom: 8px; padding-left: 16px;"><span style="color: #888;">dist/ generated — </span><span style="color: #27c93f;">6 pages</span><span style="color: #888;">, </span><span style="color: #27c93f;">0kb JS</span><span style="color: #888;"> shipped to client</span></div>
+    <div style="margin-top: 20px; padding: 14px 18px; background: #1e1e1e; border-radius: 8px; border: 1px solid #2a2a2a; display: flex; gap: 28px;">
+      <div><div style="color: #27c93f; font-size: 20px; font-weight: 600;">98</div><div style="color: #666; font-size: 11px;">Performance</div></div>
+      <div><div style="color: #27c93f; font-size: 20px; font-weight: 600;">100</div><div style="color: #666; font-size: 11px;">SEO</div></div>
+      <div><div style="color: #27c93f; font-size: 20px; font-weight: 600;">100</div><div style="color: #666; font-size: 11px;">Best Practices</div></div>
+      <div><div style="color: #ffbd2e; font-size: 20px; font-weight: 600;">94</div><div style="color: #666; font-size: 11px;">Accessibility</div></div>
+    </div>
+    <div style="margin-top: 20px; color: #444; font-size: 11px;">⏱ Completed in 18 minutes — we had never touched Astro before this session</div>
+    <div style="margin-top: 20px;"><span style="color: #27c93f;">~/dump-dynasty</span><span style="color: #888;"> $ </span><span style="color: #e8e8e8; border-right: 2px solid #e8e8e8; animation: blink 1s step-end infinite; padding-right: 2px;"> </span></div>
+  </div>
+</div>
+<style>@keyframes blink { 0%, 100% { border-color: #e8e8e8; } 50% { border-color: transparent; } }</style>
+
 ## Figuring Out Astro on the Fly
 
 So what is Astro? We didn't know. We found out by reverse-engineering what the AI built.
@@ -79,6 +122,10 @@ We skipped all of it.
 
 The full pipeline: Claude Code writes → Cursor edits → Git tracks → GitHub stores → Cloudflare builds and deploys.
 
+<div style="margin: 2rem 0;">
+  <img src="/blog/ai_build_pipeline_graphic.svg" alt="The AI build pipeline from brand assets through Claude Code, Cursor, Git, GitHub, and Cloudflare to production" style="width: 100%; border-radius: 10px;" />
+</div>
+
 Five tools. Zero servers. Production-grade infrastructure for a dumpster rental company.
 
 ## What This Actually Teaches You
@@ -90,6 +137,76 @@ When you build everything yourself, you understand every layer because you chose
 When AI builds it, you get handed a complete machine you didn't assemble. And if you're serious about operating it, you have to reverse-engineer your own infrastructure. That's not a downside. That's the fastest technical education available.
 
 We didn't need a CS degree for this. We needed three things: a clear problem, the stubbornness to let AI build something we didn't fully understand yet, and the curiosity to dig in until we did.
+
+<div style="margin: 2rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border-radius: 12px; overflow: hidden; border: 1px solid #1e293b;">
+  <div style="background: #141414; padding: 28px 24px;">
+    <div style="font-family: var(--font-mono); font-size: 11px; color: #555; margin-bottom: 12px; letter-spacing: 0.08em;">THE OLD WAY</div>
+    <div style="font-size: 22px; font-weight: 500; color: #e8e8e8; margin-bottom: 4px;">Hire an Agency</div>
+    <div style="font-size: 13px; color: #555; margin-bottom: 28px;">WordPress + WooThemes + plugins</div>
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 1px solid #222;">
+        <div><div style="color: #aaa; font-size: 13px;">Timeline</div><div style="color: #e8e8e8; font-size: 15px; font-weight: 500; margin-top: 2px;">8–12 weeks</div></div>
+        <div style="background: #2a1a1a; color: #e05a5a; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">slow</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 1px solid #222;">
+        <div><div style="color: #aaa; font-size: 13px;">Cost</div><div style="color: #e8e8e8; font-size: 15px; font-weight: 500; margin-top: 2px;">$8,000 – $15,000</div></div>
+        <div style="background: #2a1a1a; color: #e05a5a; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">expensive</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 1px solid #222;">
+        <div><div style="color: #aaa; font-size: 13px;">Ongoing cost</div><div style="color: #e8e8e8; font-size: 15px; font-weight: 500; margin-top: 2px;">$200–$500/mo</div></div>
+        <div style="background: #2a1a1a; color: #e05a5a; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">recurring</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 1px solid #222;">
+        <div><div style="color: #aaa; font-size: 13px;">Lighthouse score</div><div style="color: #e8e8e8; font-size: 15px; font-weight: 500; margin-top: 2px;">40 – 65</div></div>
+        <div style="background: #2a1a1a; color: #e05a5a; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">slow load</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 1px solid #222;">
+        <div><div style="color: #aaa; font-size: 13px;">Updates</div><div style="color: #e8e8e8; font-size: 15px; font-weight: 500; margin-top: 2px;">File a ticket</div></div>
+        <div style="background: #2a1a1a; color: #e05a5a; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">dependent</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div><div style="color: #aaa; font-size: 13px;">Ownership</div><div style="color: #e8e8e8; font-size: 15px; font-weight: 500; margin-top: 2px;">You don't touch it</div></div>
+        <div style="background: #2a1a1a; color: #e05a5a; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">zero control</div>
+      </div>
+    </div>
+  </div>
+  <div style="background: #0e1a12; padding: 28px 24px;">
+    <div style="font-family: var(--font-mono); font-size: 11px; color: #27c93f; margin-bottom: 12px; letter-spacing: 0.08em; opacity: 0.7;">THE NEW WAY</div>
+    <div style="font-size: 22px; font-weight: 500; color: #e8e8e8; margin-bottom: 4px;">Claude Code + 4 Tools</div>
+    <div style="font-size: 13px; color: #3a6644; margin-bottom: 28px;">Astro · Cursor · GitHub · Cloudflare</div>
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 1px solid #1a2e1e;">
+        <div><div style="color: #4a7a58; font-size: 13px;">Timeline</div><div style="color: #e8e8e8; font-size: 15px; font-weight: 500; margin-top: 2px;">1 day</div></div>
+        <div style="background: #122218; color: #27c93f; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">fast</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 1px solid #1a2e1e;">
+        <div><div style="color: #4a7a58; font-size: 13px;">Cost</div><div style="color: #e8e8e8; font-size: 15px; font-weight: 500; margin-top: 2px;">~$50 in AI credits</div></div>
+        <div style="background: #122218; color: #27c93f; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">cheap</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 1px solid #1a2e1e;">
+        <div><div style="color: #4a7a58; font-size: 13px;">Ongoing cost</div><div style="color: #e8e8e8; font-size: 15px; font-weight: 500; margin-top: 2px;">~$20/mo hosting</div></div>
+        <div style="background: #122218; color: #27c93f; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">minimal</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 1px solid #1a2e1e;">
+        <div><div style="color: #4a7a58; font-size: 13px;">Lighthouse score</div><div style="color: #e8e8e8; font-size: 15px; font-weight: 500; margin-top: 2px;">98 – 100</div></div>
+        <div style="background: #122218; color: #27c93f; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">instant load</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 1px solid #1a2e1e;">
+        <div><div style="color: #4a7a58; font-size: 13px;">Updates</div><div style="color: #e8e8e8; font-size: 15px; font-weight: 500; margin-top: 2px;">Type a prompt</div></div>
+        <div style="background: #122218; color: #27c93f; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">immediate</div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div><div style="color: #4a7a58; font-size: 13px;">Ownership</div><div style="color: #e8e8e8; font-size: 15px; font-weight: 500; margin-top: 2px;">You own every file</div></div>
+        <div style="background: #122218; color: #27c93f; font-size: 11px; padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">full control</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="margin-top: 2px; background: #0a0a0a; border-radius: 0 0 12px 12px; padding: 14px 24px; display: flex; justify-content: center; align-items: center; gap: 8px; border: 1px solid #1e293b; border-top: none;">
+  <span style="font-family: var(--font-mono); font-size: 12px; color: #444;">same result.</span>
+  <span style="font-family: var(--font-mono); font-size: 12px; color: #27c93f;">99% less cost.</span>
+  <span style="font-family: var(--font-mono); font-size: 12px; color: #444;">shipped in a day.</span>
+</div>
 
 **Prompt. Observe. Understand. Redirect.**
 
