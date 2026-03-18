@@ -1,0 +1,89 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Badge from '../components/ui/Badge.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  tags?: string[];
+  readingTime?: number;
+}
+
+const { title, description, pubDate, tags = [], readingTime } = Astro.props;
+
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={`${title} — Xovion Labs`} description={description}>
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
+    <!-- Header -->
+    <header class="mb-12">
+      {tags.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-6">
+          {tags.map((tag) => <Badge>{tag}</Badge>)}
+        </div>
+      )}
+      <h1 class="text-3xl sm:text-4xl font-bold text-[#E6EDF3] leading-tight mb-4">
+        {title}
+      </h1>
+      <p class="text-[#8B949E] text-lg mb-6">{description}</p>
+      <div class="flex items-center gap-4 text-sm text-[#8B949E] border-t border-[#21262D] pt-6">
+        <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+        {readingTime && (
+          <>
+            <span>·</span>
+            <span>{readingTime} min read</span>
+          </>
+        )}
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="prose prose-invert prose-lg max-w-none
+      prose-headings:text-[#E6EDF3] prose-headings:font-bold
+      prose-p:text-[#8B949E] prose-p:leading-relaxed
+      prose-a:text-[#58A6FF] prose-a:no-underline hover:prose-a:underline
+      prose-code:text-[#D2A8FF] prose-code:bg-[#161B22] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:font-mono prose-code:text-sm
+      prose-pre:bg-[#161B22] prose-pre:border prose-pre:border-[#30363D]
+      prose-blockquote:border-l-[#58A6FF] prose-blockquote:text-[#8B949E]
+      prose-strong:text-[#E6EDF3]
+      prose-li:text-[#8B949E]
+      prose-hr:border-[#21262D]">
+      <slot />
+    </div>
+
+    <!-- Newsletter CTA -->
+    <div class="mt-16 p-8 bg-[#161B22] border border-[#21262D] rounded-xl">
+      <h3 class="text-xl font-bold text-[#E6EDF3] mb-2">Stay in the loop</h3>
+      <p class="text-[#8B949E] mb-6">
+        Get practical AI workflows, build tutorials, and operator insights delivered to your inbox.
+        No fluff, no theory — just what works.
+      </p>
+      <form class="flex flex-col sm:flex-row gap-3">
+        <input
+          type="email"
+          placeholder="your@email.com"
+          class="flex-1 px-4 py-2.5 bg-[#0D1117] border border-[#30363D] rounded-lg text-[#E6EDF3] placeholder-[#8B949E] focus:outline-none focus:border-[#58A6FF] font-mono text-sm"
+        />
+        <button
+          type="submit"
+          class="px-6 py-2.5 bg-[#58A6FF] text-[#0D1117] font-semibold rounded-lg hover:bg-[#79BAFF] transition-colors whitespace-nowrap"
+        >
+          Subscribe
+        </button>
+      </form>
+    </div>
+
+    <!-- Back to blog -->
+    <div class="mt-8">
+      <a href="/blog" class="text-[#58A6FF] hover:text-[#79BAFF] transition-colors font-mono text-sm">
+        ← Back to Blog
+      </a>
+    </div>
+  </article>
+</BaseLayout>

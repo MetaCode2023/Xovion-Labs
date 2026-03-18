@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceDetail from '../components/services/ServiceDetail.astro';
+import { services } from '../data/services';
+import Button from '../components/ui/Button.astro';
+import GlowEffect from '../components/ui/GlowEffect.astro';
+---
+
+<BaseLayout
+  title="Services — Xovion Labs"
+  description="Website builds, CRM automation, AI tool integration, and AI strategy — grounded in real operations, not theory."
+>
+  <!-- Page header -->
+  <section class="relative overflow-hidden px-4 sm:px-6 pt-16 pb-12 border-b border-[#21262D]">
+    <GlowEffect color="purple" position="top-right" />
+    <div class="max-w-6xl mx-auto relative z-10">
+      <p class="text-xs font-mono text-[#58A6FF] uppercase tracking-widest mb-4">Services</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-[#E6EDF3] mb-4">
+        Four ways we build with AI
+      </h1>
+      <p class="text-[#8B949E] text-lg max-w-2xl mb-8">
+        Every service is grounded in real work across real businesses.
+        You get the outcome — not a roadmap, not a consultation, not a course.
+      </p>
+      <!-- Quick nav -->
+      <div class="flex flex-wrap gap-3">
+        {services.map((service) => (
+          <a
+            href={`#${service.id}`}
+            class="px-4 py-2 bg-[#161B22] border border-[#21262D] rounded-lg text-sm text-[#8B949E] hover:text-[#E6EDF3] hover:border-[#58A6FF] transition-all font-mono"
+          >
+            {service.icon} {service.title}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Service details -->
+  <section class="px-4 sm:px-6 max-w-6xl mx-auto">
+    {services.map((service, index) => (
+      <ServiceDetail service={service} index={index} />
+    ))}
+  </section>
+
+  <!-- Bottom CTA -->
+  <section class="px-4 sm:px-6 py-16 bg-[#161B22] border-t border-[#21262D]">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-2xl font-bold text-[#E6EDF3] mb-4">Not sure which service you need?</h2>
+      <p class="text-[#8B949E] mb-8">
+        Book a call and we'll figure it out together. 30 minutes, no sales pitch,
+        just a straight conversation about what will actually move the needle for your business.
+      </p>
+      <Button href="/contact" size="lg">Book a Call</Button>
+    </div>
+  </section>
+</BaseLayout>

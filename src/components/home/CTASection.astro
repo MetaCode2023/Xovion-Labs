@@ -1,0 +1,27 @@
+---
+import Button from '../ui/Button.astro';
+import GlowEffect from '../ui/GlowEffect.astro';
+---
+
+<section class="relative overflow-hidden px-4 sm:px-6 py-20 sm:py-28 border-t border-[#21262D]">
+  <GlowEffect color="blue" position="center" />
+
+  <div class="max-w-3xl mx-auto text-center relative z-10">
+    <p class="text-xs font-mono text-[#58A6FF] uppercase tracking-widest mb-4">Ready to build?</p>
+    <h2 class="text-3xl sm:text-4xl font-bold text-[#E6EDF3] mb-4">
+      Stop planning. Start shipping.
+    </h2>
+    <p class="text-[#8B949E] text-lg mb-10 max-w-xl mx-auto">
+      Book a call and we'll figure out exactly what you need — website, CRM, AI integrations, or all three.
+      No sales pitch. Just a straight conversation about what to build.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <Button href="/contact" size="lg">
+        Book a Call
+      </Button>
+      <Button href="/blog" variant="secondary" size="lg">
+        Explore the Blog
+      </Button>
+    </div>
+  </div>
+</section>

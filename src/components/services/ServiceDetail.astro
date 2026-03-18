@@ -1,0 +1,73 @@
+---
+import type { Service } from '../../data/services';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  service: Service;
+  index: number;
+}
+
+const { service, index } = Astro.props;
+---
+
+<div id={service.id} class="py-16 sm:py-20 border-b border-[#21262D] last:border-0 scroll-mt-20">
+  <div class={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-start ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
+    <!-- Left: content -->
+    <div>
+      <div class="flex items-center gap-3 mb-6">
+        <span class="text-4xl">{service.icon}</span>
+        <div>
+          <p class="text-xs font-mono text-[#58A6FF] uppercase tracking-widest">{`0${index + 1}`}</p>
+          <h2 class="text-2xl sm:text-3xl font-bold text-[#E6EDF3]">{service.title}</h2>
+        </div>
+      </div>
+      <p class="text-[#8B949E] text-lg leading-relaxed mb-8">{service.description}</p>
+
+      <div class="mb-8">
+        <h3 class="text-sm font-semibold text-[#E6EDF3] uppercase tracking-wider mb-4">What it covers</h3>
+        <ul class="space-y-2">
+          {service.whatItCovers.map((item) => (
+            <li class="flex items-start gap-2 text-sm text-[#8B949E]">
+              <span class="text-[#7EE787] font-mono mt-0.5 flex-shrink-0">✓</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <Button href="/contact">{service.cta}</Button>
+    </div>
+
+    <!-- Right: proof + deliverable -->
+    <div class="space-y-6">
+      <div class="bg-[#161B22] border border-[#21262D] rounded-xl p-6">
+        <h3 class="text-sm font-semibold text-[#E6EDF3] mb-2">Who it's for</h3>
+        <ul class="space-y-2">
+          {service.whoItsFor.map((item) => (
+            <li class="flex items-start gap-2 text-sm text-[#8B949E]">
+              <span class="text-[#58A6FF] font-mono mt-0.5 flex-shrink-0">→</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="bg-[#161B22] border border-[#21262D] rounded-xl p-6">
+        <h3 class="text-sm font-semibold text-[#E6EDF3] mb-2">The deliverable</h3>
+        <p class="text-sm text-[#8B949E] leading-relaxed">{service.deliverable}</p>
+      </div>
+
+      <div class="bg-[#0D1117] border border-[#58A6FF]/20 rounded-xl p-6">
+        <h3 class="text-sm font-semibold text-[#58A6FF] mb-3 font-mono">Proof points</h3>
+        <ul class="space-y-2">
+          {service.proofPoints.map((point) => (
+            <li class="flex items-start gap-2 text-sm text-[#8B949E]">
+              <span class="text-[#D2A8FF] font-mono mt-0.5 flex-shrink-0">▸</span>
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

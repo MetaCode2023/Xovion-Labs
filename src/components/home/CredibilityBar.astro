@@ -1,0 +1,59 @@
+---
+const stats = [
+  { value: "13K+", label: "SMS texts/week", sub: "automated outbound" },
+  { value: "22", label: "Pipeline statuses", sub: "Close CRM built" },
+  { value: "3", label: "Businesses running", sub: "on AI workflows" },
+  { value: "4hrs", label: "To ship a site", sub: "with Claude Code" },
+  { value: "100%", label: "Real builds", sub: "zero theory" },
+];
+
+const difference = [
+  {
+    label: "Operator, not consultant",
+    desc: "Running real estate, property management, and service businesses daily — not advising from the sidelines.",
+  },
+  {
+    label: "Builder, not vendor",
+    desc: "We write the code, wire the CRMs, and deploy the automations. You get the outcome, not a roadmap.",
+  },
+  {
+    label: "AI-first, not AI-washed",
+    desc: "Every service is built on AI tooling we actually use. No hype, no GPT wrappers dressed up as products.",
+  },
+];
+---
+
+<section class="px-4 sm:px-6 py-12 bg-[#161B22] border-y border-[#21262D]">
+  <div class="max-w-6xl mx-auto">
+    <p class="text-center text-xs font-mono text-[#8B949E] uppercase tracking-widest mb-8">
+      Real numbers from real operations
+    </p>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 mb-16">
+      {stats.map((stat) => (
+        <div class="text-center">
+          <div class="text-2xl sm:text-3xl font-mono font-bold text-[#58A6FF]">{stat.value}</div>
+          <div class="text-sm font-medium text-[#E6EDF3] mt-1">{stat.label}</div>
+          <div class="text-xs text-[#8B949E] mt-0.5">{stat.sub}</div>
+        </div>
+      ))}
+    </div>
+
+    <!-- The Xovion Difference -->
+    <div class="border-t border-[#21262D] pt-12">
+      <div class="mb-8">
+        <p class="text-xs font-mono text-[#58A6FF] uppercase tracking-widest mb-3">The Xovion Difference</p>
+        <h2 class="text-2xl sm:text-3xl font-bold text-[#E6EDF3]">
+          Most AI agencies sell theory.<br />We sell results.
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {difference.map((item) => (
+          <div class="bg-[#0D1117] border border-[#21262D] rounded-xl p-5">
+            <h3 class="text-sm font-semibold text-[#E6EDF3] mb-2">{item.label}</h3>
+            <p class="text-sm text-[#8B949E] leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

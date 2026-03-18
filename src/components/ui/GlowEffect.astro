@@ -1,0 +1,27 @@
+---
+interface Props {
+  color?: 'blue' | 'purple' | 'green';
+  position?: 'top-left' | 'top-right' | 'center';
+  class?: string;
+}
+
+const { color = 'blue', position = 'top-right', class: className = '' } = Astro.props;
+
+const colorMap = {
+  blue: 'rgba(88, 166, 255, 0.08)',
+  purple: 'rgba(210, 168, 255, 0.08)',
+  green: 'rgba(126, 231, 135, 0.08)',
+};
+
+const positionMap = {
+  'top-left': 'top-0 left-0',
+  'top-right': 'top-0 right-0',
+  'center': 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+};
+---
+
+<div
+  class={`absolute pointer-events-none ${positionMap[position]} ${className}`}
+  style={`width: 600px; height: 600px; background: radial-gradient(circle, ${colorMap[color]} 0%, transparent 70%); border-radius: 50%;`}
+  aria-hidden="true"
+/>

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Story from '../components/about/Story.astro';
+import ToolStack from '../components/about/ToolStack.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<BaseLayout
+  title="About — Xovion Labs"
+  description="The story of Xovion Labs — an operator who built AI into real businesses across real estate, property management, and service companies."
+>
+  <Story />
+  <ToolStack />
+
+  <!-- Philosophy CTA -->
+  <section class="px-4 sm:px-6 py-16 border-t border-[#21262D]">
+    <div class="max-w-4xl mx-auto">
+      <div class="bg-[#161B22] border border-[#21262D] rounded-xl p-8 sm:p-12">
+        <p class="text-xs font-mono text-[#D2A8FF] uppercase tracking-widest mb-4">The Philosophy</p>
+        <blockquote class="text-2xl sm:text-3xl font-bold text-[#E6EDF3] leading-snug mb-6">
+          "Real Skills. Unreal Speed."
+        </blockquote>
+        <p class="text-[#8B949E] text-lg leading-relaxed mb-8 max-w-2xl">
+          AI amplifies what you know — it doesn't replace knowing. The operators winning with AI
+          aren't the ones who found the best tools. They're the ones who understood their business
+          well enough to automate it.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <Button href="/services">See Our Services</Button>
+          <Button href="/contact" variant="secondary">Book a Call</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
