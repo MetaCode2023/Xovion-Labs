@@ -1,97 +1,52 @@
 ---
-title: "How I Built a Business Website in a Day with Claude Code"
-description: "A step-by-step walkthrough of building a real business site from scratch using Astro and Claude Code — covering setup, components, deployment, and the actual workflow I use."
+title: "How I Built a Business Website in a Day — Without an Agency, Without a Website Builder"
+description: "When I tell people I built a production website in under four hours, they assume I used Wix or Squarespace. I didn't. Here's what I actually did, explained in plain English."
 pubDate: 2026-03-01
 tags: ["Web Development", "AI Tools", "Claude Code"]
 author: Austin
-readingTime: 8
+readingTime: 6
 ---
 
-When I tell people I built a production website in under 4 hours, they assume I used some drag-and-drop builder. I didn't. I used Astro, Tailwind, and Claude Code — and the result is faster, cleaner, and more maintainable than anything a website builder would have produced.
+When I tell people I built a production website in under four hours, they assume I used Wix or Squarespace. I didn't. And the result is faster, cleaner, and cheaper than anything a drag-and-drop builder — or a $10,000 agency — would have produced.
 
-Here's exactly how I did it.
+Here's what I actually did, explained in plain English.
 
-## The Stack
+## What Is Claude Code?
 
-No creativity required here — this is what works:
+Claude Code is an AI assistant that lives directly on your computer — not in a browser tab, not in a chat window. You open your terminal (think of it as the engine room of your computer), and you just... talk to it.
 
-- **Astro 5.x** — ships zero JS by default, built-in SEO, instant pages
-- **Tailwind CSS 4.x** — utility-first styling, dark mode trivial
-- **Claude Code** — AI in the terminal that writes and edits files
-- **Vercel** — deployed in 2 minutes from a git push
+You type: *"Build me a dark background hero section with a bold headline, a two-line subheader, and two buttons — one solid blue, one outlined."*
 
-## The Workflow
+And it builds it. Not a mockup. Not a suggestion. Actual working code, placed in the right file, following the patterns already in your project.
 
-The key insight: work component by component, not page by page.
+That's the shift. Instead of clicking and dragging boxes around on a slow website builder, or emailing a developer and waiting three days for a revision, you describe what you want in plain English and watch it get built in seconds.
 
-Bad prompt: *"Build me a homepage"*
+## The Workflow (Without the Tech Jargon)
 
-Good prompt: *"Build a Hero section in `src/components/home/Hero.astro` with a dark background, a bold headline, a subheading, and two CTA buttons — one primary (blue) and one secondary (outlined)"*
+The biggest mistake people make when building a website is trying to build the whole thing at once. I didn't do that.
 
-Claude Code works best when you're specific about file paths and scope. It reads your existing files, understands the context, and writes code that fits.
+I built it one section at a time. Hero section. Service cards. Footer. Navigation. Each piece gets its own focused session — I describe what I want, Claude builds it, I look at it in the browser, I adjust. Rinse and repeat.
 
-## Step 1: Project Setup
+Before I built any of the pages, I spent about 30 minutes doing one important thing: I taught the AI my business. Colors, fonts, the tone I wanted, the services I offer, the way I want buttons to look. I set that foundation once. After that, every new section I built automatically matched — no starting from scratch, no inconsistent styling, no "why does this page look different from that one."
 
-```bash
-npm create astro@latest my-site -- --template minimal
-cd my-site
-npm install tailwindcss @tailwindcss/vite @astrojs/react
-```
+Think of it like briefing a contractor before a job. If you explain your standards upfront, you don't have to repeat yourself on every task.
 
-Then add the Tailwind Vite plugin to `astro.config.mjs` and you're ready to build.
+## Why Not Just Use WordPress or Hire an Agency?
 
-## Step 2: Design System First
+A few reasons this approach wins:
 
-Before writing any page code, I define:
+**Speed.** The site I built scores 95+ on Google's performance test. WordPress sites with a handful of plugins routinely score in the 40s and 50s. A slow site loses visitors before they ever read your headline.
 
-- A `global.css` with my color tokens (`--color-bg-primary`, `--color-accent`, etc.)
-- A `BaseLayout.astro` with the HTML shell, font loading, and meta tags
-- Basic UI components: `Button.astro`, `Card.astro`, `Badge.astro`
+**Cost.** A web agency would charge $8,000–$15,000 for what I built in a day, then another $200/month to maintain it. My hosting is essentially free. My maintenance is me, in the terminal, making a change in under a minute.
 
-This 30-minute investment pays back on every component you build after.
+**No middleman.** Every time I want to update a service, change a price, add a blog post — I do it myself. I'm not waiting on a developer, I'm not logging into a clunky CMS, I'm not filing a ticket. I type what I want and it's done.
 
-## Step 3: Build the Data Layer
+**It doesn't break.** Website builders are held together with plugins, third-party integrations, and hope. What I built has none of that surface area. There's nothing to update, nothing to conflict, nothing to go down at 2am the night before a client presentation.
 
-For any content that repeats (services, nav links, tools), I create TypeScript data files first:
+## The Honest Takeaway
 
-```typescript
-// src/data/services.ts
-export const services = [
-  {
-    id: "website-builds",
-    title: "Website Builds",
-    description: "...",
-    // ...
-  }
-];
-```
+I'm not a developer. I don't write code for a living. But I built a fast, professional, SEO-ready business website in a single day — and I understand every piece of it well enough to maintain it myself.
 
-This means your components stay clean — just loop over data, don't hardcode content.
+That's what changes when you stop outsourcing to tools that abstract everything away from you. You don't need to know how to code. You need to know how to describe what you want clearly.
 
-## Step 4: Components, Not Pages
-
-I build components in isolation, test them in the dev server, then compose them into pages. The Hero section, the service cards, the footer — each one gets its own focused build session.
-
-Claude Code is exceptional at this. Point it at a component file, describe what you want, and it generates clean, typed Astro code that follows the patterns already in your project.
-
-## Step 5: Deploy Early
-
-I deploy to Vercel after Phase 1 — even with placeholder content. Having a live URL keeps you honest and makes it easy to show people your progress.
-
-```bash
-npx vercel --prod
-```
-
-That's it. First deploy is free and instant.
-
-## The Real Advantage
-
-The speed isn't just about Claude Code writing code faster. It's about:
-
-1. **No context switching** — I stay in the terminal the whole time
-2. **No debugging framework config** — Astro just works
-3. **No design decisions during build** — I define the design system once, then apply it
-
-The result: a site that's genuinely fast (Lighthouse 95+), SEO-ready, and maintainable — not a WordPress site with 40 plugins and a 4-second load time.
-
-If you're building a business website and you haven't tried this workflow, you're leaving time on the table.
+If you're running a service business and your website is either embarrassing, slow, or costing you money every month — this is worth your attention.
