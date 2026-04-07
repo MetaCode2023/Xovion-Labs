@@ -13,12 +13,78 @@ interface Props {
 }
 
 const { title, description, image, type } = Astro.props;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://xovionlabs.com/#organization',
+      name: 'Xovion Labs',
+      url: 'https://xovionlabs.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://xovionlabs.com/xovion_labs_logo.svg',
+      },
+      description:
+        'Xovion Labs builds custom AI automation systems for small businesses — from website infrastructure and CRM pipelines to AI agents and workflow automation. Based in Sioux Falls, SD.',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Sioux Falls',
+        addressRegion: 'SD',
+        addressCountry: 'US',
+      },
+      sameAs: [
+        'https://www.facebook.com/profile.php?id=61573321545276',
+        'https://github.com/MetaCode2023',
+      ],
+      knowsAbout: [
+        'AI automation',
+        'CRM implementation',
+        'small business AI',
+        'workflow automation',
+        'website development',
+        'AI consulting',
+      ],
+    },
+    {
+      '@type': 'LocalBusiness',
+      '@id': 'https://xovionlabs.com/#localbusiness',
+      name: 'Xovion Labs',
+      url: 'https://xovionlabs.com',
+      description:
+        'AI implementation and automation services for small businesses. We build custom AI systems, CRM pipelines, and website infrastructure — powered by real operator experience.',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Sioux Falls',
+        addressRegion: 'SD',
+        addressCountry: 'US',
+      },
+      priceRange: '$$',
+      areaServed: {
+        '@type': 'Country',
+        name: 'United States',
+      },
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'AI Services for Small Businesses',
+        itemListElement: [
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'AI-Powered Website Builds' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'CRM Architecture & Automation' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'AI Orchestration & Custom Integrations' } },
+          { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Operator Advisory & Blueprinting' } },
+        ],
+      },
+    },
+  ],
+};
 ---
 
 <!doctype html>
 <html lang="en" class="dark">
   <head>
     <SEO title={title} description={description} image={image} type={type} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body class="min-h-screen flex flex-col noise-overlay">
 
