@@ -2,14 +2,14 @@ export const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'Services', href: '/services' },
   { label: 'About', href: '/about' },
-  { label: 'Learn', href: '/blog' },
+  { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '/contact' },
 ] as const;
 
 export const siteConfig = {
   name: 'Xovion Labs',
   tagline: 'Real Skills. Unreal Speed.',
-  description: 'AI education and services for builders and operators. Website builds, CRM automation, AI tool integration, and strategy consulting — powered by real experience, not theory.',
+  description: 'Xovion Labs builds custom AI automation systems for small businesses. We handle website builds, CRM pipelines, AI agent integrations, and workflow automation — so you spend less time on repetitive tasks and more time running your business.',
   url: 'https://xovionlabs.com',
   author: 'Austin',
   social: {
