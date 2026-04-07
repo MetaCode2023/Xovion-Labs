@@ -9,10 +9,10 @@ const iconMap: Record<string, string> = {
 };
 
 const colorMap: Record<string, { border: string; bg: string; text: string; glow: string }> = {
-  blue: { border: 'border-xv-accent-blue/20', bg: 'bg-xv-accent-blue/10', text: 'text-xv-accent-blue', glow: 'group-hover:shadow-xv-accent-blue/10' },
-  cyan: { border: 'border-xv-accent-cyan/20', bg: 'bg-xv-accent-cyan/10', text: 'text-xv-accent-cyan', glow: 'group-hover:shadow-xv-accent-cyan/10' },
-  green: { border: 'border-xv-accent-green/20', bg: 'bg-xv-accent-green/10', text: 'text-xv-accent-green', glow: 'group-hover:shadow-xv-accent-green/10' },
-  purple: { border: 'border-xv-accent-purple/20', bg: 'bg-xv-accent-purple/10', text: 'text-xv-accent-purple', glow: 'group-hover:shadow-xv-accent-purple/10' },
+  blue:   { border: 'border-xv-accent-blue/20', bg: 'bg-xv-accent-blue/10', text: 'text-xv-accent-blue', glow: 'group-hover:shadow-xv-accent-blue/10' },
+  cyan:   { border: 'border-xv-accent-blue/20', bg: 'bg-xv-accent-blue/10', text: 'text-xv-accent-blue', glow: 'group-hover:shadow-xv-accent-blue/10' },
+  green:  { border: 'border-xv-accent-blue/20', bg: 'bg-xv-accent-blue/10', text: 'text-xv-accent-blue', glow: 'group-hover:shadow-xv-accent-blue/10' },
+  purple: { border: 'border-xv-accent-blue/20', bg: 'bg-xv-accent-blue/10', text: 'text-xv-accent-blue', glow: 'group-hover:shadow-xv-accent-blue/10' },
 };
 ---
 
@@ -20,7 +20,7 @@ const colorMap: Record<string, { border: string; bg: string; text: string; glow:
   <div class="section-container">
     <!-- Section header -->
     <div class="mb-14">
-      <span class="tag-green mb-4 block w-fit">What We Do</span>
+      <span class="tag-blue mb-4 block w-fit">What We Do</span>
       <h2 class="font-display font-bold text-3xl sm:text-4xl text-xv-text-primary tracking-tight">
         Four pillars. Zero fluff.
       </h2>
@@ -38,7 +38,7 @@ const colorMap: Record<string, { border: string; bg: string; text: string; glow:
           <a
             href={`/services#${service.id}`}
             class:list={[
-              'group glass-card spotlight-card p-6 sm:p-7 rounded-xl transition-all duration-300',
+              'group glass-card p-6 sm:p-7 rounded-xl transition-all duration-300 hover:border-xv-accent-blue/30',
               'hover:-translate-y-1 hover:shadow-xl',
               colors.glow,
               'opacity-0 animate-fade-in-up',

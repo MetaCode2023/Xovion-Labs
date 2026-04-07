@@ -2,8 +2,8 @@
 // TerminalWindow.astro — Animated skunkworks terminal display
 ---
 
-<div id="terminal-tilt-scene" style="perspective: 900px; perspective-origin: center center;">
-<div id="terminal-tilt" class="spotlight-card w-full max-w-lg rounded-xl border border-white/5 overflow-hidden" style="will-change: transform; transform-style: preserve-3d; transform: rotateX(0deg) rotateY(0deg); filter: drop-shadow(0px 24px 40px rgba(0,0,0,0.7)); transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);">
+<div>
+<div class="glass-card w-full max-w-lg rounded-xl border border-white/5 overflow-hidden" style="filter: drop-shadow(0px 24px 40px rgba(0,0,0,0.7));">
   <!-- Title bar -->
   <div class="flex items-center gap-2 px-4 py-3 bg-[#1C1F26] border-b border-white/5">
     <div class="flex gap-1.5">
@@ -110,43 +110,5 @@
     }
 
     setTimeout(run, 900);
-  })();
-
-  // 3D tilt effect
-  (function () {
-    const scene = document.getElementById('terminal-tilt-scene');
-    const card  = document.getElementById('terminal-tilt') as HTMLElement | null;
-    if (!scene || !card) return;
-
-    const MAX_DEG   = 8;   // max rotation in degrees
-    const SHADOW_PX = 28;  // base shadow spread
-
-    function setTilt(rotX: number, rotY: number) {
-      // Shadow shifts opposite to tilt direction for depth illusion
-      const sx = (-rotY / MAX_DEG) * 16;
-      const sy = ( rotX / MAX_DEG) * 16;
-      card!.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-      card!.style.filter    = `drop-shadow(${sx}px ${sy + SHADOW_PX}px 40px rgba(0,0,0,0.75))`;
-    }
-
-    scene.addEventListener('mousemove', (e: MouseEvent) => {
-      const rect = scene.getBoundingClientRect();
-      // Normalised position: -1 (top-left) → +1 (bottom-right)
-      const nx = ((e.clientX - rect.left)  / rect.width)  * 2 - 1;
-      const ny = ((e.clientY - rect.top)   / rect.height) * 2 - 1;
-
-      const rotY =  nx * MAX_DEG;   // cursor right → tilt right
-      const rotX = -ny * MAX_DEG;   // cursor up    → tilt up
-
-      // Fast follow while moving
-      card!.style.transition = 'transform 0.15s ease-out, filter 0.15s ease-out';
-      setTilt(rotX, rotY);
-    });
-
-    scene.addEventListener('mouseleave', () => {
-      // Bouncy spring snap-back
-      card!.style.transition = 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
-      setTilt(0, 0);
-    });
   })();
 </script>

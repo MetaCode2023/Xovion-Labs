@@ -5,7 +5,7 @@ export interface Service {
   tagline: string;
   description: string;
   icon: string;
-  color: 'blue' | 'cyan' | 'green' | 'purple';
+  color: 'blue' | 'cyan' | 'green' | 'purple'; // all resolve to blue in UI
   features: string[];
   proofPoints: string[];
   idealFor: string[];

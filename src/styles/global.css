@@ -30,8 +30,6 @@
   --animate-fade-in-down: fadeInDown 0.5s ease-out forwards;
   --animate-slide-in-left: slideInLeft 0.6s ease-out forwards;
   --animate-slide-in-right: slideInRight 0.6s ease-out forwards;
-  --animate-glow-pulse: glowPulse 3s ease-in-out infinite;
-  --animate-float: float 6s ease-in-out infinite;
 }
 
 @keyframes fadeIn {
@@ -53,18 +51,6 @@
 @keyframes slideInRight {
   0% { opacity: 0; transform: translateX(32px); }
   100% { opacity: 1; transform: translateX(0); }
-}
-@keyframes glowPulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
-}
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
-}
-@keyframes labsGradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
 }
 
 @layer base {
@@ -161,23 +147,21 @@
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(135deg, #58A6FF 0%, #a8d8ff 40%, #e8f4ff 60%, #58A6FF 100%);
-  background-size: 300% 300%;
-  animation: labsGradientShift 4s ease-in-out infinite;
+  background-image: linear-gradient(135deg, #58A6FF 0%, #a8d8ff 60%, #58A6FF 100%);
 }
 
 @utility gradient-text {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(to right, var(--color-xv-accent-blue), var(--color-xv-accent-cyan), var(--color-xv-accent-green));
+  background-image: linear-gradient(to right, var(--color-xv-accent-blue), var(--color-xv-accent-cyan));
 }
 
 @utility gradient-text-alt {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(to right, var(--color-xv-accent-purple), var(--color-xv-accent-blue), var(--color-xv-accent-cyan));
+  background-image: linear-gradient(to right, var(--color-xv-accent-blue), var(--color-xv-accent-cyan));
 }
 
 @utility glass-card {
@@ -187,44 +171,6 @@
   border-radius: 0.75rem;
 }
 
-/* ── Spotlight card: cursor-tracked glowing border + soft fill ───────────── */
-.spotlight-card {
-  position: relative;
-  isolation: isolate;
-  --mouse-x: -9999px;
-  --mouse-y: -9999px;
-  /* Soft background fill — layers on top of background-color */
-  background-image: radial-gradient(
-    380px circle at var(--mouse-x) var(--mouse-y),
-    rgba(59, 130, 246, 0.055),
-    transparent 70%
-  );
-}
-
-/* Glowing border ring — only visible at cursor position */
-.spotlight-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: radial-gradient(
-    260px circle at var(--mouse-x) var(--mouse-y),
-    rgba(88, 166, 255, 0.75),
-    transparent 65%
-  );
-  /* Mask excludes the content-box, leaving only the 1px padding ring */
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: 1;
-}
 
 @utility noise-overlay {
   position: relative;
