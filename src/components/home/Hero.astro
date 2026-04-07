@@ -31,23 +31,23 @@ import TerminalWindow from '@/components/home/TerminalWindow.astro';
       <!-- Left column: text & CTAs -->
       <div class="max-w-xl">
 
-        <!-- Live Status Badge -->
+        <!-- Status Badge -->
         <div class="opacity-0 animate-fade-in-up mb-6">
           <span class="inline-flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-full px-3 py-1">
             <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0"></span>
-            <span class="text-xs font-mono text-slate-400 tracking-wider">SYS_STATUS: ONLINE</span>
+            <span class="text-xs font-mono text-slate-400 tracking-wider">Now accepting new clients</span>
           </span>
         </div>
 
-        <!-- Headline with decrypt animation -->
+        <!-- Headline -->
         <h1 class="opacity-0 animate-fade-in-up animate-delay-100 font-display font-bold text-5xl sm:text-6xl lg:text-7xl tracking-tight leading-[1.05]">
-          <span id="decrypt-p1" class="text-xv-text-primary">Custom AI</span>
-          <span id="decrypt-p2" class="block mt-1 gradient-text">Infrastructure.</span>
+          <span class="text-xv-text-primary">We save small</span>
+          <span class="block mt-1 gradient-text">businesses time.</span>
         </h1>
 
         <!-- Tagline -->
-        <p class="opacity-0 animate-fade-in-up animate-delay-200 my-8 text-3xl sm:text-4xl font-display font-semibold text-xv-text-secondary">
-          Real Skills. <span class="text-xv-text-primary">Unreal Speed.</span>
+        <p class="opacity-0 animate-fade-in-up animate-delay-200 my-8 text-xl sm:text-2xl font-display font-medium text-xv-text-secondary max-w-lg">
+          We find the repetitive work in your business and build AI systems to handle it — so you can focus on what actually matters.
         </p>
 
         <!-- Description -->
@@ -57,14 +57,14 @@ import TerminalWindow from '@/components/home/TerminalWindow.astro';
 
         <!-- CTAs -->
         <div class="opacity-0 animate-fade-in-up animate-delay-400 mt-8 flex flex-wrap gap-3 items-center">
-          <a id="magnetic-btn" href="/services" class="inline-flex items-center gap-2 px-5 py-3 rounded-lg font-semibold text-base text-white bg-gradient-to-b from-blue-500 to-blue-600 ring-1 ring-inset ring-white/20 shadow-lg shadow-blue-500/40 hover:shadow-blue-500/60 active:scale-95" style="will-change: transform;">
-            See What We Build
+          <a id="magnetic-btn" href="/contact" class="inline-flex items-center gap-2 px-5 py-3 rounded-lg font-semibold text-base text-white bg-gradient-to-b from-blue-500 to-blue-600 ring-1 ring-inset ring-white/20 shadow-lg shadow-blue-500/40 hover:shadow-blue-500/60 active:scale-95" style="will-change: transform;">
+            Book a Free Call
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </a>
-          <a href="/contact" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm text-slate-300 bg-white/5 ring-1 ring-inset ring-white/10 transition-all duration-200 hover:text-white hover:bg-white/10 active:scale-95">
-            Book a Call
+          <a href="/services" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm text-slate-300 bg-white/5 ring-1 ring-inset ring-white/10 transition-all duration-200 hover:text-white hover:bg-white/10 active:scale-95">
+            See what we do
           </a>
         </div>
       </div>
@@ -83,47 +83,6 @@ import TerminalWindow from '@/components/home/TerminalWindow.astro';
   const video = document.getElementById('hero-bg-video') as HTMLVideoElement | null;
   if (video && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     video.pause();
-  }
-
-  const CHARS = 'X01#$%@&*!><[]{}|/\\^~';
-  const DURATION = 700;
-  const INTERVAL = 28;
-
-  function decrypt(el: HTMLElement, finalText: string, startDelay = 0) {
-    const len = finalText.length;
-    const totalFrames = Math.ceil(DURATION / INTERVAL);
-    let frame = 0;
-
-    setTimeout(() => {
-      const timer = setInterval(() => {
-        const revealed = Math.floor((frame / totalFrames) * len);
-        let out = '';
-        for (let i = 0; i < len; i++) {
-          if (finalText[i] === ' ') {
-            out += ' ';
-          } else if (i < revealed) {
-            out += finalText[i];
-          } else {
-            out += CHARS[Math.floor(Math.random() * CHARS.length)];
-          }
-        }
-        el.textContent = out;
-        frame++;
-        if (frame > totalFrames) {
-          el.textContent = finalText;
-          clearInterval(timer);
-        }
-      }, INTERVAL);
-    }, startDelay);
-  }
-
-  const p1 = document.getElementById('decrypt-p1') as HTMLElement | null;
-  const p2 = document.getElementById('decrypt-p2') as HTMLElement | null;
-
-  if (p1 && p2) {
-    // Wait for the fade-in-up animation to start (100ms delay on h1)
-    decrypt(p1, 'Custom AI', 120);
-    decrypt(p2, 'Infrastructure.', 200);
   }
 
   // Magnetic button
