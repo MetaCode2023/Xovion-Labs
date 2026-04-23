@@ -1,0 +1,7 @@
+Name,Business,Vertical,Channel,Date Contacted,Response,Follow-Up Date,Status,Notes
+John Smith,Smith's HVAC,HVAC,LinkedIn DM,2026-04-23,No reply,2026-04-27,Contacted,Connected on LinkedIn — sent primary DM script
+Maria Torres,Torres Dental,Dentist,Email,2026-04-23,Positive — wants demo,2026-04-24,Call Booked,Demo call booked for Fri 10am — sent calendar invite
+Dave R.,Rapid Plumbing,Plumber,Instagram DM,2026-04-22,No reply,2026-04-25,Contacted,Short variant DM sent — active account good engagement
+Lisa Chen,CoreFit Gym,Gym,Email,2026-04-21,Not interested,,,Replied "we use a service already" — mark cold
+Tom Wallace,Wallace Law,Law Firm,SMS,2026-04-20,Positive — asked for more info,2026-04-23,Warm,Referred by Mike D. — sent demo video link via SMS
+[OWNER_NAME],[BUSINESS_NAME],[HVAC/Plumber/Dentist/Gym/Law Firm],[LinkedIn DM/Instagram DM/Email/SMS],[YYYY-MM-DD],[No reply/Positive/Not interested/Booked call],[YYYY-MM-DD],[New/Contacted/Warm/Call Booked/Won/Lost/No Response],[Free text notes]
