@@ -1,13 +1,14 @@
 # Sequence 2: AI ROI Calculator — "The Numbers Series"
 **5 emails over 10 days**
 
-## GHL Setup Instructions
+## Setup Instructions
 
-- **Trigger:** Tag added: `lead-magnet-ai-roi` (fires when contact completes the AI ROI Calculator survey from `/ai-roi` funnel page)
+- **Trigger:** Tag added: `lead-magnet-ai-roi` (fires when contact completes the AI ROI Calculator survey)
 - **Personalization:** Email 1 uses custom field `ai_roi_hours` (populated from survey result) — set this up in the survey workflow before launching
 - **Sender:** Austin
 - **Goal:** Book a discovery call within 10 days
 - **Exit condition:** Discovery call booked — remove from sequence immediately
+- **Compatible platforms:** GoHighLevel (recommended), ActiveCampaign, HubSpot, or any platform that supports custom contact fields and conditional send logic
 
 ---
 
@@ -36,8 +37,8 @@ Here's the link: [Calendar Link]
 ---
 
 **Notes:**
-- `[ai_roi_hours]` = GHL merge tag for the custom field populated by the survey result
-- If the survey doesn't calculate hours automatically, set up a GHL workflow that maps their answer choices to an hours estimate and writes it to the `ai_roi_hours` field before this email fires
+- `[ai_roi_hours]` = merge tag for the custom field populated by the survey result (GHL: `{{contact.ai_roi_hours}}`)
+- If the survey doesn't calculate hours automatically, set up a workflow that maps their answer choices to an hours estimate and writes it to the `ai_roi_hours` field before this email fires
 - Do not send this email if the field is empty — add a condition check in the workflow
 
 ---
@@ -83,7 +84,7 @@ That's not an automation. That's an expensive copy-paste tool.
 
 Here's what a real integration looks like in practice:
 
-New lead comes in through a GHL form. A webhook fires to a Claude instance that reads the contact record — business type, service interest, how they heard about you. Claude triages the lead, assigns the right pipeline stage, drafts a personalized first follow-up, and updates the contact record. All of it happens in under 2 seconds. Zero human time per lead.
+New lead comes in through a web form. A webhook fires to a Claude instance that reads the contact record — business type, service interest, how they heard about you. Claude triages the lead, assigns the right pipeline stage, drafts a personalized first follow-up, and updates the contact record. All of it happens in under 2 seconds. Zero human time per lead.
 
 On Monday morning, that same Claude instance reads the entire pipeline — every open deal, every stalled contact, everything that moved last week — and generates a brief. Five minutes of reading replaces two hours of manual CRM review.
 
@@ -140,12 +141,13 @@ If not — you'll hear from me once a month with the Operator Brief. Real notes 
 ---
 
 **Notes:**
-- `[X]` = number of days since opt-in (use GHL date calculation or just hardcode "10")
-- `[Company]` = GHL merge tag for company name field — if empty, just use "your operation"
+- `[X]` = number of days since opt-in (calculate from your platform's date fields or just hardcode "10")
+- `[Company]` = merge tag for company name field — if empty, just use "your operation"
 
 ---
 
-## GHL Workflow Logic
+## Workflow Logic
+*(Example shown in GHL syntax — adapt trigger/condition names to your platform)*
 
 ```
 TRIGGER: Tag added: `lead-magnet-ai-roi`
@@ -170,3 +172,11 @@ ACTION: Send Email 5
 ACTION: Add tag `welcome-seq-complete`
 ACTION: Add to newsletter contact list
 ```
+
+---
+
+## Paste Notes
+- Replace `[Calendar Link]` with your booking page URL
+- Replace `[First Name]` with your platform's merge tag
+- The `ai_roi_hours` field needs to be created as a custom contact field in your CRM before launch
+- Works in GoHighLevel, ActiveCampaign, HubSpot, or any platform supporting custom fields and conditional email logic

@@ -12,15 +12,16 @@ All sequences are written and ready to paste into GHL Email Marketing > Campaign
 | `sequence-02-ai-roi-calculator.md` | AI ROI Calculator Nurture | Calculator completion | 5 | 10 | Deploy with `/ai-roi` funnel page |
 | `sequence-05-re-engagement.md` | Dormant Contact Re-engagement | Manual quarterly sweep | 3 | 10 | Deploy month 2, run quarterly |
 
-## GHL Build Checklist (do these before deploying any sequence)
+## Platform Setup Checklist (do these before deploying any sequence)
 
-- [ ] Connect sending email domain in GHL (Settings > Email Services)
-- [ ] Authenticate domain: SPF, DKIM, DMARC records added to DNS
-- [ ] Create all custom contact fields (Business Type, Service Interest, Current Tech Stack, Lead Source, ai_roi_hours, etc.)
-- [ ] Add GHL calendar booking link to all sequences (replace all `[Calendar Link]` placeholders)
-- [ ] Replace all `[First Name]` with GHL merge tag: `{{contact.first_name}}`
-- [ ] Replace all `[Company]` with GHL merge tag: `{{contact.company_name}}`
-- [ ] Test each sequence with a real email address before going live
+These sequences work in **GoHighLevel (recommended), ActiveCampaign, Close, HubSpot**, or any platform that supports tag-triggered automations, custom contact fields, and conditional email delays. GHL is the primary platform Xovion Labs uses and recommends — adapt syntax as needed for other tools.
+
+- [ ] Connect and authenticate your sending domain (SPF, DKIM, DMARC) — required for deliverability on any platform
+- [ ] Create all custom contact fields: Business Type, Service Interest, Current Tech Stack, Lead Source, `ai_roi_hours`
+- [ ] Add your calendar booking link to all sequences (replace all `[Calendar Link]` placeholders)
+- [ ] Replace all `[First Name]` with your platform's merge tag (GHL: `{{contact.first_name}}` / ActiveCampaign: `%FIRSTNAME%` / Close: `{{lead.contact_name}}` / HubSpot: `{{ contact.firstname }}`)
+- [ ] Replace all `[Company]` with your platform's company merge tag
+- [ ] Test each sequence with an internal email address before going live
 
 ## Sequences Still to Write
 

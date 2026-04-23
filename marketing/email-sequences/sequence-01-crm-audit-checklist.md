@@ -1,13 +1,14 @@
 # Sequence 1: CRM Audit Checklist Download — "The Diagnostic Series"
 **7 emails over 14 days**
 
-## GHL Setup Instructions
+## Setup Instructions
 
-- **Trigger:** Tag added: `lead-magnet-crm-audit` (fires when contact downloads the checklist from `/crm-audit` funnel page)
+- **Trigger:** Tag added: `lead-magnet-crm-audit` (fires when contact downloads the checklist from your lead capture page)
 - **Sender:** Austin
 - **Goal:** Book a discovery call within 14 days
 - **Exit condition:** Discovery call booked — remove from sequence immediately
 - **After sequence ends:** Add to newsletter list, add tag `welcome-seq-complete`
+- **Compatible platforms:** GoHighLevel (recommended), ActiveCampaign, Close Sequences, HubSpot Workflows, or any platform that supports tag-triggered email automations
 
 ---
 
@@ -197,7 +198,8 @@ It'll be there.
 
 ---
 
-## GHL Workflow Logic
+## Workflow Logic
+*(Example shown in GHL syntax — adapt trigger/condition names to your platform)*
 
 ```
 TRIGGER: Tag added: `lead-magnet-crm-audit`
@@ -230,3 +232,11 @@ ACTION: Add tag `welcome-seq-complete`
 ACTION: Add to newsletter contact list
 ACTION: Remove tag `welcome-seq-active`
 ```
+
+---
+
+## Paste Notes
+- Replace `[Calendar Link]` with your booking page URL
+- Replace `[First Name]` with your platform's merge tag (GHL: `{{contact.first_name}}` / ActiveCampaign: `%FIRSTNAME%` / Close: `{{lead.contact_name}}`)
+- The blog post link in Email 3 should point to the Close CRM pipeline post on xovionlabs.com
+- Works in any platform that supports tag triggers, conditional exits, and timed delays

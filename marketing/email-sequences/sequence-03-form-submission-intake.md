@@ -3,10 +3,9 @@
 
 ## GHL Setup Instructions
 
-- **Trigger:** Contact form webhook submission (existing webhook at `services.leadconnectorhq.com/hooks/...`)
+- **Trigger:** Contact form webhook submission
 - **Condition:** Contact did NOT book a call (no appointment exists)
 - **Sender name:** Austin
-- **Sender email:** your GHL connected email (e.g. austin@xovionlabs.com)
 - **Goal:** Get them to book a discovery call within 7 days
 - **Exit condition:** If they book a call at any point, remove from sequence immediately
 
@@ -22,11 +21,11 @@ Hey [First Name],
 
 Got your message.
 
-Before I fire back with something useful, I want to make sure I'm actually giving you the right context — not a generic reply.
+Before I fire back with something useful, I want to make sure I'm giving you the right context — not a generic reply.
 
 Two quick questions:
 
-→ [Link to 2-question GHL survey]
+→ [Link to 2-question survey]
 
 Takes 60 seconds. Helps me give you a real answer instead of a canned one.
 
@@ -34,8 +33,8 @@ Takes 60 seconds. Helps me give you a real answer instead of a canned one.
 
 ---
 
-**GHL Survey to create (linked above):**
-Question 1: "What's your biggest bottleneck right now?" (multi-choice: Lead follow-up / CRM/pipeline chaos / Website doesn't convert / Manual tasks eating time / Not sure where to start)
+**Survey to build (linked above):**
+Question 1: "What's your biggest bottleneck right now?" (multi-choice: Lead follow-up / CRM or pipeline chaos / Website doesn't convert / Manual tasks eating time / Not sure where to start)
 Question 2: "What have you already tried?" (multi-choice: Hired someone / Bought software / Tried to DIY / Nothing yet / Other)
 
 Survey completion → update contact custom fields → tag `intake-survey-complete`
@@ -46,7 +45,7 @@ Survey completion → update contact custom fields → tag `intake-survey-comple
 
 **Subject:** Here's what I'm thinking for your [business type]
 
-**GHL Conditional Content — send the version that matches their `Business Type` field:**
+**Send the version that matches their Business Type field. If unknown, send Version D.**
 
 ---
 
@@ -58,11 +57,11 @@ Based on what you shared — here's where I'd start.
 
 The highest-leverage problem for most real estate operators isn't marketing or lead gen. It's what happens *after* a lead comes in.
 
-Most setups I look at have the same issue: a pipeline that can't tell the difference between someone who just opted in cold versus someone who had a real conversation three days ago. Both contacts are sitting in the same "follow up" stage. So they get treated the same. Which means the warm one goes cold.
+Most setups I look at have the same issue: a pipeline that can't tell the difference between someone who just opted in cold versus someone who had a real conversation three days ago. Both sitting in the same "follow up" stage. Both getting treated the same — which means the warm one goes cold.
 
-We fixed this exact problem for a direct-to-seller acquisition operation — 22-stage pipeline, AI-generated Monday brief, zero manual triage. The recovery rate on warm leads was significant.
+We fixed this for a direct-to-seller acquisition operation. 22-stage pipeline, AI-generated Monday brief, zero manual triage. The recovery rate on warm leads was significant. It runs inside their existing CRM — whatever they use.
 
-If you're running any kind of outbound or inbound acquisition volume, the architecture matters more than the automation.
+If you're running any kind of outbound or inbound acquisition volume, the architecture matters more than the tool.
 
 30 minutes to walk through yours: [Calendar Link]
 
@@ -76,13 +75,13 @@ Hey [First Name],
 
 Based on what you shared — here's where I'd start.
 
-Most property management operations I look at are running on three or four disconnected platforms. AppFolio for the portfolio. Something else for leasing leads. Maybe a CRM that nobody logs into. And a lot of copying and pasting between all of them.
+Most property management operations I look at are running on three or four disconnected platforms. Something for the portfolio. Something else for leasing leads. Maybe a CRM that nobody logs into regularly. A lot of copying and pasting in between.
 
-The problem isn't the tools. It's that nothing talks to anything else, so the data that should be driving decisions is buried in tabs nobody opens.
+The problem isn't the tools — it's that nothing talks to anything else. So the data that should be driving decisions is buried in tabs nobody opens.
 
-We wired Claude directly into an AppFolio operation — automated the weekly portfolio report, flagged maintenance patterns before they became tenant issues, cut 3 hours of Monday morning admin to about 15 minutes.
+We wired Claude directly into an AppFolio operation — automated the weekly portfolio report, flagged maintenance patterns before they became tenant issues, cut 3 hours of Monday morning admin to about 15 minutes. Works alongside whatever else they're running.
 
-If your operation runs on AppFolio or a similar system, the integration path is straightforward.
+If your operation is fragmented across platforms, the integration path is simpler than it sounds.
 
 30 minutes to look at your setup: [Calendar Link]
 
@@ -96,11 +95,11 @@ Hey [First Name],
 
 Based on what you shared — here's where I'd start.
 
-The most common problem I see in service businesses isn't getting leads. It's what happens between "lead fills out a form" and "lead becomes a paying client."
+The most common problem I see in service businesses isn't getting leads — it's what happens between "lead fills out a form" and "lead becomes a paying client."
 
-There's usually a gap in there — and it's filled with manual follow-up that's inconsistent, slow, or just not happening at all.
+There's usually a gap in there filled with manual follow-up that's inconsistent, slow, or just not happening at all. The software isn't the issue. The connection between the software and the actual follow-up is.
 
-We build the infrastructure that closes that gap. Website that actually connects to your CRM. Automations that fire the right message at the right time. No one manually checking a spreadsheet.
+We build the infrastructure that closes that gap — website connected to CRM, automations that fire the right message at the right time, the whole thing running without someone manually checking a spreadsheet. Works with most major CRMs and automation platforms.
 
 30 minutes to look at where yours is leaking: [Calendar Link]
 
@@ -108,7 +107,7 @@ We build the infrastructure that closes that gap. Website that actually connects
 
 ---
 
-### Version D — Equipment Rental / Other
+### Version D — Equipment Rental / Other / Unknown
 
 Hey [First Name],
 
@@ -118,7 +117,7 @@ Most operators I talk to aren't losing business because of bad marketing. They'r
 
 Inquiry comes in. Nobody follows up fast enough. Lead goes somewhere else.
 
-We build the infrastructure that makes sure that doesn't happen — website, CRM, automations, all connected. Not theoretical. We run this in our own operations before we build it for anyone else.
+We build the infrastructure that makes sure that doesn't happen — website, CRM, automations, all connected and running without manual babysitting. We don't care what stack you're on. We've built on top of most of them.
 
 30 minutes to look at your setup: [Calendar Link]
 
@@ -142,7 +141,7 @@ I look at your current setup — whatever you've got: CRM, website, automations,
 
 If we're a fit to work together, I'll tell you what that looks like and what it would take.
 
-If we're not a fit — I'll tell you that too, and point you toward something that might actually help.
+If we're not a fit — I'll tell you that too, and point you somewhere that might actually help.
 
 No slide deck. No proposal on the call. No follow-up pressure.
 
@@ -164,11 +163,11 @@ Hey [First Name],
 
 I'm going to stop following up on this after today.
 
-You reached out [X days] ago. Either the timing's off, you went a different direction, or it's just not the right moment — all of that's fine.
+You reached out a week ago. Either the timing's off, you went a different direction, or it's just not the right moment — all fine.
 
 If the conversation is still relevant, here's the calendar: [Calendar Link]
 
-If not, I'll move you to our monthly Operator Brief — one email a month, real notes from what we're building, no sales content. You can unsubscribe anytime.
+If not, I'll move you to our monthly Operator Brief — one email a month, real notes from what we're building, no sales content. Unsubscribe anytime.
 
 Either way — hope whatever you're building is moving.
 
@@ -185,7 +184,7 @@ ACTION: Send Email 1
 
 WAIT: 24 hours
 CONDITION: Has appointment booked? → YES: Exit sequence
-ACTION: Send Email 2 (conditional content based on Business Type field)
+ACTION: Send Email 2 (conditional on Business Type field)
 
 WAIT: 2 days
 CONDITION: Has appointment booked? → YES: Exit sequence
@@ -200,10 +199,9 @@ ACTION: Add to newsletter list
 
 ---
 
-## Notes
-
-- Replace all `[Calendar Link]` with your GHL booking page URL
-- Replace all `[First Name]` with GHL merge tag: `{{contact.first_name}}`
-- Replace `[Business Type]` in subject/body with GHL merge tag: `{{contact.business_type}}`
-- The 2-question survey in Email 1 needs to be built in GHL Surveys first, then the link dropped in
-- If `Business Type` field is empty (they didn't fill out the form field), default to Version D
+## Paste Notes
+- Replace `[Calendar Link]` with your booking page URL
+- Replace `[First Name]` with your email platform's merge tag (e.g. `{{contact.first_name}}` in GHL)
+- Replace `[business type]` in subject with the contact's business type field
+- Default to Version D if Business Type field is empty
+- Works in GHL, ActiveCampaign, Close, HubSpot, or any email platform that supports conditional content and webhook triggers
