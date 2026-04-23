@@ -1,0 +1,55 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ROICalculator from '@/components/ui/ROICalculator';
+---
+
+<BaseLayout
+  title="AI ROI Calculator — Xovion Labs"
+  description="Answer 5 questions about how your operation runs. Find out exactly how many hours you're losing to manual work — and what it's costing you."
+>
+  <section class="section-padding">
+    <div class="section-container">
+      <div class="max-w-2xl mx-auto">
+
+        <!-- Header -->
+        <div class="text-center mb-12">
+          <span class="tag-purple mb-4 inline-block">Free Tool</span>
+          <h1 class="font-display font-bold text-4xl sm:text-5xl text-xv-text-primary tracking-tight text-balance">
+            Find the hours you're
+            <span class="gradient-text-alt"> losing to manual work.</span>
+          </h1>
+          <p class="mt-4 text-xv-text-secondary text-lg max-w-xl mx-auto">
+            Answer 4 questions. Get a specific estimate of the time and money your operation is spending on tasks a system should be handling.
+          </p>
+        </div>
+
+        <!-- Calculator -->
+        <ROICalculator client:load />
+
+        <!-- Social proof -->
+        <div class="mt-10 text-center">
+          <p class="text-xv-text-muted text-sm">
+            Built from running real operations — real estate acquisitions, property management, equipment rentals.
+            Not a vendor trying to sell you software.
+          </p>
+          <div class="mt-6 flex flex-wrap justify-center gap-4 text-xs text-xv-text-muted font-mono">
+            <span>Big Sioux Home Buyers</span>
+            <span class="text-xv-border">·</span>
+            <span>Metastone Properties</span>
+            <span class="text-xv-border">·</span>
+            <span>Dump Dynasty</span>
+          </div>
+        </div>
+
+        <!-- Bottom link -->
+        <div class="mt-12 text-center">
+          <p class="text-xv-text-secondary text-sm">
+            Already know you need to fix this?
+            <a href="/contact" class="text-xv-accent-blue hover:underline ml-1">Book a 30-minute call →</a>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</BaseLayout>

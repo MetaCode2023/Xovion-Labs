@@ -59,24 +59,30 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 
     <!-- Newsletter CTA -->
     <div class="mt-16 p-8 bg-[#161B22] border border-[#21262D] rounded-xl">
-      <h3 class="text-xl font-bold text-[#E6EDF3] mb-2">Stay in the loop</h3>
+      <h3 class="text-xl font-bold text-[#E6EDF3] mb-2">The Operator Brief</h3>
       <p class="text-[#8B949E] mb-6">
-        Get practical AI workflows, build tutorials, and operator insights delivered to your inbox.
-        No fluff, no theory — just what works.
+        Monthly notes from what we're building — real AI workflows, automation wins, and operator insights.
+        No fluff, no theory, no pitch content. One email a month.
       </p>
-      <form class="flex flex-col sm:flex-row gap-3">
+      <form id="blog-newsletter-form" class="flex flex-col sm:flex-row gap-3">
         <input
           type="email"
+          id="blog-email"
+          name="email"
           placeholder="your@email.com"
+          required
           class="flex-1 px-4 py-2.5 bg-[#0D1117] border border-[#30363D] rounded-lg text-[#E6EDF3] placeholder-[#8B949E] focus:outline-none focus:border-[#58A6FF] font-mono text-sm"
         />
         <button
+          id="blog-submit"
           type="submit"
           class="px-6 py-2.5 bg-[#58A6FF] text-[#0D1117] font-semibold rounded-lg hover:bg-[#79BAFF] transition-colors whitespace-nowrap"
         >
           Subscribe
         </button>
       </form>
+      <p id="blog-success" class="hidden mt-3 text-sm text-green-400">You're in. First issue lands next month.</p>
+      <p id="blog-error" class="hidden mt-3 text-sm text-red-400">Something went wrong — try again.</p>
     </div>
 
     <!-- Back to blog -->
@@ -87,3 +93,41 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
     </div>
   </article>
 </BaseLayout>
+
+<script>
+  const form = document.getElementById('blog-newsletter-form') as HTMLFormElement | null;
+  const emailInput = document.getElementById('blog-email') as HTMLInputElement | null;
+  const submitBtn = document.getElementById('blog-submit') as HTMLButtonElement | null;
+  const successMsg = document.getElementById('blog-success');
+  const errorMsg = document.getElementById('blog-error');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (submitBtn) submitBtn.disabled = true;
+    if (submitBtn) submitBtn.textContent = 'Subscribing…';
+    successMsg?.classList.add('hidden');
+    errorMsg?.classList.add('hidden');
+
+    try {
+      await fetch(
+        'https://services.leadconnectorhq.com/hooks/fKNgkg4PDWsOfFTAOWYE/webhook-trigger/cd9f3d43-0726-4640-b166-56eea3dfc46a',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: emailInput?.value,
+            source: 'blog-newsletter',
+            tags: 'newsletter-subscriber',
+          }),
+        }
+      );
+      form.reset();
+      successMsg?.classList.remove('hidden');
+    } catch {
+      errorMsg?.classList.remove('hidden');
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+      if (submitBtn) submitBtn.textContent = 'Subscribe';
+    }
+  });
+</script>
