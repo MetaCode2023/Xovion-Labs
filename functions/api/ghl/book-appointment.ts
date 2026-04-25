@@ -9,6 +9,7 @@
 interface Env {
   GHL_API_KEY: string;
   GHL_LOCATION_ID: string;
+  GHL_CALENDAR_ID: string;
 }
 
 interface GhlAppointmentResponse {
@@ -17,7 +18,6 @@ interface GhlAppointmentResponse {
 }
 
 const GHL_BASE = 'https://services.leadconnectorhq.com';
-const CALENDAR_ID = 'KFQrCuKbluXkcVKEgOXH';
 
 function ghlHeaders(apiKey: string): Record<string, string> {
   return {
@@ -59,6 +59,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
 
   if (!env.GHL_API_KEY) return json({ error: 'GHL_API_KEY not configured' }, 500);
   if (!env.GHL_LOCATION_ID) return json({ error: 'GHL_LOCATION_ID not configured' }, 500);
+  if (!env.GHL_CALENDAR_ID) return json({ error: 'GHL_CALENDAR_ID not configured' }, 500);
 
   let body: {
     contactId?: string;
@@ -114,7 +115,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     method: 'POST',
     headers: ghlHeaders(env.GHL_API_KEY),
     body: JSON.stringify({
-      calendarId: CALENDAR_ID,
+      calendarId: env.GHL_CALENDAR_ID,
       locationId: env.GHL_LOCATION_ID,
       contactId,
       startTime: start.toISOString(),
