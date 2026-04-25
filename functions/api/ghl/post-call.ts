@@ -1,6 +1,7 @@
 // POST /api/ghl/post-call
 // Vapi end-of-call-report webhook → enrich GHL contact with full call data
 //
+// Returns 200 immediately so Vapi doesn't time out; GHL work runs via waitUntil.
 // Per call:
 //   1. Look up (or create) GHL contact by caller phone number
 //   2. Add a note with transcript, summary, duration, and outcome
@@ -84,7 +85,6 @@ function nextBusinessDay(): string {
 }
 
 // Find an existing GHL contact by phone number, or create one.
-// Returns { id, name } of the contact.
 async function upsertContact(
   env: Env,
   phone: string,
@@ -104,7 +104,6 @@ async function upsertContact(
     }
   }
 
-  // No existing contact — create one
   const parts = callerName.trim().split(/\s+/);
   const createRes = await fetch(`${GHL_BASE}/contacts/`, {
     method: 'POST',
@@ -129,7 +128,6 @@ async function upsertContact(
   return { id, name };
 }
 
-// POST a note to the contact
 async function addNote(env: Env, contactId: string, body: string): Promise<void> {
   await fetch(`${GHL_BASE}/contacts/${contactId}/notes`, {
     method: 'POST',
@@ -138,7 +136,6 @@ async function addNote(env: Env, contactId: string, body: string): Promise<void>
   }).catch(() => undefined);
 }
 
-// PUT custom fields onto the contact
 async function updateCustomFields(
   env: Env,
   contactId: string,
@@ -151,7 +148,6 @@ async function updateCustomFields(
   }).catch(() => undefined);
 }
 
-// POST tags to the contact (GHL v2 tags endpoint is additive)
 async function addTags(env: Env, contactId: string, tags: string[]): Promise<void> {
   if (tags.length === 0) return;
   await fetch(`${GHL_BASE}/contacts/${contactId}/tags`, {
@@ -161,7 +157,6 @@ async function addTags(env: Env, contactId: string, tags: string[]): Promise<voi
   }).catch(() => undefined);
 }
 
-// POST a callback task assigned to Austin
 async function createCallbackTask(
   env: Env,
   contactId: string,
@@ -181,25 +176,10 @@ async function createCallbackTask(
   }).catch(() => undefined);
 }
 
-export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
-  const { request, env } = context;
-
-  if (!env.GHL_API_KEY) return json({ error: 'GHL_API_KEY not configured' }, 500);
-  if (!env.GHL_LOCATION_ID) return json({ error: 'GHL_LOCATION_ID not configured' }, 500);
-
-  let payload: VapiPayload = {};
-  try {
-    payload = (await request.json()) as VapiPayload;
-  } catch {
-    return json({ error: 'Invalid JSON body' }, 400);
-  }
-
+async function processCallData(env: Env, payload: VapiPayload): Promise<void> {
   const msg = payload.message;
-  if (msg?.type !== 'end-of-call-report') {
-    return json({ ok: true, skipped: true, reason: 'Not an end-of-call-report event' });
-  }
+  if (!msg) return;
 
-  // ── Extract call data ───────────────────────────────────────────────
   const phone = msg.customer?.number;
   const callerName = msg.customer?.name ?? 'Unknown Caller';
   const durationSec = msg.durationSeconds ?? 0;
@@ -210,15 +190,11 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   const successEval = msg.analysis?.successEvaluation ?? '';
   const callId = msg.call?.id ?? 'unknown';
 
-  if (!phone) {
-    return json({ ok: true, contactId: null, reason: 'No phone number in webhook payload' });
-  }
+  if (!phone) return;
 
   // ── 1. Look up / create contact ─────────────────────────────────────
   const contact = await upsertContact(env, phone, callerName).catch(() => null);
-  if (!contact) {
-    return json({ ok: false, error: 'Could not find or create GHL contact' }, 502);
-  }
+  if (!contact) return;
   const { id: contactId, name: contactName } = contact;
 
   // ── 2. Add note ─────────────────────────────────────────────────────
@@ -245,36 +221,45 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     { key: 'call_outcome',       field_value: endedReason },
   ]);
 
-  // ── 4 & 5. Tag based on call outcome ───────────────────────────────
+  // ── 4. Tag based on call outcome ────────────────────────────────────
   const tagsToAdd: string[] = [];
-
-  if (durationSec < 30) {
-    tagsToAdd.push('missed-call');
-  }
-
+  if (durationSec < 30) tagsToAdd.push('missed-call');
   const summaryLower = summary.toLowerCase();
-  if (/booked|appointment/.test(summaryLower)) {
-    tagsToAdd.push('call-booked');
-  }
+  if (/booked|appointment/.test(summaryLower)) tagsToAdd.push('call-booked');
+  await addTags(env, contactId, tagsToAdd);
 
-  if (tagsToAdd.length > 0) {
-    await addTags(env, contactId, tagsToAdd);
-  }
-
-  // ── 6. Create callback task if follow-up needed ─────────────────────
-  const needsCallback = /callback|call back|reach out/.test(summaryLower);
-  if (needsCallback) {
+  // ── 5. Create callback task if follow-up needed ─────────────────────
+  if (/callback|call back|reach out/.test(summaryLower)) {
     await createCallbackTask(env, contactId, contactName, summary);
   }
+}
 
-  return json({
-    ok: true,
-    contactId,
-    callId,
-    durationSeconds: durationSec,
-    tagsAdded: tagsToAdd,
-    taskCreated: needsCallback,
-  });
+export async function onRequestPost(context: {
+  request: Request;
+  env: Env;
+  waitUntil: (promise: Promise<unknown>) => void;
+}): Promise<Response> {
+  const { request, env } = context;
+
+  if (!env.GHL_API_KEY) return json({ error: 'GHL_API_KEY not configured' }, 500);
+  if (!env.GHL_LOCATION_ID) return json({ error: 'GHL_LOCATION_ID not configured' }, 500);
+
+  let payload: VapiPayload = {};
+  try {
+    payload = (await request.json()) as VapiPayload;
+  } catch {
+    return json({ error: 'Invalid JSON body' }, 400);
+  }
+
+  const msg = payload.message;
+  if (msg?.type !== 'end-of-call-report') {
+    return json({ result: 'Call data logged successfully' });
+  }
+
+  // Respond immediately so Vapi doesn't time out; all GHL writes run in background
+  context.waitUntil(processCallData(env, payload));
+
+  return json({ result: 'Call data logged successfully' });
 }
 
 export function onRequestOptions(): Response {

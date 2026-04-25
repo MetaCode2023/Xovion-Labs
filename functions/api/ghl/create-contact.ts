@@ -1,8 +1,8 @@
 // POST /api/ghl/create-contact
-// Vapi tool → upsert a GHL contact, return contactId
+// Vapi API Request tool → upsert a GHL contact, return contactId
 //
 // Body:  { firstName, lastName?, email?, phone?, companyName?, source?, tags?, notes? }
-// Response: { contactId, contact, upserted: 'created'|'updated' }
+// Response: { result: "Contact created/updated. Contact ID: {id}" }
 //
 // Upsert logic: Vapi fires two CreateContact calls per session (name first,
 // phone second). We use message.call.id stored in the GHL custom field
@@ -47,14 +47,19 @@ function json(data: unknown, status = 200): Response {
   });
 }
 
+function vapiResult(message: string): Response {
+  return new Response(JSON.stringify({ result: message }), {
+    headers: { 'Content-Type': 'application/json', ...cors() },
+  });
+}
+
 interface ParsedRequest {
   body: Record<string, unknown>;
-  toolCallId?: string;
   callId?: string;
 }
 
-// Vapi wraps tool arguments inside a webhook envelope and requires the toolCallId
-// echoed back in the response. Also extracts message.call.id for upsert keying.
+// Vapi API Request tools send arguments directly in the body. Also extract
+// message.call.id when present (function-tool envelope) for upsert keying.
 async function extractBody(request: Request): Promise<ParsedRequest> {
   const raw = await request.json() as {
     message?: {
@@ -68,25 +73,14 @@ async function extractBody(request: Request): Promise<ParsedRequest> {
 
   if (raw?.message?.type === 'tool-calls') {
     const toolCall = raw.message.toolWithToolCallList?.[0]?.toolCall;
-    const toolCallId = toolCall?.id;
     const callId = raw.message.call?.id;
     const args = toolCall?.function?.arguments;
     const body = (typeof args === 'string' ? JSON.parse(args) : args) as Record<string, unknown> ?? {};
-    return { body, toolCallId, callId };
+    return { body, callId };
   }
 
+  // API Request tool: arguments are in the top-level body
   return { body: raw as Record<string, unknown> };
-}
-
-function vapiResponse(toolCallId: string | undefined, result: unknown): Response {
-  if (toolCallId) {
-    return new Response(JSON.stringify({ results: [{ toolCallId, result }] }), {
-      headers: { 'Content-Type': 'application/json', ...cors() },
-    });
-  }
-  return new Response(JSON.stringify(result), {
-    headers: { 'Content-Type': 'application/json', ...cors() },
-  });
 }
 
 // Search GHL contacts by the stored vapi_call_id custom field value.
@@ -125,10 +119,9 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     tags?: string[];
     notes?: string;
   } = {};
-  let toolCallId: string | undefined;
   let callId: string | undefined;
   try {
-    ({ body, toolCallId, callId } = await extractBody(request) as { body: typeof body; toolCallId?: string; callId?: string });
+    ({ body, callId } = await extractBody(request) as { body: typeof body; callId?: string });
   } catch {
     return json({ error: 'Invalid JSON body' }, 400);
   }
@@ -158,8 +151,6 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   let upserted: 'created' | 'updated';
 
   if (existingContactId) {
-    // Update the existing contact — omit locationId and tags from PUT body
-    // (GHL v2 PUT does not accept locationId; tags are additive via POST elsewhere)
     const updatePayload: Record<string, unknown> = { firstName, lastName: lastName ?? '' };
     if (email) updatePayload.email = email;
     if (phone) updatePayload.phone = phone;
@@ -172,7 +163,6 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     });
     upserted = 'updated';
   } else {
-    // Create a new contact and stamp it with the vapi_call_id custom field
     if (callId) {
       payload.customFields = [{ key: 'vapi_call_id', field_value: callId }];
     }
@@ -203,7 +193,8 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     }).catch(() => { /* non-fatal */ });
   }
 
-  return vapiResponse(toolCallId, { contactId, contact: data.contact, upserted });
+  const verb = upserted === 'created' ? 'created' : 'updated';
+  return vapiResult(`Contact ${verb}. Contact ID: ${contactId}`);
 }
 
 export function onRequestOptions(): Response {
