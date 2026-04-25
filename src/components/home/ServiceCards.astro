@@ -34,21 +34,79 @@ const colorMap: Record<string, { border: string; bg: string; text: string; glow:
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
       {services.map((service, i) => {
         const colors = colorMap[service.color];
-        const delays = ['animate-delay-100', 'animate-delay-200', 'animate-delay-300', 'animate-delay-400'];
+        const delays = ['animate-delay-100', 'animate-delay-200', 'animate-delay-300', 'animate-delay-400', 'animate-delay-500'];
+        const isFeatured = i === services.length - 1;
+
+        if (isFeatured) {
+          return (
+            <a
+              href={`/services#${service.id}`}
+              class:list={[
+                'group md:col-span-2 relative overflow-hidden rounded-xl border border-xv-accent-cyan/20 bg-xv-bg-secondary',
+                'p-7 sm:p-9 transition-all duration-300 hover:border-xv-accent-cyan/40',
+                'hover:shadow-2xl hover:shadow-xv-accent-cyan/10',
+                'opacity-0 animate-fade-in-up',
+                delays[i],
+              ]}
+            >
+              {/* Subtle cyan glow in corner */}
+              <div class="pointer-events-none absolute -top-16 -right-16 w-64 h-64 rounded-full bg-xv-accent-cyan/5 blur-3xl"></div>
+
+              <div class="relative flex flex-col sm:flex-row sm:items-start gap-8">
+                {/* Left: icon + badge */}
+                <div class="shrink-0">
+                  <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-4 bg-xv-accent-cyan/10 border border-xv-accent-cyan/25">
+                    <svg class="w-7 h-7 text-xv-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <Fragment set:html={iconMap[service.icon]} />
+                    </svg>
+                  </div>
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-xv-accent-cyan/10 border border-xv-accent-cyan/20 text-xv-accent-cyan">
+                    <span class="w-1.5 h-1.5 rounded-full bg-xv-accent-cyan animate-pulse"></span>
+                    Live Now
+                  </span>
+                </div>
+
+                {/* Right: content */}
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-display font-bold text-2xl text-xv-text-primary mb-2 group-hover:text-white transition-colors">
+                    {service.shortTitle}
+                  </h3>
+                  <p class="text-base text-xv-text-secondary leading-relaxed mb-5 max-w-2xl">
+                    {service.tagline}
+                  </p>
+                  <div class="flex flex-col gap-2">
+                    {service.proofPoints.map((point) => (
+                      <div class="flex items-start gap-2 text-sm font-mono text-xv-text-muted">
+                        <span class="w-1.5 h-1.5 rounded-full bg-xv-accent-cyan mt-1.5 shrink-0"></span>
+                        {point}
+                      </div>
+                    ))}
+                  </div>
+                  <div class="mt-6 flex items-center gap-1.5 text-sm font-semibold text-xv-accent-cyan opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    Hear it for yourself
+                    <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </a>
+          );
+        }
+
         return (
           <a
             href={`/services#${service.id}`}
             class:list={[
-              'group glass-card p-6 sm:p-7 rounded-xl transition-all duration-300 hover:border-xv-accent-blue/30',
-              'hover:-translate-y-1 hover:shadow-xl',
-              colors.glow,
+              'group glass-card p-6 sm:p-7 rounded-xl transition-all duration-300 hover:border-xv-accent-cyan/25',
+              'hover:-translate-y-1 hover:shadow-xl hover:shadow-xv-accent-cyan/5',
               'opacity-0 animate-fade-in-up',
               delays[i],
             ]}
           >
             {/* Icon */}
-            <div class:list={['w-11 h-11 rounded-lg flex items-center justify-center mb-5', colors.bg, colors.border, 'border']}>
-              <svg class:list={['w-5 h-5', colors.text]} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-11 h-11 rounded-lg flex items-center justify-center mb-5 bg-xv-accent-cyan/8 border border-xv-accent-cyan/15">
+              <svg class="w-5 h-5 text-xv-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <Fragment set:html={iconMap[service.icon]} />
               </svg>
             </div>
@@ -62,13 +120,13 @@ const colorMap: Record<string, { border: string; bg: string; text: string; glow:
             </p>
 
             {/* Proof point */}
-            <div class="flex items-center gap-2 text-xs font-mono text-xv-text-muted">
-              <span class:list={['w-1 h-1 rounded-full', colors.text.replace('text-', 'bg-')]}></span>
+            <div class="flex items-start gap-2 text-xs font-mono text-xv-text-muted">
+              <span class="w-1 h-1 rounded-full bg-xv-accent-cyan mt-1.5 shrink-0"></span>
               {service.proofPoints[0]}
             </div>
 
             {/* Arrow */}
-            <div class:list={['mt-5 flex items-center gap-1.5 text-sm font-medium', colors.text, 'opacity-0 group-hover:opacity-100 transition-opacity duration-300']}>
+            <div class="mt-5 flex items-center gap-1.5 text-sm font-medium text-xv-accent-cyan opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Learn more
               <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
