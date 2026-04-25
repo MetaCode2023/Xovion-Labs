@@ -1,19 +1,15 @@
 // POST /api/ghl/check-calendar
 // Vapi tool → fetch free slots from GHL calendar
 //
-// Body:  { startDate, endDate, timezone? }
-//   startDate / endDate: ISO string or epoch ms
-//   timezone: IANA string (default: America/New_York)
+// Body:  { startDate?, endDate?, timezone? }
+//   startDate / endDate: ISO string or epoch ms (defaults to today + 7 days)
+//   timezone: IANA string (default: America/Chicago)
 //
-// Response: { slots: [{ date, time, startTime }] }
+// Response: { result: JSON.stringify({ slots: [{ date, time, startTime }] }) }
 
 interface Env {
   GHL_API_KEY: string;
   GHL_LOCATION_ID: string;
-}
-
-interface GhlFreeSlotsResponse {
-  _dates_?: Record<string, { slots: string[] }>;
 }
 
 const GHL_BASE = 'https://services.leadconnectorhq.com';
@@ -48,9 +44,8 @@ function toEpochMs(value: string | number): number {
   return Number.isFinite(n) ? n : new Date(value).getTime();
 }
 
-// Vapi sends tool arguments nested inside a webhook envelope.
-// This unwraps them so the rest of the handler stays the same for both
-// direct POST tests and live Vapi tool-call requests.
+// Vapi wraps tool arguments inside a webhook envelope; unwrap them.
+// Falls back to the raw body so direct curl/PowerShell tests still work.
 async function extractBody(request: Request): Promise<Record<string, unknown>> {
   const raw = await request.json() as {
     message?: {
@@ -81,8 +76,18 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     return json({ error: 'Invalid JSON body' }, 400);
   }
 
-  const { startDate, endDate, timezone = 'America/New_York' } = body;
-  if (!startDate || !endDate) return json({ error: 'startDate and endDate are required' }, 400);
+  // Auto-compute a 7-day window if Vapi doesn't send dates
+  const timezone = body.timezone ?? 'America/Chicago';
+  let startDate = body.startDate;
+  let endDate = body.endDate;
+
+  if (!startDate || !endDate) {
+    const now = new Date();
+    const later = new Date();
+    later.setDate(now.getDate() + 7);
+    startDate = now.toISOString().split('T')[0];
+    endDate = later.toISOString().split('T')[0];
+  }
 
   const url = new URL(`${GHL_BASE}/calendars/${CALENDAR_ID}/free-slots`);
   url.searchParams.set('startDate', String(toEpochMs(startDate)));
@@ -99,18 +104,24 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     return json({ error: `GHL API error ${ghlRes.status}`, detail }, 502);
   }
 
-  const data = (await ghlRes.json()) as GhlFreeSlotsResponse;
+  // GHL returns top-level date keys: { "2026-04-27": { slots: ["2026-04-27T10:00:00..."] } }
+  const data = await ghlRes.json() as Record<string, { slots: string[] }>;
 
   const slots: { date: string; time: string; startTime: string }[] = [];
-  if (data._dates_) {
-    for (const [date, { slots: times }] of Object.entries(data._dates_)) {
-      for (const time of times) {
-        slots.push({ date, time, startTime: `${date}T${time}` });
-      }
+  for (const [date, value] of Object.entries(data)) {
+    if (!value?.slots) continue;
+    for (const startTime of value.slots) {
+      const time = new Date(startTime).toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        timeZone: timezone,
+      });
+      slots.push({ date, time, startTime });
     }
   }
 
-  return json({ result: JSON.stringify({ slots }) });
+  // Cap at 6 slots so Vapi's AI doesn't get overwhelmed reading options
+  return json({ result: JSON.stringify({ slots: slots.slice(0, 6) }) });
 }
 
 export function onRequestOptions(): Response {
