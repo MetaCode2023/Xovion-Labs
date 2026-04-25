@@ -1,3 +1,12 @@
+// POST /api/ghl/check-calendar
+// Vapi tool → fetch free slots from GHL calendar
+//
+// Body:  { startDate?, endDate?, timezone? }
+//   startDate / endDate: ISO string or epoch ms (defaults to today + 7 days)
+//   timezone: IANA string (default: America/Chicago)
+//
+// Response: { result: JSON.stringify({ slots: [{ date, time, startTime }] }) }
+
 interface Env {
   GHL_API_KEY: string;
   GHL_LOCATION_ID: string;
@@ -35,9 +44,8 @@ function toEpochMs(value: string | number): number {
   return Number.isFinite(n) ? n : new Date(value).getTime();
 }
 
-// Vapi sends tool arguments nested inside a webhook envelope.
-// This unwraps them so the rest of the handler stays the same for both
-// direct POST tests and live Vapi tool-call requests.
+// Vapi wraps tool arguments inside a webhook envelope; unwrap them.
+// Falls back to the raw body so direct curl/PowerShell tests still work.
 async function extractBody(request: Request): Promise<Record<string, unknown>> {
   const raw = await request.json() as {
     message?: {
@@ -58,6 +66,7 @@ async function extractBody(request: Request): Promise<Record<string, unknown>> {
 
 export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
   const { request, env } = context;
+
   if (!env.GHL_API_KEY) return json({ error: 'GHL_API_KEY not configured' }, 500);
 
   let body: { startDate?: string | number; endDate?: string | number; timezone?: string } = {};
@@ -67,7 +76,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     return json({ error: 'Invalid JSON body' }, 400);
   }
 
-  // Auto-compute dates if not provided
+  // Auto-compute a 7-day window if Vapi doesn't send dates
   const timezone = body.timezone ?? 'America/Chicago';
   let startDate = body.startDate;
   let endDate = body.endDate;
@@ -95,7 +104,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     return json({ error: `GHL API error ${ghlRes.status}`, detail }, 502);
   }
 
-  // GHL returns top-level date keys: { "2026-04-27": { slots: [...] } }
+  // GHL returns top-level date keys: { "2026-04-27": { slots: ["2026-04-27T10:00:00..."] } }
   const data = await ghlRes.json() as Record<string, { slots: string[] }>;
 
   const slots: { date: string; time: string; startTime: string }[] = [];
@@ -111,8 +120,8 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     }
   }
 
-  // Return max 6 slots so Vapi doesn't get overwhelmed
-  return json({ slots: slots.slice(0, 6) });
+  // Cap at 6 slots so Vapi's AI doesn't get overwhelmed reading options
+  return json({ result: JSON.stringify({ slots: slots.slice(0, 6) }) });
 }
 
 export function onRequestOptions(): Response {
