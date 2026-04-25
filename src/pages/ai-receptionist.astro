@@ -1,0 +1,379 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="AI Phone Receptionist"
+  description="Call +1 (605) 201-1655 right now. A live AI answers, qualifies you, checks the calendar, books a real appointment, and texts you a confirmation — all before the call ends. This is the product."
+>
+
+  <!-- ─────────────────────────────────────────────────────────────────
+       HERO — Phone number front and center
+  ───────────────────────────────────────────────────────────────────── -->
+  <section class="relative overflow-hidden section-padding border-b border-xv-border/30">
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-xv-accent-blue/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="section-container relative z-10">
+      <div class="max-w-3xl">
+        <!-- Live badge -->
+        <div class="mb-6 opacity-0 animate-fade-in">
+          <span class="inline-flex items-center gap-2 bg-xv-bg-secondary border border-xv-border rounded-full px-3 py-1">
+            <span class="w-2 h-2 rounded-full bg-xv-accent-green animate-pulse shrink-0"></span>
+            <span class="text-xs font-mono text-xv-text-muted tracking-wider">Live — Running Right Now</span>
+          </span>
+        </div>
+
+        <!-- Primary headline -->
+        <h1 class="opacity-0 animate-fade-in-up animate-delay-100 font-display font-bold tracking-tight leading-tight">
+          <span class="text-4xl sm:text-5xl lg:text-6xl text-xv-text-primary">Call This Number</span>
+          <span class="block text-4xl sm:text-5xl lg:text-6xl text-xv-text-primary mt-1">Right Now.</span>
+        </h1>
+
+        <!-- Phone number — massive, clickable -->
+        <a
+          href="tel:+16052011655"
+          class="opacity-0 animate-fade-in-up animate-delay-200 block mt-6 font-display font-bold tracking-tight gradient-text"
+          style="font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1; text-decoration: none;"
+        >
+          +1 (605) 201-1655
+        </a>
+
+        <!-- Subtext -->
+        <p class="opacity-0 animate-fade-in-up animate-delay-300 mt-6 text-lg sm:text-xl text-xv-text-secondary max-w-2xl leading-relaxed">
+          You're about to talk to an AI that books real appointments, creates real contacts, and sends real confirmation texts. This is not a demo. This is the product.
+        </p>
+
+        <!-- Secondary note -->
+        <p class="opacity-0 animate-fade-in-up animate-delay-400 mt-3 text-sm font-mono text-xv-text-muted">
+          Monday–Sunday · 24/7 · Answers in under 2 seconds
+        </p>
+
+        <!-- CTAs -->
+        <div class="opacity-0 animate-fade-in-up animate-delay-500 mt-8 flex flex-wrap gap-3 items-center">
+          <a href="tel:+16052011655" class="btn-primary text-base">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 6.75z"/>
+            </svg>
+            Call Now
+          </a>
+          <a href="/contact" class="btn-secondary text-base">
+            Talk to Austin Instead
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────────────
+       ANIMATED CHECKLIST — fires in sequence via CSS delays
+  ───────────────────────────────────────────────────────────────────── -->
+  <section class="section-padding border-b border-xv-border/30 bg-xv-bg-secondary/20">
+    <div class="section-container">
+      <div class="max-w-2xl mx-auto text-center mb-12">
+        <span class="tag-blue mb-4 block w-fit mx-auto">What happens on every call</span>
+        <h2 class="font-display font-bold text-3xl sm:text-4xl text-xv-text-primary tracking-tight">
+          In under 4 minutes, this is what you get:
+        </h2>
+      </div>
+
+      <div class="max-w-lg mx-auto space-y-4">
+        {[
+          { label: 'Call answered in under 2 seconds', delay: '0.3s' },
+          { label: 'Your contact created in CRM', delay: '0.9s' },
+          { label: 'Live calendar checked in real time', delay: '1.5s' },
+          { label: 'Appointment booked', delay: '2.1s' },
+          { label: 'Confirmation text sent to your phone', delay: '2.7s' },
+        ].map(({ label, delay }) => (
+          <div
+            class="opacity-0 animate-fade-in-up flex items-center gap-4 glass-card rounded-xl p-4"
+            style={`animation-delay: ${delay}`}
+          >
+            <div class="w-8 h-8 rounded-full bg-xv-accent-green/10 border border-xv-accent-green/30 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-xv-accent-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <span class="font-display font-semibold text-xv-text-primary">{label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────────────
+       REAL TRANSCRIPT SECTION
+  ───────────────────────────────────────────────────────────────────── -->
+  <section class="section-padding border-b border-xv-border/30">
+    <div class="section-container">
+      <div class="max-w-2xl mb-12">
+        <span class="tag-blue mb-4 block w-fit">Real call. Real outcome.</span>
+        <h2 class="font-display font-bold text-3xl sm:text-4xl text-xv-text-primary tracking-tight">
+          Here's What An Actual Call<br class="hidden sm:block" /> Looks Like
+        </h2>
+        <p class="mt-3 text-xv-text-secondary text-lg">
+          This is an excerpt from a real inbound call — a plumbing business owner trying to understand how AI actually works.
+        </p>
+      </div>
+
+      <div class="max-w-2xl space-y-3">
+        <!-- Conversation bubbles -->
+        <div class="flex flex-col items-end gap-1">
+          <span class="text-xs font-mono text-xv-text-muted pr-1">Caller</span>
+          <div class="max-w-[85%] bg-xv-accent-blue/15 border border-xv-accent-blue/20 rounded-2xl rounded-tr-sm px-5 py-3 text-xv-text-primary leading-relaxed">
+            "I have a plumbing company. I waste a lot of time on admin. Give me a couple examples of simple things I could just set up."
+          </div>
+        </div>
+
+        <div class="flex flex-col items-start gap-1">
+          <span class="text-xs font-mono text-xv-text-muted pl-1">Dakota <span class="text-xv-accent-cyan">· AI Receptionist</span></span>
+          <div class="max-w-[85%] glass-card rounded-2xl rounded-tl-sm px-5 py-3 text-xv-text-primary leading-relaxed">
+            "Say you miss a call from a customer needing a pipe fixed. If your AI answers instead of voicemail, it can book the job right there, push their info into your CRM, and text you details while you work. Austin actually built this to solve the exact problem in his own dumpster rental company."
+          </div>
+        </div>
+
+        <div class="flex flex-col items-end gap-1">
+          <span class="text-xs font-mono text-xv-text-muted pr-1">Caller</span>
+          <div class="max-w-[85%] bg-xv-accent-blue/15 border border-xv-accent-blue/20 rounded-2xl rounded-tr-sm px-5 py-3 text-xv-text-primary leading-relaxed">
+            "You kinda know your stuff. I kinda like talking to you."
+          </div>
+        </div>
+
+        <!-- Outcome callout -->
+        <div class="mt-6 p-5 rounded-xl border border-xv-accent-cyan/20 bg-xv-accent-cyan/5">
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-xv-accent-cyan mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="text-sm text-xv-text-secondary leading-relaxed">
+              That call took <span class="text-xv-text-primary font-semibold">4 minutes and 30 seconds</span>. Contact created. Calendar checked. Appointment booked. Confirmation text sent. No human involved.
+            </p>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="pt-4">
+          <a href="/contact" class="btn-primary">
+            Book a Call with Austin
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────────────
+       HOW IT WORKS — visual flowchart
+  ───────────────────────────────────────────────────────────────────── -->
+  <section class="section-padding bg-xv-bg-secondary/20 border-b border-xv-border/30">
+    <div class="section-container">
+      <div class="text-center mb-12">
+        <span class="tag-blue mb-4 block w-fit mx-auto">Under the hood</span>
+        <h2 class="font-display font-bold text-3xl sm:text-4xl text-xv-text-primary tracking-tight">
+          How it works
+        </h2>
+        <p class="mt-3 text-xv-text-secondary text-lg max-w-xl mx-auto">
+          Eight steps. Zero humans. Runs from first ring to confirmed booking in under four minutes.
+        </p>
+      </div>
+
+      <!-- Flow grid -->
+      <div class="max-w-4xl mx-auto">
+        <!-- Row 1 -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+          {[
+            { step: '01', label: 'Customer Calls', icon: 'M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 6.75z' },
+            { step: '02', label: 'AI Answers < 2s', icon: 'M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z' },
+            { step: '03', label: 'Qualifies Caller', icon: 'M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z' },
+            { step: '04', label: 'Checks Calendar', icon: 'M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5' },
+          ].map(({ step, label, icon }) => (
+            <div class="glass-card rounded-xl p-4 text-center">
+              <div class="w-8 h-8 rounded-full bg-xv-accent-blue/10 border border-xv-accent-blue/20 flex items-center justify-center mx-auto mb-3">
+                <span class="text-xs font-mono font-bold text-xv-accent-blue">{step}</span>
+              </div>
+              <svg class="w-5 h-5 text-xv-accent-blue mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={icon} />
+              </svg>
+              <p class="text-xs font-display font-semibold text-xv-text-primary">{label}</p>
+            </div>
+          ))}
+        </div>
+
+        <!-- Arrow down -->
+        <div class="flex justify-center my-2">
+          <svg class="w-5 h-5 text-xv-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {[
+            { step: '05', label: 'Appointment Booked', icon: 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+            { step: '06', label: 'CRM Updated', icon: 'M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125' },
+            { step: '07', label: 'Confirmation Text', icon: 'M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 8.25h3m-3 3h3m-3 3h3' },
+            { step: '08', label: 'You Get Notified', icon: 'M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0' },
+          ].map(({ step, label, icon }) => (
+            <div class="glass-card rounded-xl p-4 text-center border-xv-accent-green/20">
+              <div class="w-8 h-8 rounded-full bg-xv-accent-green/10 border border-xv-accent-green/20 flex items-center justify-center mx-auto mb-3">
+                <span class="text-xs font-mono font-bold text-xv-accent-green">{step}</span>
+              </div>
+              <svg class="w-5 h-5 text-xv-accent-green mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={icon} />
+              </svg>
+              <p class="text-xs font-display font-semibold text-xv-text-primary">{label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────────────
+       USE CASES — Before / After cards
+  ───────────────────────────────────────────────────────────────────── -->
+  <section class="section-padding border-b border-xv-border/30">
+    <div class="section-container">
+      <div class="max-w-2xl mb-12">
+        <span class="tag-blue mb-4 block w-fit">Who it's built for</span>
+        <h2 class="font-display font-bold text-3xl sm:text-4xl text-xv-text-primary tracking-tight">
+          Before and after.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {[
+          {
+            title: 'Home Services & Trades',
+            icon: 'M11.42 15.17l-5.633-5.634a2.25 2.25 0 010-3.182l.944-.943a2.25 2.25 0 013.182 0l1.527 1.527 1.527-1.527a2.25 2.25 0 013.182 0l.944.943a2.25 2.25 0 010 3.182L11.42 15.17z',
+            before: 'Missing calls while under a sink. Playing phone tag at 9pm. Losing jobs to whoever picked up.',
+            after: 'AI answers every call, books the job, texts you the details. You find out when you come up for air.',
+          },
+          {
+            title: 'Real Estate & Property Management',
+            icon: 'M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25',
+            before: 'Tenant calls going to voicemail after hours. Leads going cold while you\'re showing a property.',
+            after: 'AI qualifies every inbound call, books showings, logs everything in AppFolio or GHL.',
+          },
+          {
+            title: 'Any Appointment-Based Business',
+            icon: 'M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5',
+            before: 'Staff spending 2 hours a day on scheduling and follow-up calls. Calendar chaos.',
+            after: 'AI handles inbound, books appointments, sends reminders. Staff focuses on the actual work.',
+          },
+        ].map(({ title, icon, before, after }) => (
+          <div class="glass-card rounded-xl overflow-hidden">
+            <div class="p-5 border-b border-xv-border/40">
+              <div class="flex items-center gap-3 mb-1">
+                <div class="w-8 h-8 rounded-lg bg-xv-accent-blue/10 border border-xv-accent-blue/20 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-xv-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={icon} />
+                  </svg>
+                </div>
+                <h3 class="font-display font-semibold text-xv-text-primary">{title}</h3>
+              </div>
+            </div>
+            <div class="p-5 space-y-4">
+              <div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-red-400/70 shrink-0"></span>
+                  <span class="text-xs font-mono text-xv-text-muted uppercase tracking-wider">Before</span>
+                </div>
+                <p class="text-sm text-xv-text-secondary leading-relaxed">{before}</p>
+              </div>
+              <div class="border-t border-xv-border/30 pt-4">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-xv-accent-green shrink-0"></span>
+                  <span class="text-xs font-mono text-xv-accent-green uppercase tracking-wider">After</span>
+                </div>
+                <p class="text-sm text-xv-text-secondary leading-relaxed">{after}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────────────
+       CONVERSATIONAL FAQ
+  ───────────────────────────────────────────────────────────────────── -->
+  <section class="section-padding bg-xv-bg-secondary/20 border-b border-xv-border/30">
+    <div class="section-container">
+      <div class="max-w-2xl mb-12">
+        <span class="tag-blue mb-4 block w-fit">FAQ</span>
+        <h2 class="font-display font-bold text-3xl sm:text-4xl text-xv-text-primary tracking-tight">
+          Questions we actually get on calls.
+        </h2>
+      </div>
+
+      <div class="max-w-2xl space-y-6">
+        {[
+          {
+            q: "What's the difference between ChatGPT and an AI agent?",
+            a: "ChatGPT talks. An AI agent does. The leap is connecting the language model to real tools — your calendar, your CRM, your dispatch system — so it can take action mid-conversation, not just generate text.",
+          },
+          {
+            q: "Which AI model is the best?",
+            a: "Depends on the job. Claude for reasoning and long documents. Gemini for web data and Google ecosystem. GPT for general business workflows. We map the right model to your specific use case — not the other way around.",
+          },
+          {
+            q: "Will it sound robotic?",
+            a: "Call +1 (605) 201-1655 and find out. That's a live AI answering right now.",
+          },
+          {
+            q: "How long does a build take?",
+            a: "3–5 days for most builds once we understand your operation. Voice AI configured, calendar connected, CRM wired, post-call automations running.",
+          },
+          {
+            q: "What happens when it can't handle something?",
+            a: "It captures the name and number and flags it for a callback. It never tries to handle what it shouldn't — that's a configuration decision we make together during the build.",
+          },
+        ].map(({ q, a }) => (
+          <div class="glass-card rounded-xl p-6">
+            <p class="font-display font-semibold text-xv-text-primary mb-2 leading-snug">{q}</p>
+            <p class="text-sm text-xv-text-secondary leading-relaxed">{a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─────────────────────────────────────────────────────────────────
+       BOTTOM CTA
+  ───────────────────────────────────────────────────────────────────── -->
+  <section class="section-padding">
+    <div class="section-container text-center max-w-2xl mx-auto">
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-xv-text-primary tracking-tight">
+        Want this for your business?
+      </h2>
+      <p class="mt-3 text-xv-text-secondary text-lg">
+        3–5 day build. Wired into your existing software. Runs 24/7.
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <a href="/contact" class="btn-primary">
+          Talk to Austin
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a href="tel:+16052011655" class="btn-secondary">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 6.75z"/>
+          </svg>
+          Call the AI First
+        </a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
