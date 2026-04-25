@@ -1,19 +1,6 @@
-// POST /api/ghl/check-calendar
-// Vapi tool → fetch free slots from GHL calendar
-//
-// Body:  { startDate, endDate, timezone? }
-//   startDate / endDate: ISO string or epoch ms
-//   timezone: IANA string (default: America/New_York)
-//
-// Response: { slots: [{ date, time, startTime }] }
-
 interface Env {
   GHL_API_KEY: string;
   GHL_LOCATION_ID: string;
-}
-
-interface GhlFreeSlotsResponse {
-  _dates_?: Record<string, { slots: string[] }>;
 }
 
 const GHL_BASE = 'https://services.leadconnectorhq.com';
@@ -50,7 +37,6 @@ function toEpochMs(value: string | number): number {
 
 export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
   const { request, env } = context;
-
   if (!env.GHL_API_KEY) return json({ error: 'GHL_API_KEY not configured' }, 500);
 
   let body: { startDate?: string | number; endDate?: string | number; timezone?: string } = {};
@@ -60,7 +46,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     return json({ error: 'Invalid JSON body' }, 400);
   }
 
-  const { startDate, endDate, timezone = 'America/New_York' } = body;
+  const { startDate, endDate, timezone = 'America/Chicago' } = body;
   if (!startDate || !endDate) return json({ error: 'startDate and endDate are required' }, 400);
 
   const url = new URL(`${GHL_BASE}/calendars/${CALENDAR_ID}/free-slots`);
@@ -73,15 +59,14 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     headers: ghlHeaders(env.GHL_API_KEY),
   });
 
-  if (!ghlRes.ok) {
-    const detail = await ghlRes.text();
-    return json({ error: `GHL API error ${ghlRes.status}`, detail }, 502);
-  }
-
+  // DEBUG: return raw GHL response to see actual structure
   const raw = await ghlRes.text();
-  
-  // DEBUG: return raw GHL response so we can see the actual structure
   return new Response(raw, {
     status: 200,
     headers: { 'Content-Type': 'application/json', ...cors() },
   });
+}
+
+export function onRequestOptions(): Response {
+  return new Response(null, { headers: cors() });
+}
