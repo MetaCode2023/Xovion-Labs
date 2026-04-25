@@ -72,6 +72,7 @@ async function extractBody(request: Request): Promise<ParsedRequest> {
     message?: {
       type?: string;
       call?: { id?: string };
+      toolCallList?: Array<{ id?: string; function?: { arguments?: unknown } }>;
       toolWithToolCallList?: Array<{
         toolCall?: { id?: string; function?: { arguments?: unknown } };
       }>;
@@ -79,7 +80,8 @@ async function extractBody(request: Request): Promise<ParsedRequest> {
   };
 
   if (raw?.message?.type === 'tool-calls') {
-    const toolCall = raw.message.toolWithToolCallList?.[0]?.toolCall;
+    // Safely check both Vapi payload structures
+    const toolCall = raw.message.toolCallList?.[0] || raw.message.toolWithToolCallList?.[0]?.toolCall;
     const toolCallId = toolCall?.id;
     const callId = raw.message.call?.id;
     const args = toolCall?.function?.arguments;
