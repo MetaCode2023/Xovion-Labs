@@ -46,8 +46,18 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     return json({ error: 'Invalid JSON body' }, 400);
   }
 
-  const { startDate, endDate, timezone = 'America/Chicago' } = body;
-  if (!startDate || !endDate) return json({ error: 'startDate and endDate are required' }, 400);
+  // Auto-compute dates if not provided
+  const timezone = body.timezone ?? 'America/Chicago';
+  let startDate = body.startDate;
+  let endDate = body.endDate;
+
+  if (!startDate || !endDate) {
+    const now = new Date();
+    const later = new Date();
+    later.setDate(now.getDate() + 7);
+    startDate = now.toISOString().split('T')[0];
+    endDate = later.toISOString().split('T')[0];
+  }
 
   const url = new URL(`${GHL_BASE}/calendars/${CALENDAR_ID}/free-slots`);
   url.searchParams.set('startDate', String(toEpochMs(startDate)));
@@ -59,12 +69,29 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     headers: ghlHeaders(env.GHL_API_KEY),
   });
 
-  // DEBUG: return raw GHL response to see actual structure
-  const raw = await ghlRes.text();
-  return new Response(raw, {
-    status: 200,
-    headers: { 'Content-Type': 'application/json', ...cors() },
-  });
+  if (!ghlRes.ok) {
+    const detail = await ghlRes.text();
+    return json({ error: `GHL API error ${ghlRes.status}`, detail }, 502);
+  }
+
+  // GHL returns top-level date keys: { "2026-04-27": { slots: [...] } }
+  const data = await ghlRes.json() as Record<string, { slots: string[] }>;
+
+  const slots: { date: string; time: string; startTime: string }[] = [];
+  for (const [date, value] of Object.entries(data)) {
+    if (!value?.slots) continue;
+    for (const startTime of value.slots) {
+      const time = new Date(startTime).toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        timeZone: timezone,
+      });
+      slots.push({ date, time, startTime });
+    }
+  }
+
+  // Return max 6 slots so Vapi doesn't get overwhelmed
+  return json({ slots: slots.slice(0, 6) });
 }
 
 export function onRequestOptions(): Response {
