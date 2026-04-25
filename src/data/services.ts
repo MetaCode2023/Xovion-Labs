@@ -5,7 +5,7 @@ export interface Service {
   tagline: string;
   description: string;
   icon: string;
-  color: 'blue' | 'cyan' | 'green' | 'purple'; // all resolve to blue in UI
+  color: 'blue' | 'cyan' | 'green' | 'purple';
   features: string[];
   proofPoints: string[];
   idealFor: string[];
@@ -112,6 +112,31 @@ export const services: Service[] = [
       'Operators tired of paying for AI tools that their team doesn\'t actually use.',
       'Business owners who know AI is the future but refuse to hire a theoretical \'consultant.\'',
       'Founders bleeding cash on manual tasks who need a gritty, actionable plan today.',
+    ],
+  },
+  {
+    id: 'ai-receptionist',
+    title: 'AI Phone Receptionist',
+    shortTitle: 'AI Receptionist',
+    tagline: 'Every call answered. Every lead captured. Every job booked. Runs while you work.',
+    description: 'A real AI receptionist — not a phone tree, not a voicemail upgrade — that picks up every inbound call, qualifies the caller, checks your live calendar, and books the appointment before the call ends. Wired directly into your CRM and follow-up system. Running 24/7. We built and stress-tested this on our own dumpster rental company before offering it to anyone else.',
+    icon: 'phone',
+    color: 'cyan',
+    features: [
+      'Answers in under 2 seconds, 24/7 — nights, weekends, lunch breaks included',
+      'Creates a contact record in your CRM mid-call with name, number, and call intent',
+      'Checks your live calendar and books real appointments — not "we\'ll confirm via email"',
+      'Sends a confirmation text to the caller before the call ends',
+      'Handles objections, qualifies leads, and explains your services in plain language',
+    ],
+    proofPoints: [
+      'Built and running live on Dump Dynasty (our own dumpster rental company) — not a demo environment',
+      'Running live on Xovion Labs right now — call +1 (605) 201-1655 to experience it yourself',
+    ],
+    idealFor: [
+      'Service businesses and home services trades where a missed call is a missed job',
+      'Real estate and property management operations handling after-hours inbound',
+      'Any appointment-based business where staff spend hours a day on scheduling and follow-up',
     ],
   },
 ];

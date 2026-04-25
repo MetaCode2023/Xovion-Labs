@@ -101,6 +101,34 @@ But if your business has any of the following going on, it's worth thinking abou
 
 ---
 
+## Hear It In Action
+
+Don't take our word for it. Call the number and find out.
+
+**+1 (605) 201-1655**
+
+That's a live AI receptionist running on Xovion Labs right now. It answers in under 2 seconds, qualifies the caller, checks a real calendar, and books a real appointment — before the call ends.
+
+Here's an excerpt from a real inbound call — a plumbing business owner who wanted to understand how it all works:
+
+---
+
+**Caller:** "I have a plumbing company. I waste a lot of time on admin. Give me a couple examples of simple things I could just set up."
+
+**Dakota (AI):** "Say you miss a call from a customer needing a pipe fixed. If your AI answers instead of voicemail, it can book the job right there, push their info into your CRM, and text you details while you work. Austin actually built this to solve the exact problem in his own dumpster rental company."
+
+**Caller:** "You kinda know your stuff. I kinda like talking to you."
+
+---
+
+> **That call took 4 minutes and 30 seconds.** Contact created. Calendar checked. Appointment booked. Confirmation text sent.
+
+That outcome — lead qualified, slot filled, CRM updated, confirmation sent — happened without a single human involved. The caller walked away with a booked appointment. We walked away with a new contact in our pipeline.
+
+[Call the AI now →](tel:+16052011655) or [book a call with Austin →](/contact) to see how this gets built for your operation.
+
+---
+
 ## How We Build These
 
 We use purpose-built voice AI platforms — tools like [Vapi](https://vapi.ai) and [Bland AI](https://bland.ai) that are purpose-built for business phone automation — wired directly into your existing calendar and CRM. Not generic scripts. We train the AI on your actual business: your services, your pricing, your FAQs, how you want specific situations handled.
