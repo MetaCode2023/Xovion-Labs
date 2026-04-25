@@ -78,20 +78,10 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     return json({ error: `GHL API error ${ghlRes.status}`, detail }, 502);
   }
 
-  const data = (await ghlRes.json()) as GhlFreeSlotsResponse;
-
-  const slots: { date: string; time: string; startTime: string }[] = [];
-  if (data._dates_) {
-    for (const [date, { slots: times }] of Object.entries(data._dates_)) {
-      for (const time of times) {
-        slots.push({ date, time, startTime: `${date}T${time}` });
-      }
-    }
-  }
-
-  return json({ slots });
-}
-
-export function onRequestOptions(): Response {
-  return new Response(null, { headers: cors() });
-}
+  const raw = await ghlRes.text();
+  
+  // DEBUG: return raw GHL response so we can see the actual structure
+  return new Response(raw, {
+    status: 200,
+    headers: { 'Content-Type': 'application/json', ...cors() },
+  });
