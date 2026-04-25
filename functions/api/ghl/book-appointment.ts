@@ -42,6 +42,26 @@ function json(data: unknown, status = 200): Response {
   });
 }
 
+// Vapi sends tool arguments nested inside a webhook envelope.
+// This unwraps them so the handler works for both direct tests and live Vapi calls.
+async function extractBody(request: Request): Promise<Record<string, unknown>> {
+  const raw = await request.json() as {
+    message?: {
+      type?: string;
+      toolWithToolCallList?: Array<{
+        toolCall?: { function?: { arguments?: unknown } };
+      }>;
+    };
+  };
+
+  if (raw?.message?.type === 'tool-calls') {
+    const args = raw.message.toolWithToolCallList?.[0]?.toolCall?.function?.arguments;
+    return (typeof args === 'string' ? JSON.parse(args) : args) as Record<string, unknown> ?? {};
+  }
+
+  return raw as Record<string, unknown>;
+}
+
 export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
   const { request, env } = context;
 
@@ -58,7 +78,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     address?: string;
   } = {};
   try {
-    body = await request.json();
+    body = await extractBody(request) as typeof body;
   } catch {
     return json({ error: 'Invalid JSON body' }, 400);
   }
