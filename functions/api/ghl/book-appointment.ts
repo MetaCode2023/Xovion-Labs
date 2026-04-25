@@ -42,8 +42,14 @@ function json(data: unknown, status = 200): Response {
   });
 }
 
-function vapiResult(message: string): Response {
-  return new Response(JSON.stringify({ result: message }), {
+// Handles both Vapi tool types:
+// - Server URL custom tools: wraps in { results: [{ toolCallId, result }] }
+// - API Request tools: returns { result }
+function vapiResult(message: string, toolCallId?: string): Response {
+  const body = toolCallId
+    ? { results: [{ toolCallId, result: message }] }
+    : { result: message };
+  return new Response(JSON.stringify(body), {
     headers: { 'Content-Type': 'application/json', ...cors() },
   });
 }
@@ -63,19 +69,22 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     appointmentStatus?: string;
     address?: string;
   } = {};
+  let toolCallId: string | undefined;
 
   try {
     const raw = await request.json() as {
       message?: {
         type?: string;
         toolWithToolCallList?: Array<{
-          toolCall?: { function?: { arguments?: unknown } };
+          toolCall?: { id?: string; function?: { arguments?: unknown } };
         }>;
       };
     } & typeof body;
 
     if (raw?.message?.type === 'tool-calls') {
-      const args = raw.message.toolWithToolCallList?.[0]?.toolCall?.function?.arguments;
+      const toolCall = raw.message.toolWithToolCallList?.[0]?.toolCall;
+      toolCallId = toolCall?.id;
+      const args = toolCall?.function?.arguments;
       body = (typeof args === 'string' ? JSON.parse(args) : args) as typeof body ?? {};
     } else {
       body = raw as typeof body;
@@ -134,7 +143,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     timeZone: timezone,
   });
 
-  return vapiResult(`Appointment booked for ${readableTime}`);
+  return vapiResult(`Appointment booked for ${readableTime}`, toolCallId);
 }
 
 export function onRequestOptions(): Response {

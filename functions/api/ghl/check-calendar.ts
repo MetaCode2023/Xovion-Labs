@@ -38,8 +38,14 @@ function json(data: unknown, status = 200): Response {
   });
 }
 
-function vapiResult(message: string): Response {
-  return new Response(JSON.stringify({ result: message }), {
+// Handles both Vapi tool types:
+// - Server URL custom tools: wraps in { results: [{ toolCallId, result }] }
+// - API Request tools: returns { result }
+function vapiResult(message: string, toolCallId?: string): Response {
+  const body = toolCallId
+    ? { results: [{ toolCallId, result: message }] }
+    : { result: message };
+  return new Response(JSON.stringify(body), {
     headers: { 'Content-Type': 'application/json', ...cors() },
   });
 }
@@ -56,18 +62,21 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   if (!env.GHL_API_KEY) return json({ error: 'GHL_API_KEY not configured' }, 500);
 
   let body: { startDate?: string | number; endDate?: string | number; timezone?: string } = {};
+  let toolCallId: string | undefined;
   try {
     const raw = await request.json() as {
       message?: {
         type?: string;
         toolWithToolCallList?: Array<{
-          toolCall?: { function?: { arguments?: unknown } };
+          toolCall?: { id?: string; function?: { arguments?: unknown } };
         }>;
       };
     } & typeof body;
 
     if (raw?.message?.type === 'tool-calls') {
-      const args = raw.message.toolWithToolCallList?.[0]?.toolCall?.function?.arguments;
+      const toolCall = raw.message.toolWithToolCallList?.[0]?.toolCall;
+      toolCallId = toolCall?.id;
+      const args = toolCall?.function?.arguments;
       body = (typeof args === 'string' ? JSON.parse(args) : args) as typeof body ?? {};
     } else {
       body = raw as typeof body;
@@ -125,10 +134,10 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   }
 
   if (labels.length === 0) {
-    return vapiResult('No available slots found in the next 7 days.');
+    return vapiResult('No available slots found in the next 7 days.', toolCallId);
   }
 
-  return vapiResult(`Available slots: ${labels.join(', ')}`);
+  return vapiResult(`Available slots: ${labels.join(', ')}`, toolCallId);
 }
 
 export function onRequestOptions(): Response {
