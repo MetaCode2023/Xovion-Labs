@@ -44,24 +44,43 @@ function toEpochMs(value: string | number): number {
   return Number.isFinite(n) ? n : new Date(value).getTime();
 }
 
-// Vapi wraps tool arguments inside a webhook envelope; unwrap them.
-// Falls back to the raw body so direct curl/PowerShell tests still work.
-async function extractBody(request: Request): Promise<Record<string, unknown>> {
+interface ParsedRequest {
+  body: Record<string, unknown>;
+  toolCallId?: string;
+}
+
+// Vapi wraps tool arguments inside a webhook envelope and requires the toolCallId
+// echoed back in the response. Unwraps both; falls back to raw body for direct tests.
+async function extractBody(request: Request): Promise<ParsedRequest> {
   const raw = await request.json() as {
     message?: {
       type?: string;
       toolWithToolCallList?: Array<{
-        toolCall?: { function?: { arguments?: unknown } };
+        toolCall?: { id?: string; function?: { arguments?: unknown } };
       }>;
     };
   };
 
   if (raw?.message?.type === 'tool-calls') {
-    const args = raw.message.toolWithToolCallList?.[0]?.toolCall?.function?.arguments;
-    return (typeof args === 'string' ? JSON.parse(args) : args) as Record<string, unknown> ?? {};
+    const toolCall = raw.message.toolWithToolCallList?.[0]?.toolCall;
+    const toolCallId = toolCall?.id;
+    const args = toolCall?.function?.arguments;
+    const body = (typeof args === 'string' ? JSON.parse(args) : args) as Record<string, unknown> ?? {};
+    return { body, toolCallId };
   }
 
-  return raw as Record<string, unknown>;
+  return { body: raw as Record<string, unknown> };
+}
+
+function vapiResponse(toolCallId: string | undefined, result: unknown): Response {
+  if (toolCallId) {
+    return new Response(JSON.stringify({ results: [{ toolCallId, result }] }), {
+      headers: { 'Content-Type': 'application/json', ...cors() },
+    });
+  }
+  return new Response(JSON.stringify(result), {
+    headers: { 'Content-Type': 'application/json', ...cors() },
+  });
 }
 
 export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
@@ -70,8 +89,9 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   if (!env.GHL_API_KEY) return json({ error: 'GHL_API_KEY not configured' }, 500);
 
   let body: { startDate?: string | number; endDate?: string | number; timezone?: string } = {};
+  let toolCallId: string | undefined;
   try {
-    body = await extractBody(request) as typeof body;
+    ({ body, toolCallId } = await extractBody(request) as { body: typeof body; toolCallId?: string });
   } catch {
     return json({ error: 'Invalid JSON body' }, 400);
   }
@@ -121,7 +141,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   }
 
   // Cap at 6 slots so Vapi's AI doesn't get overwhelmed reading options
-  return json({ result: JSON.stringify({ slots: slots.slice(0, 6) }) });
+  return vapiResponse(toolCallId, { slots: slots.slice(0, 6) });
 }
 
 export function onRequestOptions(): Response {
