@@ -1,8 +1,12 @@
 // POST /api/ghl/create-contact
-// Vapi tool → create a GHL contact, return contactId
+// Vapi tool → upsert a GHL contact, return contactId
 //
 // Body:  { firstName, lastName?, email?, phone?, companyName?, source?, tags?, notes? }
-// Response: { contactId, contact }
+// Response: { contactId, contact, upserted: 'created'|'updated' }
+//
+// Upsert logic: Vapi fires two CreateContact calls per session (name first,
+// phone second). We use message.call.id stored in the GHL custom field
+// `vapi_call_id` to detect duplicates — update if found, create if not.
 
 interface Env {
   GHL_API_KEY: string;
@@ -11,6 +15,11 @@ interface Env {
 
 interface GhlContactResponse {
   contact?: { id: string; [key: string]: unknown };
+}
+
+interface GhlSearchResponse {
+  contacts?: { id: string; [key: string]: unknown }[];
+  total?: number;
 }
 
 const GHL_BASE = 'https://services.leadconnectorhq.com';
@@ -41,14 +50,16 @@ function json(data: unknown, status = 200): Response {
 interface ParsedRequest {
   body: Record<string, unknown>;
   toolCallId?: string;
+  callId?: string;
 }
 
 // Vapi wraps tool arguments inside a webhook envelope and requires the toolCallId
-// echoed back in the response. Unwraps both; falls back to raw body for direct tests.
+// echoed back in the response. Also extracts message.call.id for upsert keying.
 async function extractBody(request: Request): Promise<ParsedRequest> {
   const raw = await request.json() as {
     message?: {
       type?: string;
+      call?: { id?: string };
       toolWithToolCallList?: Array<{
         toolCall?: { id?: string; function?: { arguments?: unknown } };
       }>;
@@ -58,9 +69,10 @@ async function extractBody(request: Request): Promise<ParsedRequest> {
   if (raw?.message?.type === 'tool-calls') {
     const toolCall = raw.message.toolWithToolCallList?.[0]?.toolCall;
     const toolCallId = toolCall?.id;
+    const callId = raw.message.call?.id;
     const args = toolCall?.function?.arguments;
     const body = (typeof args === 'string' ? JSON.parse(args) : args) as Record<string, unknown> ?? {};
-    return { body, toolCallId };
+    return { body, toolCallId, callId };
   }
 
   return { body: raw as Record<string, unknown> };
@@ -75,6 +87,26 @@ function vapiResponse(toolCallId: string | undefined, result: unknown): Response
   return new Response(JSON.stringify(result), {
     headers: { 'Content-Type': 'application/json', ...cors() },
   });
+}
+
+// Search GHL contacts by the stored vapi_call_id custom field value.
+async function findContactByCallId(env: Env, callId: string): Promise<string | null> {
+  const res = await fetch(`${GHL_BASE}/contacts/search`, {
+    method: 'POST',
+    headers: ghlHeaders(env.GHL_API_KEY),
+    body: JSON.stringify({
+      locationId: env.GHL_LOCATION_ID,
+      filters: [
+        { field: 'customField.vapi_call_id', operator: 'EQ', value: callId },
+      ],
+      page: 1,
+      limit: 1,
+    }),
+  });
+
+  if (!res.ok) return null;
+  const data = (await res.json()) as GhlSearchResponse;
+  return data.contacts?.[0]?.id ?? null;
 }
 
 export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
@@ -94,8 +126,9 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     notes?: string;
   } = {};
   let toolCallId: string | undefined;
+  let callId: string | undefined;
   try {
-    ({ body, toolCallId } = await extractBody(request) as { body: typeof body; toolCallId?: string });
+    ({ body, toolCallId, callId } = await extractBody(request) as { body: typeof body; toolCallId?: string; callId?: string });
   } catch {
     return json({ error: 'Invalid JSON body' }, 400);
   }
@@ -114,11 +147,43 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   if (phone) payload.phone = phone;
   if (companyName) payload.companyName = companyName;
 
-  const ghlRes = await fetch(`${GHL_BASE}/contacts/`, {
-    method: 'POST',
-    headers: ghlHeaders(env.GHL_API_KEY),
-    body: JSON.stringify(payload),
-  });
+  // Upsert: if we have a call.id, check whether a contact already exists for
+  // this Vapi session before creating a new one.
+  let existingContactId: string | null = null;
+  if (callId) {
+    existingContactId = await findContactByCallId(env, callId).catch(() => null);
+  }
+
+  let ghlRes: Response;
+  let upserted: 'created' | 'updated';
+
+  if (existingContactId) {
+    // Update the existing contact — omit locationId and tags from PUT body
+    // (GHL v2 PUT does not accept locationId; tags are additive via POST elsewhere)
+    const updatePayload: Record<string, unknown> = { firstName, lastName: lastName ?? '' };
+    if (email) updatePayload.email = email;
+    if (phone) updatePayload.phone = phone;
+    if (companyName) updatePayload.companyName = companyName;
+
+    ghlRes = await fetch(`${GHL_BASE}/contacts/${existingContactId}`, {
+      method: 'PUT',
+      headers: ghlHeaders(env.GHL_API_KEY),
+      body: JSON.stringify(updatePayload),
+    });
+    upserted = 'updated';
+  } else {
+    // Create a new contact and stamp it with the vapi_call_id custom field
+    if (callId) {
+      payload.customFields = [{ key: 'vapi_call_id', field_value: callId }];
+    }
+
+    ghlRes = await fetch(`${GHL_BASE}/contacts/`, {
+      method: 'POST',
+      headers: ghlHeaders(env.GHL_API_KEY),
+      body: JSON.stringify(payload),
+    });
+    upserted = 'created';
+  }
 
   if (!ghlRes.ok) {
     const detail = await ghlRes.text();
@@ -126,9 +191,9 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   }
 
   const data = (await ghlRes.json()) as GhlContactResponse;
-  const contactId = data.contact?.id;
+  const contactId = data.contact?.id ?? existingContactId;
 
-  if (!contactId) return json({ error: 'Contact created but no ID returned', raw: data }, 502);
+  if (!contactId) return json({ error: 'Contact upserted but no ID returned', raw: data }, 502);
 
   if (notes) {
     await fetch(`${GHL_BASE}/contacts/${contactId}/notes`, {
@@ -138,7 +203,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     }).catch(() => { /* non-fatal */ });
   }
 
-  return vapiResponse(toolCallId, { contactId, contact: data.contact });
+  return vapiResponse(toolCallId, { contactId, contact: data.contact, upserted });
 }
 
 export function onRequestOptions(): Response {
