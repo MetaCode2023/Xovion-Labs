@@ -47,19 +47,26 @@ function json(data: unknown, status = 200): Response {
   });
 }
 
-function vapiResult(message: string): Response {
-  return new Response(JSON.stringify({ result: message }), {
+// Handles both Vapi tool types:
+// - Server URL custom tools: wraps in { results: [{ toolCallId, result }] }
+// - API Request tools: returns { result }
+function vapiResult(message: string, toolCallId?: string): Response {
+  const body = toolCallId
+    ? { results: [{ toolCallId, result: message }] }
+    : { result: message };
+  return new Response(JSON.stringify(body), {
     headers: { 'Content-Type': 'application/json', ...cors() },
   });
 }
 
 interface ParsedRequest {
   body: Record<string, unknown>;
+  toolCallId?: string;
   callId?: string;
 }
 
-// Vapi API Request tools send arguments directly in the body. Also extract
-// message.call.id when present (function-tool envelope) for upsert keying.
+// Handles both Vapi envelope formats. Extracts toolCallId for server-URL tools
+// and call.id (stored as vapi_call_id in GHL) for upsert deduplication.
 async function extractBody(request: Request): Promise<ParsedRequest> {
   const raw = await request.json() as {
     message?: {
@@ -73,10 +80,11 @@ async function extractBody(request: Request): Promise<ParsedRequest> {
 
   if (raw?.message?.type === 'tool-calls') {
     const toolCall = raw.message.toolWithToolCallList?.[0]?.toolCall;
+    const toolCallId = toolCall?.id;
     const callId = raw.message.call?.id;
     const args = toolCall?.function?.arguments;
     const body = (typeof args === 'string' ? JSON.parse(args) : args) as Record<string, unknown> ?? {};
-    return { body, callId };
+    return { body, toolCallId, callId };
   }
 
   // API Request tool: arguments are in the top-level body
@@ -120,8 +128,9 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     notes?: string;
   } = {};
   let callId: string | undefined;
+  let toolCallId: string | undefined;
   try {
-    ({ body, callId } = await extractBody(request) as { body: typeof body; callId?: string });
+    ({ body, callId, toolCallId } = await extractBody(request) as { body: typeof body; callId?: string; toolCallId?: string });
   } catch {
     return json({ error: 'Invalid JSON body' }, 400);
   }
@@ -194,7 +203,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   }
 
   const verb = upserted === 'created' ? 'created' : 'updated';
-  return vapiResult(`Contact ${verb}. Contact ID: ${contactId}`);
+  return vapiResult(`Contact ${verb}. Contact ID: ${contactId}`, toolCallId);
 }
 
 export function onRequestOptions(): Response {
