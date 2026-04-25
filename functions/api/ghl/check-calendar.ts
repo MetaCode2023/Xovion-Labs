@@ -1,24 +1,51 @@
 // POST /api/ghl/check-calendar
 // Vapi tool → fetch free slots from GHL calendar
 //
-// Request body:
-//   startDate  string | number  ISO date string or epoch ms
-//   endDate    string | number  ISO date string or epoch ms
-//   timezone   string           IANA timezone (default: America/New_York)
+// Body:  { startDate, endDate, timezone? }
+//   startDate / endDate: ISO string or epoch ms
+//   timezone: IANA string (default: America/New_York)
 //
-// Response:
-//   { slots: [{ date, time, startTime }] }
+// Response: { slots: [{ date, time, startTime }] }
 
-import { Env, GHL_BASE, CALENDAR_ID, ghlHeaders, json, optionsResponse, toEpochMs } from './_helpers';
+interface Env {
+  GHL_API_KEY: string;
+  GHL_LOCATION_ID: string;
+}
 
 interface GhlFreeSlotsResponse {
   _dates_?: Record<string, { slots: string[] }>;
 }
 
-interface RequestBody {
-  startDate?: string | number;
-  endDate?: string | number;
-  timezone?: string;
+const GHL_BASE = 'https://services.leadconnectorhq.com';
+const CALENDAR_ID = 'KFQrCuKbluXkcVKEgOXH';
+
+function ghlHeaders(apiKey: string): Record<string, string> {
+  return {
+    Authorization: `Bearer ${apiKey}`,
+    Version: '2021-07-28',
+    'Content-Type': 'application/json',
+  };
+}
+
+function cors(): Record<string, string> {
+  return {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+}
+
+function json(data: unknown, status = 200): Response {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { 'Content-Type': 'application/json', ...cors() },
+  });
+}
+
+function toEpochMs(value: string | number): number {
+  if (typeof value === 'number') return value;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : new Date(value).getTime();
 }
 
 export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
@@ -26,7 +53,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
 
   if (!env.GHL_API_KEY) return json({ error: 'GHL_API_KEY not configured' }, 500);
 
-  let body: RequestBody = {};
+  let body: { startDate?: string | number; endDate?: string | number; timezone?: string } = {};
   try {
     body = await request.json();
   } catch {
@@ -34,10 +61,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   }
 
   const { startDate, endDate, timezone = 'America/New_York' } = body;
-
-  if (!startDate || !endDate) {
-    return json({ error: 'startDate and endDate are required' }, 400);
-  }
+  if (!startDate || !endDate) return json({ error: 'startDate and endDate are required' }, 400);
 
   const url = new URL(`${GHL_BASE}/calendars/${CALENDAR_ID}/free-slots`);
   url.searchParams.set('startDate', String(toEpochMs(startDate)));
@@ -56,7 +80,6 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
 
   const data = (await ghlRes.json()) as GhlFreeSlotsResponse;
 
-  // Flatten the _dates_ map into a simple slots array for Vapi consumption
   const slots: { date: string; time: string; startTime: string }[] = [];
   if (data._dates_) {
     for (const [date, { slots: times }] of Object.entries(data._dates_)) {
@@ -70,5 +93,5 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
 }
 
 export function onRequestOptions(): Response {
-  return optionsResponse();
+  return new Response(null, { headers: cors() });
 }
