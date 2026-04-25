@@ -118,7 +118,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     }).catch(() => { /* non-fatal */ });
   }
 
-  return json({ contactId, contact: data.contact });
+  return json({ result: JSON.stringify({ contactId, contact: data.contact }) });
 }
 
 export function onRequestOptions(): Response {

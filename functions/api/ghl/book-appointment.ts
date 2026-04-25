@@ -123,7 +123,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   }
 
   const appointment = (await ghlRes.json()) as GhlAppointmentResponse;
-  return json({ appointmentId: appointment.id, appointment });
+  return json({ result: JSON.stringify({ appointmentId: appointment.id, appointment }) });
 }
 
 export function onRequestOptions(): Response {

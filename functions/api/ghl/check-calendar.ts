@@ -110,7 +110,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     }
   }
 
-  return json({ slots });
+  return json({ result: JSON.stringify({ slots }) });
 }
 
 export function onRequestOptions(): Response {
