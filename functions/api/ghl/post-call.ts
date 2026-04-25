@@ -1,7 +1,8 @@
 // POST /api/ghl/post-call
 // Vapi end-of-call-report webhook → log call data to GHL contact
 //
-// Vapi sends this after every call. Handler:
+// Returns 200 immediately so Vapi doesn't time out; GHL work runs via waitUntil.
+// Handler:
 //   1. Parses caller phone/name from message.customer
 //   2. Upserts a GHL contact (create if not found by phone)
 //   3. Posts a formatted call summary note to the contact
@@ -60,7 +61,6 @@ function json(data: unknown, status = 200): Response {
 }
 
 async function upsertContact(env: Env, phone: string, name: string, email?: string): Promise<string | null> {
-  // Search for existing contact by phone
   const searchUrl = new URL(`${GHL_BASE}/contacts/search/duplicate`);
   searchUrl.searchParams.set('locationId', env.GHL_LOCATION_ID);
   searchUrl.searchParams.set('phone', phone);
@@ -94,23 +94,9 @@ async function upsertContact(env: Env, phone: string, name: string, email?: stri
   return createData.contact?.id ?? null;
 }
 
-export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
-  const { request, env } = context;
-
-  if (!env.GHL_API_KEY) return json({ error: 'GHL_API_KEY not configured' }, 500);
-  if (!env.GHL_LOCATION_ID) return json({ error: 'GHL_LOCATION_ID not configured' }, 500);
-
-  let payload: VapiPayload = {};
-  try {
-    payload = await request.json();
-  } catch {
-    return json({ error: 'Invalid JSON body' }, 400);
-  }
-
+async function processCallData(env: Env, payload: VapiPayload): Promise<void> {
   const msg = payload.message;
-  if (msg?.type !== 'end-of-call-report') {
-    return json({ ok: true, skipped: true, reason: 'Not an end-of-call-report event' });
-  }
+  if (!msg) return;
 
   const callId = msg.call?.id ?? 'unknown';
   const phone = msg.customer?.number;
@@ -135,20 +121,44 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     recordingUrl ? `\nRecording: ${recordingUrl}` : '',
   ].filter(Boolean).join('\n');
 
-  if (!phone) {
-    return json({ ok: true, contactId: null, reason: 'No phone number in webhook payload' });
-  }
+  if (!phone) return;
 
   const contactId = await upsertContact(env, phone, extractedName, extractedEmail).catch(() => null);
-  if (!contactId) return json({ ok: false, error: 'Could not create or find GHL contact' }, 502);
+  if (!contactId) return;
 
   await fetch(`${GHL_BASE}/contacts/${contactId}/notes`, {
     method: 'POST',
     headers: ghlHeaders(env.GHL_API_KEY),
     body: JSON.stringify({ userId: contactId, body: noteLines }),
   }).catch(() => { /* non-fatal */ });
+}
 
-  return json({ ok: true, contactId, callId, durationSeconds: durationSec });
+export async function onRequestPost(context: {
+  request: Request;
+  env: Env;
+  waitUntil: (promise: Promise<unknown>) => void;
+}): Promise<Response> {
+  const { request, env } = context;
+
+  if (!env.GHL_API_KEY) return json({ error: 'GHL_API_KEY not configured' }, 500);
+  if (!env.GHL_LOCATION_ID) return json({ error: 'GHL_LOCATION_ID not configured' }, 500);
+
+  let payload: VapiPayload = {};
+  try {
+    payload = await request.json();
+  } catch {
+    return json({ error: 'Invalid JSON body' }, 400);
+  }
+
+  const msg = payload.message;
+  if (msg?.type !== 'end-of-call-report') {
+    return json({ result: 'Call data logged successfully' });
+  }
+
+  // Respond immediately so Vapi doesn't time out; process GHL writes in background
+  context.waitUntil(processCallData(env, payload));
+
+  return json({ result: 'Call data logged successfully' });
 }
 
 export function onRequestOptions(): Response {

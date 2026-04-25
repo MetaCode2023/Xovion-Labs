@@ -1,10 +1,10 @@
 // POST /api/ghl/book-appointment
-// Vapi tool → create a confirmed appointment on the GHL calendar
+// Vapi API Request tool → create a confirmed appointment on the GHL calendar
 //
 // Body:  { contactId, startTime, endTime?, timezone?, title?, appointmentStatus?, address? }
 //   startTime: ISO 8601  e.g. "2024-01-15T10:00:00"
 //   endTime: defaults to startTime + 30 min
-// Response: { appointmentId, appointment }
+// Response: { result: "Appointment booked for Monday, April 27 at 10:00 AM" }
 
 interface Env {
   GHL_API_KEY: string;
@@ -42,41 +42,8 @@ function json(data: unknown, status = 200): Response {
   });
 }
 
-interface ParsedRequest {
-  body: Record<string, unknown>;
-  toolCallId?: string;
-}
-
-// Vapi wraps tool arguments inside a webhook envelope and requires the toolCallId
-// echoed back in the response. Unwraps both; falls back to raw body for direct tests.
-async function extractBody(request: Request): Promise<ParsedRequest> {
-  const raw = await request.json() as {
-    message?: {
-      type?: string;
-      toolWithToolCallList?: Array<{
-        toolCall?: { id?: string; function?: { arguments?: unknown } };
-      }>;
-    };
-  };
-
-  if (raw?.message?.type === 'tool-calls') {
-    const toolCall = raw.message.toolWithToolCallList?.[0]?.toolCall;
-    const toolCallId = toolCall?.id;
-    const args = toolCall?.function?.arguments;
-    const body = (typeof args === 'string' ? JSON.parse(args) : args) as Record<string, unknown> ?? {};
-    return { body, toolCallId };
-  }
-
-  return { body: raw as Record<string, unknown> };
-}
-
-function vapiResponse(toolCallId: string | undefined, result: unknown): Response {
-  if (toolCallId) {
-    return new Response(JSON.stringify({ results: [{ toolCallId, result }] }), {
-      headers: { 'Content-Type': 'application/json', ...cors() },
-    });
-  }
-  return new Response(JSON.stringify(result), {
+function vapiResult(message: string): Response {
+  return new Response(JSON.stringify({ result: message }), {
     headers: { 'Content-Type': 'application/json', ...cors() },
   });
 }
@@ -96,9 +63,23 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     appointmentStatus?: string;
     address?: string;
   } = {};
-  let toolCallId: string | undefined;
+
   try {
-    ({ body, toolCallId } = await extractBody(request) as { body: typeof body; toolCallId?: string });
+    const raw = await request.json() as {
+      message?: {
+        type?: string;
+        toolWithToolCallList?: Array<{
+          toolCall?: { function?: { arguments?: unknown } };
+        }>;
+      };
+    } & typeof body;
+
+    if (raw?.message?.type === 'tool-calls') {
+      const args = raw.message.toolWithToolCallList?.[0]?.toolCall?.function?.arguments;
+      body = (typeof args === 'string' ? JSON.parse(args) : args) as typeof body ?? {};
+    } else {
+      body = raw as typeof body;
+    }
   } catch {
     return json({ error: 'Invalid JSON body' }, 400);
   }
@@ -143,7 +124,17 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   }
 
   const appointment = (await ghlRes.json()) as GhlAppointmentResponse;
-  return vapiResponse(toolCallId, { appointmentId: appointment.id, appointment });
+
+  const readableTime = start.toLocaleString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZone: timezone,
+  });
+
+  return vapiResult(`Appointment booked for ${readableTime}`);
 }
 
 export function onRequestOptions(): Response {
