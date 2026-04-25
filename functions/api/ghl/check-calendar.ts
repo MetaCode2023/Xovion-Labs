@@ -64,10 +64,12 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
 
   let body: { startDate?: string | number; endDate?: string | number; timezone?: string } = {};
   let toolCallId: string | undefined;
+  
   try {
     const raw = await request.json() as {
       message?: {
         type?: string;
+        toolCallList?: Array<{ id?: string; function?: { arguments?: unknown } }>;
         toolWithToolCallList?: Array<{
           toolCall?: { id?: string; function?: { arguments?: unknown } };
         }>;
@@ -75,7 +77,8 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     } & typeof body;
 
     if (raw?.message?.type === 'tool-calls') {
-      const toolCall = raw.message.toolWithToolCallList?.[0]?.toolCall;
+      // Safely check both Vapi payload structures
+      const toolCall = raw.message.toolCallList?.[0] || raw.message.toolWithToolCallList?.[0]?.toolCall;
       toolCallId = toolCall?.id;
       const args = toolCall?.function?.arguments;
       body = (typeof args === 'string' ? JSON.parse(args) : args) as typeof body ?? {};
