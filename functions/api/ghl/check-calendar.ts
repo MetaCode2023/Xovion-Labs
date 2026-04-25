@@ -10,10 +10,10 @@
 interface Env {
   GHL_API_KEY: string;
   GHL_LOCATION_ID: string;
+  GHL_CALENDAR_ID: string;
 }
 
 const GHL_BASE = 'https://services.leadconnectorhq.com';
-const CALENDAR_ID = 'KFQrCuKbluXkcVKEgOXH';
 
 function ghlHeaders(apiKey: string): Record<string, string> {
   return {
@@ -60,6 +60,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
   const { request, env } = context;
 
   if (!env.GHL_API_KEY) return json({ error: 'GHL_API_KEY not configured' }, 500);
+  if (!env.GHL_CALENDAR_ID) return json({ error: 'GHL_CALENDAR_ID not configured' }, 500);
 
   let body: { startDate?: string | number; endDate?: string | number; timezone?: string } = {};
   let toolCallId: string | undefined;
@@ -97,7 +98,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
     endDate = later.toISOString().split('T')[0];
   }
 
-  const url = new URL(`${GHL_BASE}/calendars/${CALENDAR_ID}/free-slots`);
+  const url = new URL(`${GHL_BASE}/calendars/${env.GHL_CALENDAR_ID}/free-slots`);
   url.searchParams.set('startDate', String(toEpochMs(startDate)));
   url.searchParams.set('endDate', String(toEpochMs(endDate)));
   url.searchParams.set('timezone', timezone);
