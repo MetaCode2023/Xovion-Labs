@@ -48,6 +48,27 @@ function toEpochMs(value: string | number): number {
   return Number.isFinite(n) ? n : new Date(value).getTime();
 }
 
+// Vapi sends tool arguments nested inside a webhook envelope.
+// This unwraps them so the rest of the handler stays the same for both
+// direct POST tests and live Vapi tool-call requests.
+async function extractBody(request: Request): Promise<Record<string, unknown>> {
+  const raw = await request.json() as {
+    message?: {
+      type?: string;
+      toolWithToolCallList?: Array<{
+        toolCall?: { function?: { arguments?: unknown } };
+      }>;
+    };
+  };
+
+  if (raw?.message?.type === 'tool-calls') {
+    const args = raw.message.toolWithToolCallList?.[0]?.toolCall?.function?.arguments;
+    return (typeof args === 'string' ? JSON.parse(args) : args) as Record<string, unknown> ?? {};
+  }
+
+  return raw as Record<string, unknown>;
+}
+
 export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
   const { request, env } = context;
 
@@ -55,7 +76,7 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
 
   let body: { startDate?: string | number; endDate?: string | number; timezone?: string } = {};
   try {
-    body = await request.json();
+    body = await extractBody(request) as typeof body;
   } catch {
     return json({ error: 'Invalid JSON body' }, 400);
   }
