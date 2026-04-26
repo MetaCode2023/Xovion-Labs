@@ -3,7 +3,7 @@ import { siteConfig } from '@/data/navigation';
 import TerminalWindow from '@/components/home/TerminalWindow.astro';
 ---
 
-<section class="relative overflow-hidden min-h-[90vh] flex items-center">
+<section class="relative overflow-hidden min-h-screen flex items-center">
   <!-- Background effects -->
   <div class="absolute inset-0">
     <!-- Video background -->
@@ -25,28 +25,47 @@ import TerminalWindow from '@/components/home/TerminalWindow.astro';
     <div class="absolute inset-0 bg-gradient-to-b from-xv-bg-primary/60 via-xv-bg-primary/35 to-xv-bg-primary/80"></div>
   </div>
 
-  <div class="section-container relative z-10 py-20 md:py-28 w-full">
+  <div class="section-container relative z-10 py-24 md:py-32 w-full">
 
-    <!-- Status Badge -->
-    <div class="opacity-0 animate-fade-in-up mb-6">
+    <!-- Top bar: badge left, live indicator right -->
+    <div class="opacity-0 animate-fade-in-up flex items-center justify-between mb-10">
       <span class="inline-flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-full px-3 py-1">
         <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0"></span>
         <span class="text-xs font-mono text-slate-400 tracking-wider">Now accepting new clients</span>
       </span>
+      <span class="hidden sm:flex items-center gap-2 text-xs font-mono text-slate-500">
+        <span class="w-1.5 h-1.5 rounded-full bg-xv-accent-cyan"></span>
+        Live on 3 businesses
+      </span>
     </div>
 
-    <!-- Full-width headline -->
-    <h1 class="opacity-0 animate-fade-in-up animate-delay-100 font-display font-extrabold text-5xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-tight leading-[1.05] sm:leading-[1.0] lg:leading-[0.95] mb-10 lg:mb-14">
-      <span class="text-xv-text-primary">We Turn LLMs Into</span>
-      <span class="block text-xv-text-primary">Business Operators,</span>
-      <span class="block gradient-text">Not Just Chatbots.</span>
-    </h1>
+    <!-- Headline block -->
+    <div class="relative mb-12 lg:mb-16">
+
+      <!-- Ghost watermark — visual depth, not readable weight -->
+      <div class="absolute -top-4 -left-2 font-display font-extrabold leading-none tracking-tighter text-[5rem] sm:text-[8rem] lg:text-[11rem] text-white/[0.025] select-none pointer-events-none" aria-hidden="true">
+        OPERATORS
+      </div>
+
+      <!-- Eyebrow + thin cyan rule -->
+      <div class="opacity-0 animate-fade-in-up animate-delay-100 flex items-center gap-4 mb-7">
+        <div class="w-8 h-px bg-xv-accent-cyan shrink-0"></div>
+        <span class="text-xs font-mono text-xv-accent-cyan tracking-widest uppercase">AI Systems Built by Operators</span>
+      </div>
+
+      <!-- Headline — confident, not aggressive -->
+      <h1 class="relative opacity-0 animate-fade-in-up animate-delay-200 font-display font-extrabold text-3xl sm:text-4xl lg:text-5xl xl:text-6xl tracking-tight leading-[1.12]">
+        <span class="text-xv-text-primary">We Turn LLMs Into</span>
+        <span class="block text-xv-text-primary">Business Operators,</span>
+        <span class="block gradient-text">Not Just Chatbots.</span>
+      </h1>
+    </div>
 
     <!-- Bottom row: copy + terminal -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
       <!-- Left: tagline, description, CTAs -->
-      <div class="opacity-0 animate-fade-in-up animate-delay-200 max-w-lg">
+      <div class="opacity-0 animate-fade-in-up animate-delay-300 max-w-lg">
         <p class="text-lg sm:text-xl font-display font-semibold text-xv-text-secondary mb-5">
           Fair warning — when you call us, you're talking to an AI. But it's built for this.
         </p>
@@ -67,7 +86,7 @@ import TerminalWindow from '@/components/home/TerminalWindow.astro';
       </div>
 
       <!-- Right: Terminal (desktop only) -->
-      <div class="opacity-0 animate-fade-in-up animate-delay-300 hidden lg:flex items-start justify-center">
+      <div class="opacity-0 animate-fade-in-up animate-delay-400 hidden lg:flex items-start justify-center">
         <TerminalWindow />
       </div>
 
