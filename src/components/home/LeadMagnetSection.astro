@@ -1,15 +1,25 @@
 ---
 ---
 
-<section class="section-padding">
+<section class="section-padding relative">
+  <!-- Section top glow line -->
+  <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-xv-accent-cyan/25 to-transparent" aria-hidden="true"></div>
+
   <div class="section-container">
-    <div class="max-w-3xl mx-auto text-center mb-10">
-      <span class="tag-green mb-4 inline-block">Free Resources</span>
+
+    <!-- Eyebrow -->
+    <div class="flex items-center justify-center gap-4 mb-6 opacity-0 animate-fade-in-up">
+      <div class="w-8 h-px bg-xv-accent-cyan shrink-0"></div>
+      <span class="text-xs font-mono text-xv-accent-cyan tracking-widest uppercase">Free Resources</span>
+      <div class="w-8 h-px bg-xv-accent-cyan shrink-0"></div>
+    </div>
+
+    <div class="max-w-3xl mx-auto text-center mb-10 opacity-0 animate-fade-in-up animate-delay-100">
       <h2 class="font-display font-bold text-3xl sm:text-4xl text-xv-text-primary tracking-tight">
         Not ready for a call?
         <span class="gradient-text"> Start here.</span>
       </h2>
-      <p class="mt-3 text-xv-text-secondary text-lg">
+      <p class="mt-3 text-slate-400 text-base sm:text-lg">
         Two free tools to diagnose where AI creates the most leverage in your operation.
         No email required to browse — just to get the results.
       </p>
@@ -18,9 +28,10 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
 
       <!-- CRM Audit -->
-      <a href="/crm-audit" class="glass-card spotlight-card rounded-xl p-7 group hover:border-xv-accent-blue/40 transition-all">
-        <div class="w-10 h-10 rounded-lg bg-xv-accent-blue/10 border border-xv-accent-blue/20 flex items-center justify-center mb-5">
-          <svg class="w-5 h-5 text-xv-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <a href="/crm-audit" class="group relative bg-xv-bg-secondary rounded-xl p-7 border border-xv-border hover:border-xv-accent-cyan/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-xv-accent-cyan/5 opacity-0 animate-fade-in-up animate-delay-200">
+        <div class="absolute top-0 left-0 right-0 h-px rounded-t-xl bg-xv-accent-cyan/15 group-hover:bg-xv-accent-cyan/40 transition-colors duration-300"></div>
+        <div class="w-10 h-10 rounded-lg bg-xv-accent-cyan/8 border border-xv-accent-cyan/15 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-xv-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
           </svg>
         </div>
@@ -28,21 +39,25 @@
           <h3 class="font-display font-semibold text-lg text-xv-text-primary group-hover:text-white transition-colors">
             CRM Audit Checklist
           </h3>
-          <span class="text-xs font-mono text-xv-accent-blue bg-xv-accent-blue/10 px-2 py-0.5 rounded-full whitespace-nowrap ml-3">Free PDF</span>
+          <span class="text-xs font-mono text-xv-accent-cyan bg-xv-accent-cyan/10 px-2 py-0.5 rounded-full whitespace-nowrap ml-3">Free PDF</span>
         </div>
-        <p class="text-sm text-xv-text-secondary leading-relaxed mb-4">
+        <p class="text-sm text-slate-400 leading-relaxed mb-4">
           12 diagnostic questions that expose where your pipeline is bleeding revenue.
           Find the Stage 3 Graveyard before it costs you another warm lead.
         </p>
-        <span class="text-sm text-xv-accent-blue font-medium group-hover:underline">
-          Get the checklist →
+        <span class="text-sm text-xv-accent-cyan font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
+          Get the checklist
+          <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
         </span>
       </a>
 
       <!-- AI ROI Calculator -->
-      <a href="/ai-roi" class="glass-card spotlight-card rounded-xl p-7 group hover:border-xv-accent-purple/40 transition-all">
-        <div class="w-10 h-10 rounded-lg bg-xv-accent-purple/10 border border-xv-accent-purple/20 flex items-center justify-center mb-5">
-          <svg class="w-5 h-5 text-xv-accent-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <a href="/ai-roi" class="group relative bg-xv-bg-secondary rounded-xl p-7 border border-xv-border hover:border-xv-accent-cyan/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-xv-accent-cyan/5 opacity-0 animate-fade-in-up animate-delay-300">
+        <div class="absolute top-0 left-0 right-0 h-px rounded-t-xl bg-xv-accent-cyan/15 group-hover:bg-xv-accent-cyan/40 transition-colors duration-300"></div>
+        <div class="w-10 h-10 rounded-lg bg-xv-accent-cyan/8 border border-xv-accent-cyan/15 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-xv-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0012 2.25z" />
           </svg>
         </div>
@@ -50,14 +65,17 @@
           <h3 class="font-display font-semibold text-lg text-xv-text-primary group-hover:text-white transition-colors">
             AI ROI Calculator
           </h3>
-          <span class="text-xs font-mono text-xv-accent-purple bg-xv-accent-purple/10 px-2 py-0.5 rounded-full whitespace-nowrap ml-3">Interactive</span>
+          <span class="text-xs font-mono text-xv-accent-cyan bg-xv-accent-cyan/10 px-2 py-0.5 rounded-full whitespace-nowrap ml-3">Interactive</span>
         </div>
-        <p class="text-sm text-xv-text-secondary leading-relaxed mb-4">
+        <p class="text-sm text-slate-400 leading-relaxed mb-4">
           Answer 4 questions. Get a specific estimate of how many hours your operation is losing
           to manual work every month — and what it's costing you.
         </p>
-        <span class="text-sm text-xv-accent-purple font-medium group-hover:underline">
-          Run the numbers →
+        <span class="text-sm text-xv-accent-cyan font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
+          Run the numbers
+          <svg class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
         </span>
       </a>
 

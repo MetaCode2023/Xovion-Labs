@@ -3,18 +3,22 @@
 ---
 
 <section class="section-padding relative overflow-hidden">
+  <!-- Section top glow line -->
+  <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-xv-accent-cyan/25 to-transparent" aria-hidden="true"></div>
+
   <!-- Background glow -->
-  <div class="absolute inset-0">
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-xv-accent-blue/6 rounded-full blur-[120px]"></div>
-  </div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-xv-accent-cyan/5 rounded-full blur-[120px] pointer-events-none" aria-hidden="true"></div>
 
   <div class="section-container relative z-10">
-    <div class="glass-card rounded-2xl p-8 sm:p-12 md:p-16 text-center max-w-3xl mx-auto">
+    <div class="bg-xv-bg-secondary border border-xv-border rounded-2xl p-8 sm:p-12 md:p-16 text-center max-w-3xl mx-auto relative overflow-hidden">
+      <!-- Inner top accent -->
+      <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-xv-accent-cyan/40 to-transparent" aria-hidden="true"></div>
+
       <h2 class="font-display font-bold text-3xl sm:text-4xl text-xv-text-primary tracking-tight text-balance">
         Ready to build something
         <span class="gradient-text"> that works?</span>
       </h2>
-      <p class="mt-4 text-xv-text-secondary text-lg max-w-lg mx-auto">
+      <p class="mt-4 text-slate-400 text-base sm:text-lg max-w-lg mx-auto">
         Whether you need a website, a CRM overhaul, or just want to figure out where AI fits in your business — let's talk.
       </p>
       <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
