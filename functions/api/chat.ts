@@ -14,7 +14,7 @@ type ContentBlock = TextBlock | ToolUseBlock;
 interface Message { role: 'user' | 'assistant'; content: ContentBlock[] | ToolResultBlock[] | string }
 interface AnthropicResponse { stop_reason: string; content: ContentBlock[] }
 
-const BOOKING_LINK = 'https://api.leadconnectorhq.com/widget/bookings/ai-leverage-exploration-';
+const BOOKING_LINK = 'https://api.leadconnectorhq.com/widget/booking/KFQrCuKbluXkcVKEgOXH';
 
 // ── System prompt ─────────────────────────────────────────────────────────────
 const SYSTEM_PROMPT = `You are a conversational AI agent for Xovion Labs — an AI systems company that builds websites, automates CRMs, wires AI into business software, and advises operators on where AI creates real leverage.
