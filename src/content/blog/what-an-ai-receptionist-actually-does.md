@@ -105,7 +105,7 @@ But if your business has any of the following going on, it's worth thinking abou
 
 Don't take our word for it. Call the number and find out.
 
-**+1 (605) 201-1655**
+**+1 (662) 670-1259**
 
 That's a live AI receptionist running on Xovion Labs right now. It answers in under 2 seconds, qualifies the caller, checks a real calendar, and books a real appointment — before the call ends.
 
@@ -125,7 +125,7 @@ Here's an excerpt from a real inbound call — a plumbing business owner who wan
 
 That outcome — lead qualified, slot filled, CRM updated, confirmation sent — happened without a single human involved. The caller walked away with a booked appointment. We walked away with a new contact in our pipeline.
 
-[Call the AI now →](tel:+16052011655) or [book a call with Austin →](/contact) to see how this gets built for your operation.
+[Call the AI now →](tel:+16626701259) or [book a call with Austin →](/contact) to see how this gets built for your operation.
 
 ---
 

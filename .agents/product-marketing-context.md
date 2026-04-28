@@ -14,7 +14,8 @@ Xovion Labs is the internal engineering arm for a portfolio of physical business
 **Core value proposition**: We don't sell tools we read about. We sell systems we depend on daily to run real businesses. Operators building for operators.
 **Domain**: xovionlabs.com
 **Location**: Sioux Falls, SD
-**Live AI demo**: +1 (605) 201-1655 (the AI Receptionist — real running system, not a recording)
+**Live AI demo (Xovion)**: +1 (662) 670-1259 — the Xovion AI Receptionist; what a prospect's setup would feel like
+**Live production proof (Dump Dynasty)**: +1 (605) 937-5430 — the AI Receptionist running on Austin's real dumpster business
 
 ---
 
@@ -112,7 +113,7 @@ In operator language:
 - **"It's too expensive vs. SaaS"** → SaaS is rented. We help you stop renting and own infrastructure built for your operation. Lower cost over 12 months and better fit.
 - **"We don't have time for a 3-month implementation"** → Most engagements ship working systems in days, not months. Phased deliverables — every phase produces something working.
 - **"Our team won't adopt it"** → We engineer for adoption. The CRM tells reps exactly who to call today. The receptionist replaces a missed-call log. The team uses it because it removes work, not adds it.
-- **"How do I know this isn't just hype?"** → Call +1 (605) 201-1655 and talk to the AI receptionist running on Dump Dynasty right now. That's a real production system, not a demo.
+- **"How do I know this isn't just hype?"** → Two real systems you can call yourself: +1 (662) 670-1259 (Xovion's own receptionist — what your setup would feel like) and +1 (605) 937-5430 (Dump Dynasty — running in a real business taking real bookings). Production systems, not demos.
 
 ---
 
@@ -129,7 +130,7 @@ In operator language:
 
 **Typical decision process:**
 1. Visit xovionlabs.com from a referral, podcast, or LinkedIn post
-2. Browse services, hit the AI receptionist demo number (+1 605-201-1655)
+2. Browse services, hit the AI receptionist demo number (+1 662-670-1259)
 3. Either book a discovery call directly, or take a free resource first (CRM Audit Checklist, AI ROI Calculator)
 4. 30-min discovery call → custom blueprint → engagement
 
@@ -191,7 +192,7 @@ Phrases operators use (and that should appear in our copy):
 ## Proof Points
 
 **Live production systems running in our own businesses:**
-- **Dump Dynasty (dumpdynastyrentals.com)** — Built with Claude Code; AI receptionist live on +1 (605) 201-1655; AI-driven dispatch and CRM
+- **Dump Dynasty (dumpdynastyrentals.com)** — Built with Claude Code; AI receptionist live on +1 (605) 937-5430; AI-driven dispatch and CRM
 - **Big Sioux Home Buyers (bigsiouxhomebuyers.com)** — Astro site, integrated with Close CRM
 - **Metastone Properties** — AppFolio + Close CRM + AI for deal underwriting and forensic cash flow analysis
 - **Direct-to-seller acquisitions** — 22-stage acquisition pipeline, 13K+ weekly outbound SMS, AI lead triage
@@ -215,7 +216,7 @@ Phrases operators use (and that should appear in our copy):
 2. **CRM Architecture & Automation** — Granular pipelines, smart views, AI intelligence briefs, intent-driven automation
 3. **AI Orchestration & Custom Integrations** — Secure AI bridges (MCP/API) into your actual software stack
 4. **Operator Advisory & Blueprinting** — BS-free strategy from someone running real businesses
-5. **AI Phone Receptionist** — 24/7 inbound call AI that books real appointments, live demo at +1 (605) 201-1655
+5. **AI Phone Receptionist** — 24/7 inbound call AI that books real appointments, live demo at +1 (662) 670-1259
 
 When discussing services in copy, always pull current details from `src/data/services.ts` — it's the canonical source.
 
@@ -242,7 +243,7 @@ When matching visitors/prospects to services:
 
 **Key metrics that matter:**
 - Discovery calls booked
-- AI Receptionist demo calls (+1 605-201-1655)
+- AI Receptionist demo calls (+1 662-670-1259)
 - Free resource completions (CRM Audit, AI ROI Calculator)
 - Newsletter signups
 - Contract value per engagement (vs. SaaS subscription baseline customers were paying)

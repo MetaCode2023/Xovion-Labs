@@ -31,7 +31,7 @@ If you find yourself making up service names, prices, or proof points, stop — 
 - **Deploy**: Cloudflare Pages (`@astrojs/cloudflare` adapter, `functions/` for serverless endpoints)
 - **Domain**: xovionlabs.com
 - **Build**: `npm run build` → static output via Astro
-- **Live AI demo**: +1 (605) 201-1655 (AI Phone Receptionist)
+- **Live AI demo**: +1 (662) 670-1259 (AI Phone Receptionist)
 
 ## What ships vs. what doesn't
 
