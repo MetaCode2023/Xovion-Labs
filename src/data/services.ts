@@ -131,7 +131,7 @@ export const services: Service[] = [
     ],
     proofPoints: [
       'Built and running live on Dump Dynasty (our own dumpster rental company) — not a demo environment',
-      'Running live on Xovion Labs right now — call +1 (605) 201-1655 to experience it yourself',
+      'Running live on Xovion Labs right now — call +1 (662) 670-1259 to experience it yourself',
     ],
     idealFor: [
       'Service businesses and home services trades where a missed call is a missed job',
