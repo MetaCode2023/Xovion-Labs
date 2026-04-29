@@ -1,0 +1,53 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import XTimeline from '@/components/global/XTimeline.astro';
+---
+
+<BaseLayout
+  title="Feed"
+  description="Latest posts from @xovionai — AI concepts, teardowns, and notes from inside the build. Educator-first, no hype."
+>
+
+  <!-- Header -->
+  <section class="section-padding pb-8">
+    <div class="section-container">
+      <span class="tag-blue mb-4 block w-fit">Feed</span>
+      <h1 class="font-display font-bold text-4xl sm:text-5xl text-xv-text-primary tracking-tight">
+        Notes from the <span class="gradient-text">build.</span>
+      </h1>
+      <p class="mt-4 text-xv-text-secondary text-lg max-w-2xl">
+        AI concepts, teardowns, and notes from inside the work — posted as @xovionai on X.
+        Educator-first. No hype. No hashtags.
+      </p>
+      <div class="mt-6">
+        <a
+          href="https://twitter.com/xovionai"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-secondary text-sm"
+        >
+          Follow on X
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="pb-20 md:pb-28">
+    <div class="section-container">
+      <div class="max-w-2xl mx-auto">
+        <div class="glass-card rounded-xl p-3 sm:p-4">
+          <XTimeline height={1200} ariaLabel="Full timeline of @xovionai posts on X" />
+        </div>
+        <p class="mt-6 text-xs font-mono text-xv-text-muted text-center">
+          Embedded directly from X. If the timeline doesn't load,
+          <a href="https://twitter.com/xovionai" target="_blank" rel="noopener noreferrer" class="text-xv-accent-blue hover:underline">view the feed on X</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

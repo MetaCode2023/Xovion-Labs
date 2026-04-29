@@ -1,0 +1,32 @@
+---
+interface Props {
+  height?: number;
+  tweetLimit?: number;
+  ariaLabel?: string;
+}
+
+const { height = 800, tweetLimit, ariaLabel = 'Latest posts from @xovionai on X' } = Astro.props;
+---
+
+<div class="x-timeline-wrapper" aria-label={ariaLabel}>
+  <a
+    class="twitter-timeline"
+    data-theme="dark"
+    data-chrome="transparent noborders"
+    data-height={height}
+    data-tweet-limit={tweetLimit}
+    href="https://twitter.com/xovionai"
+  >
+    Posts by @xovionai
+  </a>
+</div>
+
+<script is:inline async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<style>
+  .x-timeline-wrapper {
+    width: 100%;
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+</style>
