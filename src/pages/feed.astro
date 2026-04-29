@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import XTimeline from '@/components/global/XTimeline.astro';
+import XFeed from '@/components/global/XFeed.astro';
 ---
 
 <BaseLayout
@@ -35,16 +35,13 @@ import XTimeline from '@/components/global/XTimeline.astro';
     </div>
   </section>
 
-  <!-- Timeline -->
+  <!-- Feed -->
   <section class="pb-20 md:pb-28">
     <div class="section-container">
       <div class="max-w-2xl mx-auto">
-        <div class="glass-card rounded-xl p-3 sm:p-4">
-          <XTimeline height={1200} ariaLabel="Full timeline of @xovionai posts on X" />
-        </div>
-        <p class="mt-6 text-xs font-mono text-xv-text-muted text-center">
-          Embedded directly from X. If the timeline doesn't load,
-          <a href="https://twitter.com/xovionai" target="_blank" rel="noopener noreferrer" class="text-xv-accent-blue hover:underline">view the feed on X</a>.
+        <XFeed />
+        <p class="mt-8 text-xs font-mono text-xv-text-muted text-center">
+          Each card links to the original post on X.
         </p>
       </div>
     </div>

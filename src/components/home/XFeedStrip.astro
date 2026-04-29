@@ -1,5 +1,5 @@
 ---
-import XTimeline from '@/components/global/XTimeline.astro';
+import XFeed from '@/components/global/XFeed.astro';
 ---
 
 <section class="section-padding">
@@ -15,10 +15,8 @@ import XTimeline from '@/components/global/XTimeline.astro';
     </div>
 
     <div class="max-w-2xl mx-auto">
-      <div class="glass-card rounded-xl p-3 sm:p-4">
-        <XTimeline height={600} tweetLimit={3} ariaLabel="Recent posts from @xovionai on X" />
-      </div>
-      <div class="mt-6 text-center">
+      <XFeed limit={3} compact />
+      <div class="mt-8 text-center">
         <a href="/feed" class="btn-secondary text-sm">
           See the full feed
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
