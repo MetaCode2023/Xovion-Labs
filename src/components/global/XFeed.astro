@@ -1,0 +1,104 @@
+---
+import xFeedRaw from '@/data/x-feed.json';
+
+interface Tweet {
+  id: string;
+  text: string;
+  created_at: string;
+  image?: string;
+  thread?: string[];
+}
+
+interface Props {
+  limit?: number;
+  compact?: boolean;
+}
+
+const { limit, compact = false } = Astro.props;
+
+const allTweets = (xFeedRaw as Tweet[])
+  .slice()
+  .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+const tweets = limit ? allTweets.slice(0, limit) : allTweets;
+
+const handle = 'xovionai';
+
+function formatRelative(iso: string): string {
+  const then = new Date(iso).getTime();
+  const now = Date.now();
+  const diffMs = now - then;
+  const m = Math.floor(diffMs / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return `${m}m`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h`;
+  const d = Math.floor(h / 24);
+  if (d < 7) return `${d}d`;
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function linkify(raw: string): string {
+  const escaped = escapeHtml(raw);
+  const withUrls = escaped.replace(
+    /\bhttps?:\/\/[^\s<]+/g,
+    (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-xv-accent-blue hover:underline">${url}</a>`
+  );
+  const withMentions = withUrls.replace(
+    /(^|[^\w])@(\w{1,15})\b/g,
+    (_m, pre, name) => `${pre}<a href="https://x.com/${name}" target="_blank" rel="noopener noreferrer" class="text-xv-accent-blue hover:underline">@${name}</a>`
+  );
+  return withMentions.replace(/\n/g, '<br />');
+}
+---
+
+{tweets.length === 0 ? (
+  <div class="glass-card rounded-xl p-8 text-center">
+    <p class="text-xv-text-secondary">
+      No posts yet. Follow <a href={`https://x.com/${handle}`} target="_blank" rel="noopener noreferrer" class="text-xv-accent-blue hover:underline">@{handle}</a> on X — new posts will appear here.
+    </p>
+  </div>
+) : (
+  <div class={compact ? 'space-y-3' : 'space-y-4'}>
+    {tweets.map((t) => (
+      <a
+        href={`https://x.com/${handle}/status/${t.id}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="glass-card spotlight-card rounded-xl p-5 sm:p-6 block group hover:border-xv-accent-blue/40 transition-all"
+      >
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="font-display font-semibold text-sm text-xv-text-primary">Xovion Labs</span>
+            <span class="text-xs font-mono text-xv-text-muted">@{handle}</span>
+          </div>
+          <div class="flex items-center gap-2 text-xs font-mono text-xv-text-muted">
+            <time datetime={t.created_at}>{formatRelative(t.created_at)}</time>
+            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </div>
+        </div>
+        <p
+          class={`text-xv-text-secondary leading-relaxed whitespace-pre-line ${compact ? 'text-sm line-clamp-4' : 'text-base'}`}
+          set:html={linkify(t.text)}
+        />
+        {t.image && !compact && (
+          <img
+            src={t.image}
+            alt=""
+            loading="lazy"
+            class="mt-4 rounded-lg border border-xv-border/30 w-full"
+          />
+        )}
+        <div class="mt-4 text-xs font-mono text-xv-text-muted group-hover:text-xv-accent-blue transition-colors">
+          View on X →
+        </div>
+      </a>
+    ))}
+  </div>
+)}
