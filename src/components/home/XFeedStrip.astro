@@ -1,0 +1,31 @@
+---
+import XTimeline from '@/components/global/XTimeline.astro';
+---
+
+<section class="section-padding">
+  <div class="section-container">
+    <div class="max-w-2xl mx-auto text-center mb-10">
+      <span class="tag-blue mb-4 inline-block">@xovionai</span>
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-xv-text-primary tracking-tight">
+        Notes from the <span class="gradient-text">build.</span>
+      </h2>
+      <p class="mt-3 text-xv-text-secondary text-lg">
+        AI concepts, teardowns, and what we're learning — posted live on X.
+      </p>
+    </div>
+
+    <div class="max-w-2xl mx-auto">
+      <div class="glass-card rounded-xl p-3 sm:p-4">
+        <XTimeline height={600} tweetLimit={3} ariaLabel="Recent posts from @xovionai on X" />
+      </div>
+      <div class="mt-6 text-center">
+        <a href="/feed" class="btn-secondary text-sm">
+          See the full feed
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
